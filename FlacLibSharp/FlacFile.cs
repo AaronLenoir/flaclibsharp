@@ -137,13 +137,6 @@ namespace FlacLibSharp
         public CueSheet CueSheet { get { return this.cueSheet; } }
         public SeekTable SeekTable { get { return this.seekTable; } }
 
-        // TODO: Add method to just quickly fetch the metadata from the file:
-        // Metadata data = FlacFile.GetMetadata("flacfile.flac");
-        // Or perhaps even more quickly get some specific data like:
-        // string artist = FlacFile.GetArtist("flacfile.flac");
-        // 
-        // Maybe isolate in something like SharpZipLib's FastZip: FastFlac.GetArtist("blabla.flac");
-
         #endregion
 
         public void Dispose()
