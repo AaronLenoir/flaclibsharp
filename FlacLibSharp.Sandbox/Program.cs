@@ -16,18 +16,6 @@ namespace FlacLibSharp.Sandbox
             Console.WriteLine("Get Artist: " + FastFlac.GetArtist(@"Data\testfile1.flac"));
             Console.WriteLine("Get Duration: " + FastFlac.GetDuration(@"Data\testfile1.flac"));
 
-            var data = FastFlac.GetMetaData("file.flac");
-            FlacLibSharp.Metadata.StreamInfo = FastFlac.GetStreamInfo("file.flac");
-
-            using (FlacFile flac = new FlacFile(@"file1.flac"))
-            {
-                var data = flac.Metadata;
-                foreach (var block in data)
-                {
-                    Console.WriteLine("Metadata block found of type: {0}", block.Header.Type);
-                }
-            }
-
             Console.ReadLine();
         }
 

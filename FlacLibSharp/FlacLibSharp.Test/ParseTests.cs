@@ -60,11 +60,11 @@ namespace FlacLibSharp.Test
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
             {
                 //Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");
-                foreach (Metadata.MetadataBlock block in file.Metadata)
+                foreach (MetadataBlock block in file.Metadata)
                 {
-                    if (block.Header.Type == Metadata.MetadataBlockHeader.MetadataBlockType.StreamInfo)
+                    if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.StreamInfo)
                     {
-                        Metadata.StreamInfo info = (Metadata.StreamInfo)block;
+                        StreamInfo info = (StreamInfo)block;
                         string md5sum = Helpers.ByteHelper.ByteArrayToString(info.MD5Signature);
                         Assert.AreEqual(md5sum, "1d2e54a059ea776787ef66f1f93d3e34");
                         Assert.AreEqual(info.MinimumBlockSize, 4096);
@@ -90,11 +90,11 @@ namespace FlacLibSharp.Test
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
             {
                 //Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");
-                foreach (Metadata.MetadataBlock block in file.Metadata)
+                foreach (MetadataBlock block in file.Metadata)
                 {
-                    if (block.Header.Type == Metadata.MetadataBlockHeader.MetadataBlockType.VorbisComment)
+                    if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.VorbisComment)
                     {
-                        Metadata.VorbisComment info = (Metadata.VorbisComment)block;
+                        VorbisComment info = (VorbisComment)block;
                         Assert.AreEqual(info["ARTIST"], "Ziggystar");
                         Assert.AreEqual(info.Artist, "Ziggystar");
                         Assert.AreEqual(info["TITLE"], "Roland jx3p demo");
@@ -135,14 +135,14 @@ namespace FlacLibSharp.Test
             using (FlacFile file = new FlacFile(@"Data\testfile2.flac"))
             {
                 //Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");
-                foreach (Metadata.MetadataBlock block in file.Metadata)
+                foreach (MetadataBlock block in file.Metadata)
                 {
-                    if (block.Header.Type == Metadata.MetadataBlockHeader.MetadataBlockType.Picture)
+                    if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Picture)
                     {
-                        Metadata.Picture info = (Metadata.Picture)block;
+                        Picture info = (Picture)block;
                         Assert.AreEqual(info.Height, (UInt32)213);
                         Assert.AreEqual(info.Width, (UInt32)400);
-                        Assert.AreEqual(info.PictureType, Metadata.PictureType.CoverFront);
+                        Assert.AreEqual(info.PictureType, PictureType.CoverFront);
                         Assert.AreEqual(info.MIMEType, "image/jpeg");
                     }
                 }
