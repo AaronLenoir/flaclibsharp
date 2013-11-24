@@ -4,7 +4,7 @@ using System.Text;
 
 using FlacLibSharp.Helpers;
 
-namespace FlacLibSharp.Metadata {
+namespace FlacLibSharp {
     public class CueSheet : MetadataBlock {
 
         public override void LoadBlockData(byte[] data) {

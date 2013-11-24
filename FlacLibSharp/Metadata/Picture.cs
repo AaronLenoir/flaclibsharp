@@ -6,7 +6,7 @@ using System.Text;
 using FlacLibSharp.Exceptions;
 using FlacLibSharp.Helpers;
 
-namespace FlacLibSharp.Metadata
+namespace FlacLibSharp
 {
     public enum PictureType
     {

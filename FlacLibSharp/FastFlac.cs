@@ -18,7 +18,7 @@ namespace FlacLibSharp
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static List<Metadata.MetadataBlock> GetMetaData(string path)
+        public static List<MetadataBlock> GetMetaData(string path)
         {
             using (FlacFile flac = new FlacFile(path))
             {
@@ -31,7 +31,7 @@ namespace FlacLibSharp
         /// </summary>
         /// <param name="path"></param>
         /// <returns>The StreamInfo metadata or null if no StreamInfo metadata is found.</returns>
-        public static Metadata.StreamInfo GetStreamInfo(string path)
+        public static StreamInfo GetStreamInfo(string path)
         {
             using (FlacFile flac = new FlacFile(path))
             {
@@ -44,7 +44,7 @@ namespace FlacLibSharp
         /// </summary>
         /// <param name="path"></param>
         /// <returns>The vorbis comment metadata or null if none is available.</returns>
-        public static Metadata.VorbisComment GetVorbisComment(string path)
+        public static VorbisComment GetVorbisComment(string path)
         {
             using (FlacFile flac = new FlacFile(path))
             {

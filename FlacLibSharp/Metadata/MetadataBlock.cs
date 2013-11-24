@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace FlacLibSharp.Metadata {
+namespace FlacLibSharp {
     public abstract class MetadataBlock {
 
         protected MetadataBlock()

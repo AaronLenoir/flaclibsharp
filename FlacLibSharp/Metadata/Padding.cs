@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FlacLibSharp.Metadata {
+namespace FlacLibSharp {
     public class Padding : MetadataBlock {
 
         private UInt32 emptyBitCount;
