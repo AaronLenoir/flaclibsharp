@@ -5,6 +5,9 @@ using System.Text;
 using FlacLibSharp.Helpers;
 
 namespace FlacLibSharp {
+    /// <summary>
+    /// A metadata block that contains information on the actual stream.
+    /// </summary>
     public class StreamInfo : MetadataBlock {
 
         #region Private Fields
@@ -27,6 +30,10 @@ namespace FlacLibSharp {
 
         #endregion
 
+        /// <summary>
+        /// Loads a new stream info block from the provided data.
+        /// </summary>
+        /// <param name="data"></param>
         public override void LoadBlockData(byte[] data) {
             //throw new Exception("The method or operation is not implemented.");
 
@@ -111,6 +118,9 @@ namespace FlacLibSharp {
             get { return this.md5Signature; }
         }
 
+        /// <summary>
+        /// The duration of the audio in seconds, calculated based on the stream info.
+        /// </summary>
         public int Duration
         {
             get

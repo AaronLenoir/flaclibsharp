@@ -5,8 +5,15 @@ using System.Text;
 using FlacLibSharp.Helpers;
 
 namespace FlacLibSharp {
+    /// <summary>
+    /// This block stores various information for use in a cue sheet.
+    /// </summary>
     public class CueSheet : MetadataBlock {
 
+        /// <summary>
+        /// TODO: Parses the binary metadata from the flac file into a CueSheet object.
+        /// </summary>
+        /// <param name="data">The binary data from the flac file.</param>
         public override void LoadBlockData(byte[] data) {
             this.mediaCatalog = Encoding.ASCII.GetString(data, 0, 128);
             this.leadInSampleCount = BinaryDataHelper.GetUInt64(data, 128);
@@ -20,34 +27,45 @@ namespace FlacLibSharp {
 
         private string mediaCatalog;
 
+        /// <summary>
+        /// The media catalog number.
+        /// </summary>
         public string MediaCatalog {
             get { return this.mediaCatalog; }
-            set { this.mediaCatalog = value; }
         }
 
         private UInt64 leadInSampleCount;
 
+        /// <summary>
+        /// The number of lead-in samples, this field is only relevant for CD-DA cuesheets.
+        /// </summary>
         public UInt64 LeadInSampleCount {
             get { return this.leadInSampleCount; }
-            set { this.leadInSampleCount = value; }
         }
 
         private Boolean isCDCueSheet;
 
+        /// <summary>
+        /// True if the cuesheet corresponds to a Compact Disc.
+        /// </summary>
         public Boolean IsCDCueSheet {
             get { return this.isCDCueSheet; }
-            set { this.isCDCueSheet = value; }
         }
 
         private byte trackCount;
 
+        /// <summary>
+        /// The number of tracks.
+        /// </summary>
         public byte TrackCount {
             get { return this.trackCount; }
-            set { this.trackCount = value; }
         }
 
         private CueSheetTrackCollection tracks;
 
+        /// <summary>
+        /// The collection of tracks in the cuesheet.
+        /// </summary>
         public CueSheetTrackCollection Tracks {
             get {
                 if (this.tracks == null) {
@@ -55,7 +73,6 @@ namespace FlacLibSharp {
                 }
                 return this.tracks;
             }
-            set { this.tracks = value; }
         }
 
     }

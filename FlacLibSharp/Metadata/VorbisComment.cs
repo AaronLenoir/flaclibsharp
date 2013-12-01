@@ -6,6 +6,9 @@ using FlacLibSharp.Helpers;
 
 namespace FlacLibSharp
 {
+    /// <summary>
+    /// A metadata block contain the "Vorbis Comment" (artist, ...)
+    /// </summary>
     public class VorbisComment : MetadataBlock
     {
         // Vorbis format: http://www.xiph.org/vorbis/doc/v-comment.html
@@ -13,6 +16,10 @@ namespace FlacLibSharp
         private Dictionary<string, string> comments;
         private string vendor;
 
+        /// <summary>
+        /// Loads the Vorbis from a block of data.
+        /// </summary>
+        /// <param name="data"></param>
         public override void LoadBlockData(byte[] data)
         {
             if (this.comments == null)
@@ -39,10 +46,12 @@ namespace FlacLibSharp
 
             // All done, note that FLAC doesn't have the "fraiming bit" for vorbis ...
         }
-
+        
+        /// <summary>
+        /// Adds a comment to the list of vorbis comments.
+        /// </summary>
+        /// <param name="comment"></param>
         protected void AddComment(string comment) {
-            
-
             int splitIndex = comment.IndexOf("=");
             string key = comment.Substring(0, splitIndex).ToUpper();
             string value = comment.Substring(splitIndex + 1);
@@ -50,8 +59,16 @@ namespace FlacLibSharp
             this.comments.Add(key, value);
         }
 
+        /// <summary>
+        /// The Vendor of the flac file.
+        /// </summary>
         public string Vendor { get { return this.vendor; } }
 
+        /// <summary>
+        /// Get one of the vorbis comment.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field.</param>
+        /// <returns>The value of the vorbis comment field.</returns>
         public String this[string key]
         {
             get
@@ -60,6 +77,11 @@ namespace FlacLibSharp
             }
         }
 
+        /// <summary>
+        /// Checks whether a field with the given key is present in the Vorbis Comment data.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field.</param>
+        /// <returns>True if such a field is available.</returns>
         public bool ContainsField(string key)
         {
             return this.comments.ContainsKey(key.ToUpper());

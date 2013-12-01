@@ -43,6 +43,9 @@ namespace FlacLibSharp
 
         #region Properties
 
+        /// <summary>
+        /// A list of all the available metadata.
+        /// </summary>
         public List<MetadataBlock> Metadata
         {
             get
@@ -59,13 +62,19 @@ namespace FlacLibSharp
 
         #region Initialization
 
-        public void Initialize()
+        /// <summary>
+        /// Verifies the flac identity and tries to load the available metadata blocks.
+        /// </summary>
+        protected void Initialize()
         {
             VerifyFlacIdentity();
             ReadMetadata();
         }
 
-        public void VerifyFlacIdentity()
+        /// <summary>
+        /// Verifies whether or not the first four bytes of the file indicate this is a flac file.
+        /// </summary>
+        private void VerifyFlacIdentity()
         {
             byte[] data = new byte[4];
 
@@ -86,7 +95,10 @@ namespace FlacLibSharp
             }
         }
 
-        public void ReadMetadata()
+        /// <summary>
+        /// Tries to parse all the metadata blocks available in the file.
+        /// </summary>
+        protected void ReadMetadata()
         {
             bool foundStreamInfo = false;
             MetadataBlock lastMetaDataBlock = null;
@@ -130,15 +142,41 @@ namespace FlacLibSharp
         private CueSheet cueSheet;
         private SeekTable seekTable;
 
+        /// <summary>
+        /// Returns the StreamInfo metedata block of the loaded Flac file.
+        /// </summary>
         public StreamInfo StreamInfo { get { return this.streamInfo; } }
+
+        /// <summary>
+        /// Returns the Picture metadata block of the loaded Flac file or null if this block is not available.
+        /// </summary>
         public Picture Picture { get { return this.picture; } }
+        
+        /// <summary>
+        /// Returns the ApplicationInfo metadata block of the loaded Flac file or null if this block is not available.
+        /// </summary>
         public ApplicationInfo ApplicationInfo { get { return this.applicationInfo; } }
+
+        /// <summary>
+        /// Returns the VorbisComment metadata block of the loaded Flac file or null if this block is not available.
+        /// </summary>
         public VorbisComment VorbisComment { get { return this.vorbisComment; } }
+
+        /// <summary>
+        /// Returns the CueSheet metadata block of the loaded Flac file or null if this block is not available.
+        /// </summary>
         public CueSheet CueSheet { get { return this.cueSheet; } }
+
+        /// <summary>
+        /// Returns the SeekTable metadata block of the loaded Flac file or null if this block is not available.
+        /// </summary>
         public SeekTable SeekTable { get { return this.seekTable; } }
 
         #endregion
 
+        /// <summary>
+        /// Releases the loaded flac file.
+        /// </summary>
         public void Dispose()
         {
             if (dataStream != null)

@@ -4,11 +4,21 @@ using System.Text;
 using System.IO;
 
 namespace FlacLibSharp {
+    /// <summary>
+    /// The abstract base class for all meta data blocks.
+    /// </summary>
     public abstract class MetadataBlock {
 
+        /// <summary>
+        /// Creates an empty metadata block
+        /// </summary>
         protected MetadataBlock()
         { }
 
+        /// <summary>
+        /// When overriden in a derived class, will load the given type of metadata from the data provided.
+        /// </summary>
+        /// <param name="data">The data where to find the metadata block in.</param>
         public abstract void LoadBlockData(byte[] data);
 
         /// <summary>
@@ -70,6 +80,9 @@ namespace FlacLibSharp {
 
         private MetadataBlockHeader header;
 
+        /// <summary>
+        /// Each metadata block has a header, defining it's type among other things.
+        /// </summary>
         public MetadataBlockHeader Header {
             get { return this.header; }
         }

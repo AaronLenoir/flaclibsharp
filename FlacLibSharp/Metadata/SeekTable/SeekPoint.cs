@@ -5,6 +5,9 @@ using System.Text;
 using FlacLibSharp.Helpers;
 
 namespace FlacLibSharp {
+    /// <summary>
+    /// A seek point in a frame.
+    /// </summary>
     public class SeekPoint : IComparable<SeekPoint> {
 
         private UInt64 firstSampleNumber;
@@ -12,6 +15,10 @@ namespace FlacLibSharp {
         private UInt16 numberOfSamples;
         private bool isPlaceHolder;
 
+        /// <summary>
+        /// Creates a new seekpoint.
+        /// </summary>
+        /// <param name="data"></param>
         public SeekPoint(byte[] data) {
             this.firstSampleNumber = BinaryDataHelper.GetUInt64(data, 0);
             this.byteOffset = BinaryDataHelper.GetUInt64(data, 8);
@@ -19,11 +26,17 @@ namespace FlacLibSharp {
             ValidateIsPlaceholder();
         }
 
+        /// <summary>
+        /// Creates a place holder seekpoint.
+        /// </summary>
         public SeekPoint() {
             this.firstSampleNumber = Int64.MaxValue;
             this.isPlaceHolder = true;
         }
 
+        /// <summary>
+        /// Sample number of the first sample in a target frame, 0xFFFFFFFFFFFFFFFF for a placeholder point.
+        /// </summary>
         public UInt64 FirstSampleNumber {
             get { return this.firstSampleNumber; }
             set {
@@ -32,16 +45,25 @@ namespace FlacLibSharp {
             }
         }
 
+        /// <summary>
+        /// Offset (in bytes) from the first byte of the first frame header to the first byte of the target frame's header.
+        /// </summary>
         public UInt64 ByteOffset {
             get { return this.byteOffset; }
             set { this.byteOffset = value; }
         }
 
+        /// <summary>
+        /// Number of samples in the target frame.
+        /// </summary>
         public UInt16 NumberOfSamples {
             get { return this.numberOfSamples; }
             set { this.numberOfSamples = value; }
         }
 
+        /// <summary>
+        /// Indicates if this seekpoint is a place holder.
+        /// </summary>
         public bool IsPlaceHolder {
             get { return this.isPlaceHolder; }
             set { this.isPlaceHolder = value; }
@@ -56,7 +78,12 @@ namespace FlacLibSharp {
         }
 
         #region IComparable<FLACSeekPoint> Members
-
+        
+        /// <summary>
+        /// Compares two seekpoints based on the "first sample number".
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public int CompareTo(SeekPoint other) {
             if (this.firstSampleNumber == other.firstSampleNumber) {
                 // We're equal... in the reality of FLAC this may never happen

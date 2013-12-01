@@ -8,15 +8,100 @@ using FlacLibSharp.Helpers;
 
 namespace FlacLibSharp
 {
+    /// <summary>
+    /// What kind of picture is in the flac file, picture type according to the ID3v2 APIC frame.
+    /// </summary>
     public enum PictureType
     {
-        Other = 0, FileIcon = 1, OtherFileIcon = 2, CoverFront = 3, CoverBack = 4,
-        LeafletPage = 5, Media = 6, LeadArtist = 7, Artist = 8, Conductor = 9,
-        Band = 10, Composer = 11, Lyricist = 12, RecordingLocation = 13, DuringRecording = 14,
-        DuringPerformance = 15, MovieScreenCapture = 16, BrightColouredFish = 17,
-        Illustration = 18, ArtistLogotype = 19, StudioLogotype = 20
+        /// <summary>
+        /// A general picture.
+        /// </summary>
+        Other = 0,
+        /// <summary>
+        /// The picture is a file icon.
+        /// </summary>
+        FileIcon = 1,
+        /// <summary>
+        /// The picture is another file icon.
+        /// </summary>
+        OtherFileIcon = 2,
+        /// <summary>
+        /// The picture is the front cover of an album.
+        /// </summary>
+        CoverFront = 3,
+        /// <summary>
+        /// The picture is the back cover of an album.
+        /// </summary>
+        CoverBack = 4,
+        /// <summary>
+        /// The picture is the leaflet page of an album.
+        /// </summary>
+        LeafletPage = 5,
+        /// <summary>
+        /// The picture is a media page (e.g. label of CD).
+        /// </summary>
+        Media = 6,
+        /// <summary>
+        /// The picture of the lead artist.
+        /// </summary>
+        LeadArtist = 7,
+        /// <summary>
+        /// Picture of the artist.
+        /// </summary>
+        Artist = 8,
+        /// <summary>
+        /// Picture of the conductor.
+        /// </summary>
+        Conductor = 9,
+        /// <summary>
+        /// Picture of the band.
+        /// </summary>
+        Band = 10,
+        /// <summary>
+        /// picture of the composer.
+        /// </summary>
+        Composer = 11,
+        /// <summary>
+        /// Picture of the Lyricist.
+        /// </summary>
+        Lyricist = 12,
+        /// <summary>
+        /// Picture of the recording location.
+        /// </summary>
+        RecordingLocation = 13,
+        /// <summary>
+        /// Picture during the recording.
+        /// </summary>
+        DuringRecording = 14,
+        /// <summary>
+        /// Picture during the performance.
+        /// </summary>
+        DuringPerformance = 15,
+        /// <summary>
+        /// A movie screen capture picture.
+        /// </summary>
+        MovieScreenCapture = 16, 
+        /// <summary>
+        /// A picture of a bright coloured fish. Yes, really ... a fish. Brightly coloured even!
+        /// </summary>
+        BrightColouredFish = 17,
+        /// <summary>
+        /// A picture of an illustration.
+        /// </summary>
+        Illustration = 18,
+        /// <summary>
+        /// A picture of the artist logo.
+        /// </summary>
+        ArtistLogotype = 19,
+        /// <summary>
+        /// The studio logo.
+        /// </summary>
+        StudioLogotype = 20
     }
 
+    /// <summary>
+    /// A picture metadata block.
+    /// </summary>
     public class Picture : MetadataBlock
     {
         private PictureType pictureType;
@@ -31,6 +116,10 @@ namespace FlacLibSharp
 
         private string url;
 
+        /// <summary>
+        /// Loads the picture data from a Metadata block.
+        /// </summary>
+        /// <param name="data"></param>
         public override void LoadBlockData(byte[] data)
         {
             // First 32-bit: picture type according to the ID3v2 APIC frame
@@ -65,15 +154,36 @@ namespace FlacLibSharp
             }
         }
 
+        /// <summary>
+        /// What kind of picture this is.
+        /// </summary>
         public PictureType PictureType { get { return this.pictureType; } }
 
+        /// <summary>
+        /// The MIME type of the picture file.
+        /// </summary>
         public string MIMEType { get { return this.mimeType; } }
 
+        /// <summary>
+        /// A description for the picture.
+        /// </summary>
         public string Description { get { return this.description; } }
 
+        /// <summary>
+        /// Width of the picture (in pixels).
+        /// </summary>
         public UInt32 Width { get { return this.width; } }
+        /// <summary>
+        /// Width of the picture (in pixels).
+        /// </summary>
         public UInt32 Height { get { return this.height; } }
+        /// <summary>
+        /// The colour depth of the picture.
+        /// </summary>
         public UInt32 ColorDepth { get { return this.colorDepth; } }
+        /// <summary>
+        /// For color indexed pictures, all of the colours in the picture.
+        /// </summary>
         public UInt32 Colors { get { return this.colors; } }
 
         /// <summary>

@@ -5,18 +5,66 @@ using System.Text;
 using FlacLibSharp.Helpers;
 
 namespace FlacLibSharp {
+    /// <summary>
+    /// A metadata block header.
+    /// </summary>
     public class MetadataBlockHeader {
 
+        /// <summary>
+        /// Defines the type of meta data.
+        /// </summary>
         public enum MetadataBlockType {
-            None, StreamInfo, Padding, Application, Seektable, VorbisComment, CueSheet, Picture, Invalid
+            /// <summary>
+            /// An unknown type of metadata.
+            /// </summary>
+            None,
+            /// <summary>
+            /// Information on the flac audio stream.
+            /// </summary>
+            StreamInfo,
+            /// <summary>
+            /// A metadata block that pads some space. It has no further meaning.
+            /// </summary>
+            Padding,
+            /// <summary>
+            /// A metadata block with application specific information.
+            /// </summary>
+            Application,
+            /// <summary>
+            /// A metadata block that has some information for seektables.
+            /// </summary>
+            Seektable,
+            /// <summary>
+            /// A metadata block that contains the vorbis comments (artist, field, ...)
+            /// </summary>
+            VorbisComment,
+            /// <summary>
+            /// A metadata block containing cue sheet information.
+            /// </summary>
+            CueSheet,
+            /// <summary>
+            /// A metadata block with picture information.
+            /// </summary>
+            Picture,
+            /// <summary>
+            /// A metadata block that is not valid or could not be parsed.
+            /// </summary>
+            Invalid
         }
 
+        /// <summary>
+        /// Creates a new metadata block header from the provided data.
+        /// </summary>
+        /// <param name="data"></param>
         public MetadataBlockHeader(byte[] data) {
             this.ParseData(data);
         }
 
         private bool isLastMetaDataBlock;
 
+        /// <summary>
+        /// Indicates if this is the last metadata block in the file (meaning that it is followed by the actual audio stream).
+        /// </summary>
         public bool IsLastMetaDataBlock {
             get { return this.isLastMetaDataBlock; }
             set { this.isLastMetaDataBlock = value; }
@@ -24,6 +72,9 @@ namespace FlacLibSharp {
 
         private MetadataBlockType type;
 
+        /// <summary>
+        /// Defines what kind of metadatablock this is.
+        /// </summary>
         public MetadataBlockType Type {
             get { return this.type; }
             set { this.type = value; }
@@ -31,11 +82,18 @@ namespace FlacLibSharp {
 
         private Int32 metaDataBlockLength;
 
+        /// <summary>
+        /// Defines the length of the metadata block.
+        /// </summary>
         public Int32 MetaDataBlockLength {
             get { return this.metaDataBlockLength; }
             set { this.metaDataBlockLength = value; }
         }
 
+        /// <summary>
+        /// Interprets the meta data block header.
+        /// </summary>
+        /// <param name="data"></param>
         protected void ParseData(byte[] data) {
             int typeID;
             // Parses the 4 byte header data:
