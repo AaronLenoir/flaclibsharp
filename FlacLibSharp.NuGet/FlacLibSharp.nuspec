@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>FlacLibSharp</id>
+    <version>1.0.0</version>
+    <authors>Aaron Lenoir</authors>
+    <owners>Aaron Lenoir</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
+    <projectUrl>https://github.com/AaronLenoir/flaclibsharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A .NET library for reading FLAC metadata.</description>
+    <copyright>Copyright 2013</copyright>
+  </metadata>
+  <files>
+	<file src="..\lib\FlacLibSharp.dll" target="lib\20" />
+	<file src="..\lib\FlacLibSharp.xml" target="lib\20" />
+  </files>
+</package>
