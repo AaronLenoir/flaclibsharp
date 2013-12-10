@@ -11,10 +11,15 @@ namespace FlacLibSharp.Sandbox
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Get Album: " + FastFlac.GetAlbum(@"Data\testfile1.flac"));
-            Console.WriteLine("Get Title: " + FastFlac.GetTitle(@"Data\testfile1.flac"));
-            Console.WriteLine("Get Artist: " + FastFlac.GetArtist(@"Data\testfile1.flac"));
-            Console.WriteLine("Get Duration: " + FastFlac.GetDuration(@"Data\testfile1.flac"));
+        //    Console.WriteLine("Get Album: " + FastFlac.GetAlbum(@"Data\testfile1.flac"));
+        //    Console.WriteLine("Get Title: " + FastFlac.GetTitle(@"Data\testfile1.flac"));
+        //    Console.WriteLine("Get Artist: " + FastFlac.GetArtist(@"Data\testfile1.flac"));
+        //    Console.WriteLine("Get Duration: " + FastFlac.GetDuration(@"Data\testfile1.flac"));
+
+            using (FlacFile file = new FlacFile(@"Data\testfile3.flac"))
+            {
+                var seekTable = file.SeekTable;
+            }
 
             Console.ReadLine();
         }
