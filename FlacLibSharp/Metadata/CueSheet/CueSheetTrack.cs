@@ -13,9 +13,17 @@ namespace FlacLibSharp {
         /// <summary>
         /// Initialize the CueSheetTrack
         /// </summary>
-        /// <param name="data"></param>
-        public CueSheetTrack(byte[] data) {
-
+        /// <param name="data">The full data array.</param>
+        /// <param name="dataOffset">Where the cuesheet track begins.</param>
+        public CueSheetTrack(byte[] data, int dataOffset) {
+            this.trackOffset = BinaryDataHelper.GetUInt64(data, dataOffset);
+            this.trackNumber = (byte)BinaryDataHelper.GetUInt(data, dataOffset + 4, 8);
+            this.isrc = System.Text.Encoding.ASCII.GetString(data, dataOffset + 5, 12);
+            this.isAudioTrack = BinaryDataHelper.GetBoolean(data, dataOffset + 17, 1);
+            this.isPreEmphasis = BinaryDataHelper.GetBoolean(data, dataOffset + 17, 2);
+            // 6 bits + 13 bytes need to be zero, won't check this
+            this.indexPointCount = (byte)BinaryDataHelper.GetUInt(data, dataOffset + 30, 8);
+            // For all tracks, except the lead-in track, one or more track index points
         }
 
         private UInt64 trackOffset;

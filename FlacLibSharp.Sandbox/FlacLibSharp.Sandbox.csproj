@@ -55,6 +55,9 @@
     <Content Include="Data\testfile3.flac">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\testfile4.flac">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlacLibSharp\FlacLibSharp.csproj">

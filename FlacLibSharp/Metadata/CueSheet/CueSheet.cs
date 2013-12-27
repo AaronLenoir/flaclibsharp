@@ -20,8 +20,17 @@ namespace FlacLibSharp {
             this.isCDCueSheet = BinaryDataHelper.GetBoolean(data, 132, 0);
             // We're skipping 7 bits + 258 bytes which is reserved null data
             this.trackCount = data[391];
+            if (this.trackCount > 100)
+            {
+                // Do we really need to throw an exception here?
+                throw new Exceptions.FlacLibSharpInvalidFormatException("CueSheet has invalid track count. Cannot be more than 100.");
+            }
+            
+            int cueSheetTrackOffset = 392;
             for (int i = 0; i < this.trackCount; i++) {
-                //this.tracks.Add(new FLACCueSheetTrack(BinaryDataHelper.GetDataSubset(data, 392 + (i*
+                CueSheetTrack newTrack = new CueSheetTrack(data, cueSheetTrackOffset);
+                cueSheetTrackOffset += 36 + (12 * newTrack.IndexPointCount); // 36 bytes for the cueSheetTrack and 12 bytes per index point ...
+                this.tracks.Add(newTrack);
             }
         }
 

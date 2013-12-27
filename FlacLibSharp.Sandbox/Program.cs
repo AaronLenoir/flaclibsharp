@@ -16,9 +16,9 @@ namespace FlacLibSharp.Sandbox
         //    Console.WriteLine("Get Artist: " + FastFlac.GetArtist(@"Data\testfile1.flac"));
         //    Console.WriteLine("Get Duration: " + FastFlac.GetDuration(@"Data\testfile1.flac"));
 
-            using (FlacFile file = new FlacFile(@"Data\testfile3.flac"))
+            using (FlacFile file = new FlacFile(@"Data\testfile4.flac"))
             {
-                var seekTable = file.SeekTable;
+                var cueSheet = file.CueSheet;
             }
 
             Console.ReadLine();
