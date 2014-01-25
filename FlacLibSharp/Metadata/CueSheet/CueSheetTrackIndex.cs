@@ -14,8 +14,9 @@ namespace FlacLibSharp {
         /// Creates a new Cue Sheet Track Index based on the binary data provided.
         /// </summary>
         /// <param name="data"></param>
-        public CueSheetTrackIndex(byte[] data) {
-
+        public CueSheetTrackIndex(byte[] data, int dataOffset) {
+            this.offset = BinaryDataHelper.GetUInt64(data, dataOffset);
+            this.indexPointNumber = (byte)BinaryDataHelper.GetUInt(data, dataOffset + 8, 8);
         }
 
         private UInt64 offset;

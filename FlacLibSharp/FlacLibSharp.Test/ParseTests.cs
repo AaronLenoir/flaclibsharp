@@ -199,7 +199,99 @@ namespace FlacLibSharp.Test
                 // Not testing ALL seekpoints ...
             }
         }
-      
+
+        //        METADATA block #2
+        //  type: 5 (CUESHEET)
+        //  is last: false
+        //  length: 600
+        //  media catalog number:
+        //  lead-in: 88200
+        //  is CD: false
+        //  number of tracks: 4
+        //    track[0]
+        //      offset: 0
+        //      number: 1
+        //      ISRC:
+        //      type: AUDIO
+        //      pre-emphasis: false
+        //      number of index points: 1
+        //        index[0]
+        //          offset: 0
+        //          number: 1
+        //    track[1]
+        //      offset: 661500
+        //      number: 2
+        //      ISRC:
+        //      type: AUDIO
+        //      pre-emphasis: false
+        //      number of index points: 2
+        //        index[0]
+        //          offset: 0
+        //          number: 0
+        //        index[1]
+        //          offset: 220500
+        //          number: 1
+        //    track[2]
+        //      offset: 1102500
+        //      number: 3
+        //      ISRC:
+        //      type: AUDIO
+        //      pre-emphasis: false
+        //      number of index points: 2
+        //        index[0]
+        //          offset: 0
+        //          number: 0
+        //        index[1]
+        //          offset: 220500
+        //          number: 1
+        //    track[3]
+        //      offset: 1703592
+        //      number: 170 (LEAD-OUT)
+
+        [TestMethod]
+        public void OpenFlacFileAndCheckCueSheet()
+        {
+            using (FlacFile file = new FlacFile(@"Data\testfile4.flac"))
+            {
+                var cueSheet = file.CueSheet;
+                Assert.IsNotNull(cueSheet, "No cuesheet found.");
+
+                Assert.AreEqual(cueSheet.Header.MetaDataBlockLength, 600);
+                Assert.AreEqual<ulong>(cueSheet.LeadInSampleCount, 88200);
+                Assert.AreEqual(cueSheet.TrackCount, 4);
+                Assert.AreEqual(cueSheet.MediaCatalog, String.Empty);
+                
+                Assert.AreEqual(cueSheet.TrackCount, cueSheet.Tracks.Count);
+                
+                Assert.AreEqual<ulong>(cueSheet.Tracks[0].TrackOffset, 0);
+                Assert.AreEqual(cueSheet.Tracks[0].IndexPointCount, 1);
+                Assert.AreEqual(cueSheet.Tracks[0].TrackNumber, 1);
+                Assert.AreEqual(cueSheet.Tracks[0].IndexPointCount, cueSheet.Tracks[0].IndexPoints.Count);
+                Assert.AreEqual(cueSheet.Tracks[0].IsAudioTrack, true);
+                Assert.AreEqual(cueSheet.Tracks[0].IsPreEmphasis, false);
+                Assert.AreEqual(cueSheet.Tracks[0].ISRC, String.Empty);
+
+                Assert.AreEqual<ulong>(cueSheet.Tracks[1].TrackOffset, 661500);
+                Assert.AreEqual(cueSheet.Tracks[1].IndexPointCount, 2);
+                Assert.AreEqual(cueSheet.Tracks[1].TrackNumber, 2);
+                Assert.AreEqual(cueSheet.IsCDCueSheet, false);
+                Assert.AreEqual(cueSheet.Tracks[1].IndexPointCount, cueSheet.Tracks[1].IndexPoints.Count);
+                Assert.AreEqual(cueSheet.Tracks[1].IsAudioTrack, true);
+                Assert.AreEqual(cueSheet.Tracks[1].IsPreEmphasis, false);
+                Assert.AreEqual(cueSheet.Tracks[1].ISRC, String.Empty);
+
+                Assert.AreEqual<ulong>(cueSheet.Tracks[2].TrackOffset, 1102500);
+                Assert.AreEqual(cueSheet.Tracks[2].IndexPointCount, 2);
+                Assert.AreEqual(cueSheet.Tracks[2].TrackNumber, 3);
+                Assert.AreEqual(cueSheet.Tracks[2].IndexPointCount, cueSheet.Tracks[2].IndexPoints.Count);
+                Assert.AreEqual(cueSheet.Tracks[2].IsAudioTrack, true);
+                Assert.AreEqual(cueSheet.Tracks[2].IsPreEmphasis, false);
+                Assert.AreEqual(cueSheet.Tracks[2].ISRC, String.Empty);
+
+                Assert.AreEqual<ulong>(cueSheet.Tracks[3].TrackOffset, 1703592);
+                Assert.AreEqual(cueSheet.Tracks[3].TrackNumber, 170); // Lead-out
+            }
+        }
 
     }
 }

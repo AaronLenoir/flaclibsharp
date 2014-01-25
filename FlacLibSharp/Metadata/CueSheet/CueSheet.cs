@@ -15,22 +15,22 @@ namespace FlacLibSharp {
         /// </summary>
         /// <param name="data">The binary data from the flac file.</param>
         public override void LoadBlockData(byte[] data) {
-            this.mediaCatalog = Encoding.ASCII.GetString(data, 0, 128);
+            this.mediaCatalog = Encoding.ASCII.GetString(data, 0, 128).Trim(new char[]{ '\0' });
             this.leadInSampleCount = BinaryDataHelper.GetUInt64(data, 128);
-            this.isCDCueSheet = BinaryDataHelper.GetBoolean(data, 132, 0);
+            this.isCDCueSheet = BinaryDataHelper.GetBoolean(data, 136, 0);
             // We're skipping 7 bits + 258 bytes which is reserved null data
-            this.trackCount = data[391];
+            this.trackCount = data[395];
             if (this.trackCount > 100)
             {
                 // Do we really need to throw an exception here?
                 throw new Exceptions.FlacLibSharpInvalidFormatException("CueSheet has invalid track count. Cannot be more than 100.");
             }
-            
-            int cueSheetTrackOffset = 392;
+
+            int cueSheetTrackOffset = 396;
             for (int i = 0; i < this.trackCount; i++) {
                 CueSheetTrack newTrack = new CueSheetTrack(data, cueSheetTrackOffset);
                 cueSheetTrackOffset += 36 + (12 * newTrack.IndexPointCount); // 36 bytes for the cueSheetTrack and 12 bytes per index point ...
-                this.tracks.Add(newTrack);
+                this.Tracks.Add(newTrack);
             }
         }
 

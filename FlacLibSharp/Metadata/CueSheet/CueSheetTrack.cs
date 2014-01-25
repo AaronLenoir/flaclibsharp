@@ -17,13 +17,20 @@ namespace FlacLibSharp {
         /// <param name="dataOffset">Where the cuesheet track begins.</param>
         public CueSheetTrack(byte[] data, int dataOffset) {
             this.trackOffset = BinaryDataHelper.GetUInt64(data, dataOffset);
-            this.trackNumber = (byte)BinaryDataHelper.GetUInt(data, dataOffset + 4, 8);
-            this.isrc = System.Text.Encoding.ASCII.GetString(data, dataOffset + 5, 12);
-            this.isAudioTrack = BinaryDataHelper.GetBoolean(data, dataOffset + 17, 1);
-            this.isPreEmphasis = BinaryDataHelper.GetBoolean(data, dataOffset + 17, 2);
+            this.trackNumber = (byte)BinaryDataHelper.GetUInt(data, dataOffset + 8, 8);
+            this.isrc = System.Text.Encoding.ASCII.GetString(data, dataOffset + 9, 12).Trim(new char[] { '\0' });
+            this.isAudioTrack = !BinaryDataHelper.GetBoolean(data, dataOffset + 21, 1); // 0 for audio
+            this.isPreEmphasis = BinaryDataHelper.GetBoolean(data, dataOffset + 21, 2);
             // 6 bits + 13 bytes need to be zero, won't check this
-            this.indexPointCount = (byte)BinaryDataHelper.GetUInt(data, dataOffset + 30, 8);
+            this.indexPointCount = (byte)BinaryDataHelper.GetUInt(data, dataOffset + 35, 8);
+
             // For all tracks, except the lead-in track, one or more track index points
+            dataOffset += 36;
+            for (int i = 0; i < indexPointCount; i++)
+            {
+                this.IndexPoints.Add(new CueSheetTrackIndex(data, dataOffset));
+                dataOffset += 12; // Index points are always 12 bytes long
+            }
         }
 
         private UInt64 trackOffset;
@@ -88,7 +95,12 @@ namespace FlacLibSharp {
         /// All of the index points in the cue sheet track.
         /// </summary>
         public CueSheetTrackIndexCollection IndexPoints {
-            get { return this.indexPoints; }
+            get {
+                if (this.indexPoints == null) { 
+                    this.indexPoints = new CueSheetTrackIndexCollection();
+                }
+                return this.indexPoints;
+            }
             set { this.indexPoints = value; }
         }
 
