@@ -12,7 +12,7 @@
     <copyright>Copyright 2013</copyright>
   </metadata>
   <files>
-	<file src="..\lib\FlacLibSharp.dll" target="lib\20" />
-	<file src="..\lib\FlacLibSharp.xml" target="lib\20" />
+	<file src="..\FlacLibSharp\bin\Release\FlacLibSharp.dll" target="lib\20" />
+	<file src="..\FlacLibSharp\bin\Release\FlacLibSharp.xml" target="lib\20" />
   </files>
 </package>
