@@ -110,7 +110,7 @@ namespace FlacLibSharp {
             //  127 : invalid, to avoid confusion with a frame sync code
             // Next 3 bytes: Length (in bytes) of metadata to follow (does not include the size of the METADATA_BLOCK_HEADER)
 
-            this.isLastMetaDataBlock = BinaryDataHelper.GetUInt(data, 0, 1, 0) == 1;
+            this.isLastMetaDataBlock = BinaryDataHelper.GetBoolean(data, 0, 0);
 
             typeID = data[0] & 0x7F;
             switch (typeID) {

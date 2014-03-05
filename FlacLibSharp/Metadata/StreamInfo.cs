@@ -45,10 +45,10 @@ namespace FlacLibSharp {
             this.minimumFrameSize = BinaryDataHelper.GetUInt24(data, 4);
             this.maximumFrameSize = BinaryDataHelper.GetUInt24(data, 7);
             // Interpret 20 bits starting from byte 10 as a UInt
-            this.sampleRateHz = (UInt32)BinaryDataHelper.GetUInt(data, 10, 20);
-            this.channels = (short)(BinaryDataHelper.GetUInt(data, 12, 3, 4) + 1);
-            this.bitsPerSample = (short)(BinaryDataHelper.GetUInt(data, 12, 5, 7) + 1);
-            this.samples = (long)BinaryDataHelper.GetUInt(data, 13, 36, 4);
+            this.sampleRateHz = (UInt32)BinaryDataHelper.GetUInt64(data, 10, 20);
+            this.channels = (short)(BinaryDataHelper.GetUInt64(data, 12, 3, 4) + 1);
+            this.bitsPerSample = (short)(BinaryDataHelper.GetUInt64(data, 12, 5, 7) + 1);
+            this.samples = (long)BinaryDataHelper.GetUInt64(data, 13, 36, 4);
             this.md5Signature = new byte[16];
             Array.Copy(data, 18, this.md5Signature, 0, 16);
         }

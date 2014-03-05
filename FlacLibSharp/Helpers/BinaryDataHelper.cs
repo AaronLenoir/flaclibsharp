@@ -3,23 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace FlacLibSharp.Helpers {
-    /// <summary>
-    /// The kinds of endianness that exist.
-    /// </summary>
-    public enum Endianness {
-        /// <summary>
-        /// Little endian.
-        /// </summary>
-        Little,
-        /// <summary>
-        /// Big endian.
-        /// </summary>
-        Big
-    }
 
     /// <summary>
-    /// A helper class for parsing byes and bits to actual numbers!
+    /// A helper class for parsing byes and bits to actual numbers.
     /// </summary>
+    /// <remarks>Currently always operates with Big-Endian numbers (because this was created for FLAC parsing which uses big-endian by default).</remarks>
     public static class BinaryDataHelper {
 
         /// <summary>
@@ -42,7 +30,7 @@ namespace FlacLibSharp.Helpers {
         /// <param name="byteOffset">Offset from where to start reading the integer, in bytes.</param>
         /// <returns>The number that was read.</returns>
         public static UInt16 GetUInt16(byte[] data, int byteOffset) {
-            return (UInt16)GetUInt(data, byteOffset, 16);
+            return (UInt16)GetUInt64(data, byteOffset, 16);
         }
 
         /// <summary>
@@ -52,7 +40,7 @@ namespace FlacLibSharp.Helpers {
         /// <param name="byteOffset">Offset from where to start reading the integer, in bytes.</param>
         /// <returns>The number that was read (it reads 24 bits, but the actual type will be a 32 bit integer).</returns>
         public static UInt32 GetUInt24(byte[] data, int byteOffset) {
-            return (UInt32)GetUInt(data, byteOffset, 24);
+            return (UInt32)GetUInt64(data, byteOffset, 24);
         }
 
         /// <summary>
@@ -62,7 +50,7 @@ namespace FlacLibSharp.Helpers {
         /// <param name="byteOffset">Offset from where to start reading the integer, in bytes.</param>
         /// <returns>The number that was read.</returns>
         public static UInt32 GetUInt32(byte[] data, int byteOffset) {
-            return (UInt32)GetUInt(data, byteOffset, 32);
+            return (UInt32)GetUInt64(data, byteOffset, 32);
         }
 
         /// <summary>
@@ -72,7 +60,7 @@ namespace FlacLibSharp.Helpers {
         /// <param name="byteOffset">Offset from where to start reading the integer, in bytes.</param>
         /// <returns>The number that was read.</returns>
         public static UInt64 GetUInt64(byte[] data, int byteOffset) {
-            return (UInt64)GetUInt(data, byteOffset, 64);
+            return (UInt64)GetUInt64(data, byteOffset, 64);
         }
 
         /// <summary>
@@ -82,8 +70,8 @@ namespace FlacLibSharp.Helpers {
         /// <param name="byteOffset">Offset from where to start reading the boolean, in bytes.</param>
         /// <param name="bitOffset">In the found byte, defines the bit that will represent the boolean.</param>
         /// <returns>The number that was read.</returns>
-        public static bool GetBoolean(byte[] data, int byteOffset, int bitOffset) {
-            return (GetUInt(data, byteOffset, 1, (byte)bitOffset) == 1);
+        public static bool GetBoolean(byte[] data, int byteOffset, byte bitOffset) {
+            return (GetUInt64(data, byteOffset, 1, bitOffset) == 1);
         }
 
         /// <summary>
@@ -93,8 +81,8 @@ namespace FlacLibSharp.Helpers {
         /// <param name="byteOffset">Offset from where to start reading the integer, in bytes.</param>
         /// <param name="bitCount">How many bits to read (16, 32, or something arbitrary but less than or equal to 64)</param>
         /// <returns>The number that was read.</returns>
-        public static UInt64 GetUInt(byte[] data, int byteOffset, int bitCount) {
-            return GetUInt(data, byteOffset, bitCount, 0);
+        public static UInt64 GetUInt64(byte[] data, int byteOffset, int bitCount) {
+            return GetUInt64(data, byteOffset, bitCount, 0);
         }
 
         /// <summary>
@@ -104,34 +92,32 @@ namespace FlacLibSharp.Helpers {
         /// <param name="byteOffset">Where in the data to start reading (offset in bytes)</param>
         /// <param name="bitCount">How many bits to read (16, 32, or something arbitrary but less than or equal to 64)</param>
         /// <param name="bitOffset">In the first byte, at which bit to start reading the data from.</param>
+        /// <remarks>Always assumes Big-Endian in the data store.</remarks>
         /// <returns></returns>
-        public static UInt64 GetUInt(byte[] data, int byteOffset, int bitCount, byte bitOffset) {
-            // TODO: Allow to span multiple bytes when offset and uneven bitcount is used... (like offset = 7, bitcount = 5)
+        public static UInt64 GetUInt64(byte[] data, int byteOffset, int bitCount, byte bitOffset) {
             UInt64 result = 0;
-            byte byteCount;
-            byte temp_value;
-            byte maskedBitCount;
 
-            byteCount = (byte)(Math.Ceiling((bitCount+bitOffset) / 8.0));
+            // Total amount of bits to read (the rest is masked)
+            int totalBitCount = bitCount + bitOffset; 
+            
+            // byteCount = Math.Ceiling(totalBitCount / 8) = How many bytes we'll be reading in total (maximum 8)
+            byte byteCount = (byte)(totalBitCount >> 3); // totalBitCount / 8
+            if(totalBitCount % 8 > 0) {
+                byteCount += 1;
+            } // Math.Ceiling
 
-            maskedBitCount = (byte)((byteCount * 8) - bitCount - bitOffset);
 
-            for (int i = 0; i < byteCount; i++) {
-                temp_value = data[byteOffset + i];
-                if (i == 0) {
-                    temp_value = (byte)(temp_value << bitOffset);
-                    temp_value = (byte)(temp_value >> bitOffset);
-                }
+            // The first byte needs to be masked with the bitOffset, as we might not read the first few bits
+            result = (byte)(((data[byteOffset] << bitOffset) & 0xFF) >> bitOffset);
 
-                result = result + temp_value;
-                if (i == (byteCount - 1)) {
-                    result = result >> maskedBitCount;
-                } else if (bitCount < 8) {
-                    result = result << (8 - maskedBitCount);
-                } else {
-                    result = result << 8;
-                }
+            // If we have more than 1 byte we'll read these in one by one
+            for (int i = 1; i < byteCount; i++) {
+                result = (result << 8) + data[byteOffset + i];
             }
+
+            // Bits masked at the end of the number (because we don't want to read up until the full last byte)
+            byte maskedBitCount = (byte)((byteCount << 3) - totalBitCount); // (byteCount * 8) - totalBitCount
+            result = result >> maskedBitCount;
 
             return result;
         }
