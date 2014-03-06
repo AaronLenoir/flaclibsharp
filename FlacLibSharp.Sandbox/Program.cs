@@ -16,6 +16,12 @@ namespace FlacLibSharp.Sandbox
         //    Console.WriteLine("Get Artist: " + FastFlac.GetArtist(@"Data\testfile1.flac"));
         //    Console.WriteLine("Get Duration: " + FastFlac.GetDuration(@"Data\testfile1.flac"));
 
+
+            using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+            {
+
+            }
+
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
             {
                 // Access to the StreamInfo class (actually this should ALWAYS be there ...)
