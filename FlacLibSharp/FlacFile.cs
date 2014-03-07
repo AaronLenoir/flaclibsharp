@@ -14,7 +14,7 @@ namespace FlacLibSharp
         private Stream dataStream;
         private List<MetadataBlock> metadata;
 
-        private static byte[] magicFlacMarker = { 0x66, 0x4C, 0x61, 0x43 }; // fLaC
+        private static readonly byte[] magicFlacMarker = { 0x66, 0x4C, 0x61, 0x43 }; // fLaC
 
         #region Constructors
 
