@@ -24,7 +24,7 @@ namespace FlacLibSharp
         {
             if (this.comments == null)
             {
-                this.comments = new Dictionary<string, string>();
+                this.comments = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             }
 
             UInt32 vendorLength = BinaryDataHelper.GetUInt32(BinaryDataHelper.SwitchEndianness(data, 0, 4), 0);
@@ -52,8 +52,8 @@ namespace FlacLibSharp
         /// </summary>
         /// <param name="comment"></param>
         protected void AddComment(string comment) {
-            int splitIndex = comment.IndexOf("=");
-            string key = comment.Substring(0, splitIndex).ToUpper();
+            int splitIndex = comment.IndexOf('=');
+			string key = comment.Substring(0, splitIndex);
             string value = comment.Substring(splitIndex + 1);
 
             this.comments.Add(key, value);
@@ -73,7 +73,7 @@ namespace FlacLibSharp
         {
             get
             {
-                return this.comments[key.ToUpper()];
+                return this.comments[key];
             }
         }
 
@@ -84,7 +84,7 @@ namespace FlacLibSharp
         /// <returns>True if such a field is available.</returns>
         public bool ContainsField(string key)
         {
-            return this.comments.ContainsKey(key.ToUpper());
+            return this.comments.ContainsKey(key);
         }
 
         /// <summary>
