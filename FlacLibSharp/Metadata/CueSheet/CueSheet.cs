@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using FlacLibSharp.Helpers;
@@ -32,6 +33,15 @@ namespace FlacLibSharp {
                 cueSheetTrackOffset += 36 + (12 * newTrack.IndexPointCount); // 36 bytes for the cueSheetTrack and 12 bytes per index point ...
                 this.Tracks.Add(newTrack);
             }
+        }
+
+        /// <summary>
+        /// Will write the data describing this metadata block to the given stream.
+        /// </summary>
+        /// <param name="targetStream">Stream to write the data to.</param>
+        public override void WriteBlockData(Stream targetStream)
+        {
+            throw new NotImplementedException();
         }
 
         private string mediaCatalog;

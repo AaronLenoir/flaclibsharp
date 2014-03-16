@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using FlacLibSharp.Helpers;
@@ -60,7 +61,23 @@ namespace FlacLibSharp {
             this.ParseData(data);
         }
 
+        /// <summary>
+        /// Will write the data representing this header (as it is stored in the FLAC file) to the given stream.
+        /// </summary>
+        /// <param name="targetStream">The stream where the data will be written to.</param>
+        public void WriteHeaderData(Stream targetStream) {
+            byte data = this.isLastMetaDataBlock ? (byte)1 : (byte)0;
+            data += (byte)(this.typeID << 1);
+
+            targetStream.Write(new byte[] { data }, 0, 1);
+
+            // 24-bit metaDataBlockLength
+            targetStream.Write(BinaryDataHelper.GetBytes((UInt64)this.metaDataBlockLength, 3), 0, 3);
+        }
+
         private bool isLastMetaDataBlock;
+
+        private int typeID;
 
         /// <summary>
         /// Indicates if this is the last metadata block in the file (meaning that it is followed by the actual audio stream).
@@ -77,7 +94,10 @@ namespace FlacLibSharp {
         /// </summary>
         public MetadataBlockType Type {
             get { return this.type; }
-            set { this.type = value; }
+            set {
+                this.type = value;
+                typeID = (int)value;
+            }
         }
 
         private Int32 metaDataBlockLength;
@@ -95,7 +115,6 @@ namespace FlacLibSharp {
         /// </summary>
         /// <param name="data"></param>
         protected void ParseData(byte[] data) {
-            int typeID;
             // Parses the 4 byte header data:
             // Bit 1:   Last-metadata-block flag: '1' if this block is the last metadata block before the audio blocks, '0' otherwise.
             // Bit 2-8: Block Type, 

@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\FlacLibSharpException.cs" />
     <Compile Include="Exceptions\FlacLibSharpInvalidFormatException.cs" />
+    <Compile Include="Exceptions\FlacLibSharpSaveNotSupported.cs" />
     <Compile Include="Exceptions\FlacLibSharpStreamInfoMissing.cs" />
     <Compile Include="FastFlac.cs" />
     <Compile Include="FlacFile.cs" />
@@ -63,9 +64,6 @@
     <Compile Include="Metadata\MetadataBlock.cs" />
     <Compile Include="Metadata\VorbisComment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ProfilingSessions\Session20140307_235706.sdps" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

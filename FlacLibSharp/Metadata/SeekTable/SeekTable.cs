@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using FlacLibSharp.Helpers;
@@ -25,6 +26,15 @@ namespace FlacLibSharp {
                 newSeekPoint = new SeekPoint(BinaryDataHelper.GetDataSubset(data, i * 18, 18));
                 this.SeekPoints.Add(newSeekPoint);
             }
+        }
+
+        /// <summary>
+        /// Will write the data describing this metadata block to the given stream.
+        /// </summary>
+        /// <param name="targetStream">Stream to write the data to.</param>
+        public override void WriteBlockData(Stream targetStream)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

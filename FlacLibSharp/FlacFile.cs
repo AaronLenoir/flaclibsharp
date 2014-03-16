@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using FlacLibSharp.Exceptions;
 
 namespace FlacLibSharp
 {
@@ -13,6 +14,10 @@ namespace FlacLibSharp
     {
         private Stream dataStream;
         private List<MetadataBlock> metadata;
+        
+        // Some housekeeping for the file save
+        private long frameStart;
+        private string filePath = String.Empty;
 
         private static readonly byte[] magicFlacMarker = { 0x66, 0x4C, 0x61, 0x43 }; // fLaC
 
@@ -24,6 +29,7 @@ namespace FlacLibSharp
         /// <param name="path">Path to the file.</param>
         public FlacFile(string path)
         {
+            this.filePath = path;
             this.dataStream = File.OpenRead(path);
             this.Initialize();
         }
@@ -128,9 +134,12 @@ namespace FlacLibSharp
                         break;
                 }
             } while (!lastMetaDataBlock.Header.IsLastMetaDataBlock);
-            
+
             if (!foundStreamInfo)
                 throw new Exceptions.FlacLibSharpStreamInfoMissing();
+            
+            // Remember where the frame data starts
+            frameStart = this.dataStream.Position;
         }
 
         /* Direct access to different meta data */
@@ -171,6 +180,52 @@ namespace FlacLibSharp
         /// Returns the SeekTable metadata block of the loaded Flac file or null if this block is not available.
         /// </summary>
         public SeekTable SeekTable { get { return this.seekTable; } }
+
+        #endregion
+
+        #region Writing
+
+        public void Save()
+        {
+            if (String.IsNullOrEmpty(this.filePath))
+            {
+                throw new FlacLibSharpSaveNotSupportedException();
+            }
+
+            string bufferFile = Path.GetTempFileName();
+            using (var fs = new FileStream(bufferFile, FileMode.Create))
+            {
+                // First write the magic flac bytes ...
+                fs.Write(magicFlacMarker, 0, magicFlacMarker.Length);
+
+                foreach (MetadataBlock block in this.Metadata)
+                {
+                    try
+                    {
+                        block.WriteBlockData(fs);
+                    }
+                    catch (NotImplementedException)
+                    {
+                        // Ignore for now (testing)
+                    }
+                }
+
+                // Metadata is written back to the new file stream, now we can copy the rest of the frames
+                byte[] dataBuffer = new byte[4096];
+                this.dataStream.Seek(this.frameStart, SeekOrigin.Begin);
+
+                int read = 0;
+                do {
+                    read = this.dataStream.Read(dataBuffer, 0, dataBuffer.Length);
+                    fs.Write(dataBuffer, 0, read);
+                } while (read > 0);
+            }
+
+            this.dataStream.Close();
+
+            File.Delete(this.filePath);
+            File.Move(bufferFile, this.filePath);
+        }
 
         #endregion
 

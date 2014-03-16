@@ -86,7 +86,6 @@ namespace FlacLibSharp.Test
         [TestMethod]
         public void OpenFlacFileAndCheckVorbisComment()
         {
-
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
             {
                 //Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");

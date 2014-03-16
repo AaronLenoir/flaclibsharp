@@ -16,10 +16,16 @@ namespace FlacLibSharp {
         { }
 
         /// <summary>
-        /// When overriden in a derived class, will load the given type of metadata from the data provided.
+        /// When overridden in a derived class, will load the given type of metadata from the data provided.
         /// </summary>
         /// <param name="data">The data where to find the metadata block in.</param>
         public abstract void LoadBlockData(byte[] data);
+
+        /// <summary>
+        /// When overridden in a derived class, will write the data describing this metadata block to the given stream.
+        /// </summary>
+        /// <param name="targetStream">Stream to write the data to.</param>
+        public abstract void WriteBlockData(Stream targetStream);
 
         /// <summary>
         /// Loads the first meta data block found on the stream (first byte is supposed to be the start of the meta data block)... the stream will be forwarded to the start

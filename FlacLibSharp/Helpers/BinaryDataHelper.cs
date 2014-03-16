@@ -122,6 +122,56 @@ namespace FlacLibSharp.Helpers {
             return result;
         }
 
+#region GetBytes
+
+        /// <summary>
+        /// Converts the given value to a big-endian byte stream.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        public static byte[] GetBytesUInt16(UInt16 value)
+        {
+            return GetBytes(value, 2);
+        }
+
+        /// <summary>
+        /// Converts the given value to a big-endian byte stream.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        public static byte[] GetBytesUInt32(UInt32 value)
+        {
+            return GetBytes(value, 4);
+        }
+
+        /// <summary>
+        /// Converts the given value to a big-endian byte stream.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        public static byte[] GetBytesUInt64(UInt64 value)
+        {
+            return GetBytes(value, 8);
+        }
+
+        /// <summary>
+        /// Converts the given value to a big-endian byte stream.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="size">How many bytes to convert (the rest will be ignored in the value).</param>
+        /// <returns></returns>
+        public static byte[] GetBytes(UInt64 value, int size)
+        {
+            byte[] result = new byte[size];
+
+            for (int i = size - 1; i >= 0; i--)
+            {
+                result[i] = (byte)(value & 0xFF);
+                value = value >> 8;
+            }
+
+            return result;
+        }
+
+#endregion
+
         /// <summary>
         /// For a given array of bytes, switch the endiannes of the length-bytes starting at byteOffset.
         /// </summary>

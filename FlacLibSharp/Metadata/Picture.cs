@@ -155,6 +155,15 @@ namespace FlacLibSharp
         }
 
         /// <summary>
+        /// Will write the data describing this metadata block to the given stream.
+        /// </summary>
+        /// <param name="targetStream">Stream to write the data to.</param>
+        public override void WriteBlockData(Stream targetStream)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// What kind of picture this is.
         /// </summary>
         public PictureType PictureType { get { return this.pictureType; } }

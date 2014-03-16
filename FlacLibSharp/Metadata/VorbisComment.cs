@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using FlacLibSharp.Helpers;
@@ -46,17 +47,37 @@ namespace FlacLibSharp
 
             // All done, note that FLAC doesn't have the "fraiming bit" for vorbis ...
         }
-        
+
+        /// <summary>
+        /// Will write the data describing this metadata block to the given stream.
+        /// </summary>
+        /// <param name="targetStream">Stream to write the data to.</param>
+        public override void WriteBlockData(Stream targetStream)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Adds a comment to the list of vorbis comments.
         /// </summary>
         /// <param name="comment"></param>
-        protected void AddComment(string comment) {
+        protected void AddComment(string comment)
+        {
             int splitIndex = comment.IndexOf('=');
-			string key = comment.Substring(0, splitIndex);
+            string key = comment.Substring(0, splitIndex);
             string value = comment.Substring(splitIndex + 1);
 
-            this.comments.Add(key, value);
+            AddComment(key, value);
+        }
+
+        /// <summary>
+        /// Adds a comment to the list of vorbis comments.
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        protected void AddComment(string fieldName, string value)
+        {
+            this.comments.Add(fieldName, value);
         }
 
         /// <summary>
@@ -75,6 +96,10 @@ namespace FlacLibSharp
             {
                 return this.comments[key];
             }
+            set
+            {
+                this.comments[key] = value;
+            }
         }
 
         /// <summary>
@@ -88,34 +113,58 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Gets the Artist if available, if not an empty string is returned.
+        /// Gets or sets the Artist if available.
         /// </summary>
-        public string Artist { get { if (this.ContainsField("ARTIST")) return this["ARTIST"]; else return string.Empty; } }
+        /// <remarks>If not found an empty string is returned.</remarks>
+        public string Artist {
+            get { if (this.ContainsField("ARTIST")) return this["ARTIST"]; else return string.Empty; }
+            set { if (this.ContainsField("ARTIST")) this["ARTIST"] = value; else AddComment("ARTIST", value); }
+        }
 
         /// <summary>
-        /// Gets the Title if available, if not an empty string is returned.
+        /// Gets or sets the Title if available.
         /// </summary>
-        public string Title { get { if (this.ContainsField("TITLE")) return this["TITLE"]; else return string.Empty; } }
+        /// <remarks>If not found an empty string is returned.</remarks>
+        public string Title {
+            get { if (this.ContainsField("TITLE")) return this["TITLE"]; else return string.Empty; }
+            set { if (this.ContainsField("TITLE")) this["TITLE"] = value; else AddComment("TITLE", value); }
+        }
 
         /// <summary>
-        /// Gets the Album if available, if not an empty string is returned.
+        /// Gets or sets the Album if available.
         /// </summary>
-        public string Album { get { if (this.ContainsField("ALBUM")) return this["ALBUM"]; else return string.Empty; } }
+        /// <remarks>If not found an empty string is returned.</remarks>
+        public string Album {
+            get { if (this.ContainsField("ALBUM")) return this["ALBUM"]; else return string.Empty; }
+            set { if (this.ContainsField("ALBUM")) this["ALBUM"] = value; else AddComment("ALBUM", value); }
+        }
 
         /// <summary>
-        /// Gets the Date if available, if not an empty string is returned.
+        /// Gets or sets the Date if available.
         /// </summary>
-        public string Date { get { if (this.ContainsField("DATE")) return this["DATE"]; else return string.Empty; } }
+        /// <remarks>If not found an empty string is returned.</remarks>
+        public string Date {
+            get { if (this.ContainsField("DATE")) return this["DATE"]; else return string.Empty; }
+            set { if (this.ContainsField("DATE")) this["DATE"] = value; else AddComment("DATE", value); }
+        }
 
         /// <summary>
-        /// Gets the TrackNumber if available, if not an empty string is returned.
+        /// Gets or sets the Tacknumber if available.
         /// </summary>
-        public string TrackNumber { get { if (this.ContainsField("TRACKNUMBER")) return this["TRACKNUMBER"]; else return string.Empty; } }
+        /// <remarks>If not found an empty string is returned.</remarks>
+        public string TrackNumber {
+            get { if (this.ContainsField("TRACKNUMBER")) return this["TRACKNUMBER"]; else return string.Empty; }
+            set { if (this.ContainsField("TRACKNUMBER")) this["TRACKNUMBER"] = value; else AddComment("TRACKNUMBER", value); }
+        }
 
         /// <summary>
-        /// Gets the Genre if available, if not an empty string is returned.
+        /// Gets or sets the Genre if available.
         /// </summary>
-        public string Genre { get { if (this.ContainsField("GENRE")) return this["GENRE"]; else return string.Empty; } }
+        /// <remarks>If not found an empty string is returned.</remarks>
+        public string Genre {
+            get { if (this.ContainsField("GENRE")) return this["GENRE"]; else return string.Empty; }
+            set { if (this.ContainsField("GENRE")) this["GENRE"] = value; else AddComment("GENRE", value); }
+        }
 
     }
 }

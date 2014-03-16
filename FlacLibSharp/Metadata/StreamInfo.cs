@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using FlacLibSharp.Helpers;
@@ -51,6 +52,33 @@ namespace FlacLibSharp {
             this.samples = (long)BinaryDataHelper.GetUInt64(data, 13, 36, 4);
             this.md5Signature = new byte[16];
             Array.Copy(data, 18, this.md5Signature, 0, 16);
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, will write the data describing this metadata block to the given stream.
+        /// </summary>
+        /// <param name="targetStream">Stream to write the data to.</param>
+        public override void WriteBlockData(Stream targetStream)
+        {
+            this.Header.WriteHeaderData(targetStream);
+
+            targetStream.Write(BinaryDataHelper.GetBytesUInt16(this.minimumBlockSize), 0, 2);
+            targetStream.Write(BinaryDataHelper.GetBytesUInt16(this.maximumBlockSize), 0, 2);
+            targetStream.Write(BinaryDataHelper.GetBytes(this.minimumFrameSize, 3), 0, 3);
+            targetStream.Write(BinaryDataHelper.GetBytes(this.maximumFrameSize, 3), 0, 3);
+
+            // next are 64 bits containing:
+            // * sample rate in Hz (20-bits)
+            // * number of channels (3 bits)
+            // * bits per sample (5 bits)
+            // * total samples per stream (36 bits)
+            UInt64 combinedData = (UInt64)this.SampleRateHz << 44;
+            combinedData = combinedData + ((UInt64)(this.channels-1) << 41);
+            combinedData = combinedData + ((UInt64)(this.bitsPerSample-1) << 36);
+            combinedData = combinedData + (UInt64)this.samples;
+
+            targetStream.Write(BinaryDataHelper.GetBytes(combinedData, 8), 0, 8);
+            targetStream.Write(this.md5Signature, 0, 16);
         }
 
         #region Public Properties
