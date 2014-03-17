@@ -43,6 +43,7 @@
     <Compile Include="Exceptions\FlacLibSharpException.cs" />
     <Compile Include="Exceptions\FlacLibSharpInvalidFormatException.cs" />
     <Compile Include="Exceptions\FlacLibSharpSaveNotSupported.cs" />
+    <Compile Include="Exceptions\FlacLibSharpInvalidPaddingBitCount.cs" />
     <Compile Include="Exceptions\FlacLibSharpStreamInfoMissing.cs" />
     <Compile Include="FastFlac.cs" />
     <Compile Include="FlacFile.cs" />

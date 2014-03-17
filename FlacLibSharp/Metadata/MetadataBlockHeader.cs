@@ -66,8 +66,8 @@ namespace FlacLibSharp {
         /// </summary>
         /// <param name="targetStream">The stream where the data will be written to.</param>
         public void WriteHeaderData(Stream targetStream) {
-            byte data = this.isLastMetaDataBlock ? (byte)1 : (byte)0;
-            data += (byte)(this.typeID << 1);
+            byte data = this.isLastMetaDataBlock ? (byte)128 : (byte)0; // The 128 because the last metadata flag is the most significant bit set to 1 ...
+            data += (byte)(this.typeID & 0x7F); // We make sure to chop off the last bit
 
             targetStream.Write(new byte[] { data }, 0, 1);
 
@@ -100,12 +100,12 @@ namespace FlacLibSharp {
             }
         }
 
-        private Int32 metaDataBlockLength;
+        private UInt32 metaDataBlockLength;
 
         /// <summary>
         /// Defines the length of the metadata block.
         /// </summary>
-        public Int32 MetaDataBlockLength {
+        public UInt32 MetaDataBlockLength {
             get { return this.metaDataBlockLength; }
             set { this.metaDataBlockLength = value; }
         }
@@ -162,7 +162,7 @@ namespace FlacLibSharp {
                 this.type = MetadataBlockType.Invalid;
             }
 
-            this.metaDataBlockLength = (int)(BinaryDataHelper.GetUInt24(data, 1));
+            this.metaDataBlockLength = (BinaryDataHelper.GetUInt24(data, 1));
         }
     }
 }

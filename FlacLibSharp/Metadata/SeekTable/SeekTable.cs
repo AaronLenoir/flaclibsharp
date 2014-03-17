@@ -18,7 +18,7 @@ namespace FlacLibSharp {
         /// </summary>
         /// <param name="data"></param>
         public override void LoadBlockData(byte[] data) {
-            int numberOfSeekpoints;
+            UInt32 numberOfSeekpoints;
             SeekPoint newSeekPoint;
 
             numberOfSeekpoints = this.Header.MetaDataBlockLength / 18;

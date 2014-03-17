@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using FlacLibSharp.Exceptions;
 
 namespace FlacLibSharp {
     /// <summary>
@@ -25,15 +26,34 @@ namespace FlacLibSharp {
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
         {
-            throw new NotImplementedException();
+            this.Header.WriteHeaderData(targetStream);
+
+            // Simply write a bunch of 0 bytes (probably shouldn't do this byte per byte ...)
+            UInt32 bytes = this.emptyBitCount / 8;
+            for (UInt32 i = 0; i < bytes; i++)
+            {
+                targetStream.WriteByte(0);
+            }
         }
 
         /// <summary>
-        /// How many empty bits there are in the padding.
+        /// How many empty bits there are in the padding (must be a multiple of eight).
         /// </summary>
         public UInt32 EmptyBitCount {
-            get { return this.emptyBitCount; }
-            set { this.emptyBitCount = value; }
+            get
+            {
+                return this.emptyBitCount;
+            }
+            set
+            {
+                if (value % 8 != 0)
+                {
+                    throw new FlacLibSharpInvalidPaddingBitCount(String.Format("Padding for {0} bits is impossible, the bitcount must be a multiple of eight.", value));
+                }
+            
+                this.emptyBitCount = value;
+                this.Header.MetaDataBlockLength = value / 8;
+            }
         }
 
     }

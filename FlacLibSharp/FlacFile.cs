@@ -209,7 +209,7 @@ namespace FlacLibSharp
                         // minus 4 bytes because the MetaDataBlockLength excludes the size of the header
                         if (writtenBytes - 4 != block.Header.MetaDataBlockLength)
                         {
-                            throw new ApplicationException(String.Format("The header of metadata block of type {0} claims a length of {0} bytes but the total amount of data written was {1} bytes", 
+                            throw new ApplicationException(String.Format("The header of metadata block of type {0} claims a length of {0} bytes but the total amount of data written was {1} + 4 bytes", 
                                 block.Header.MetaDataBlockLength, writtenBytes));
                         }
                     }

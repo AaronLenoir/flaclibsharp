@@ -80,6 +80,22 @@ namespace FlacLibSharp.Test
             }
         }
 
+        [TestMethod]
+        public void OpenFlacFileAndCheckPadding()
+        {
+            using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+            {
+                //Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");
+                foreach (MetadataBlock block in file.Metadata)
+                {
+                    if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Padding)
+                    {
+                        Assert.AreEqual(block.Header.MetaDataBlockLength, ((Padding)block).EmptyBitCount / 8);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Will check some of the streaminfo as read from the testfile1.flac
         /// </summary>
@@ -255,7 +271,7 @@ namespace FlacLibSharp.Test
                 var cueSheet = file.CueSheet;
                 Assert.IsNotNull(cueSheet, "No cuesheet found.");
 
-                Assert.AreEqual(cueSheet.Header.MetaDataBlockLength, 600);
+                Assert.AreEqual(cueSheet.Header.MetaDataBlockLength, (UInt32)600);
                 Assert.AreEqual<ulong>(cueSheet.LeadInSampleCount, 88200);
                 Assert.AreEqual(cueSheet.TrackCount, 4);
                 Assert.AreEqual(cueSheet.MediaCatalog, String.Empty);

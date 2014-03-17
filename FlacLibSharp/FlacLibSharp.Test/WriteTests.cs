@@ -61,6 +61,63 @@ namespace FlacLibSharp.Test
         }
 
         [TestMethod]
+        public void CopyOpenEditAndSavePadding()
+        {
+            UInt32 newPaddingSize = 8 * 2; // 2 bytes of padding
+
+            string origFile = @"Data\testfile1.flac";
+            string newFile = @"Data\testfile1_temp.flac";
+
+            if (File.Exists(newFile))
+            {
+                File.Delete(newFile);
+            }
+            File.Copy(origFile, newFile);
+
+            try
+            {
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    Padding paddingBlock = null;
+                    foreach (var block in flac.Metadata)
+                    {
+                        if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Padding)
+                        {
+                            paddingBlock = (Padding)block;
+                        }
+                    }
+
+                    paddingBlock.EmptyBitCount = newPaddingSize; // Set empty bytes to 2
+
+                    // Save flac file
+                    flac.Save();
+                }
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    Padding paddingBlock = null;
+                    foreach (var block in flac.Metadata)
+                    {
+                        if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Padding)
+                        {
+                            paddingBlock = (Padding)block;
+                        }
+                    }
+
+                    Assert.IsNotNull(paddingBlock);
+
+                    Assert.AreEqual<UInt32>(newPaddingSize, paddingBlock.EmptyBitCount);
+                }
+            }
+            finally
+            {
+                if (File.Exists(newFile))
+                {
+                    File.Delete(newFile);
+                }
+            }
+        }
+
+        [TestMethod]
         public void CopyOpenEditAndSaveVorbisComments()
         {
             string origFile = @"Data\testfile1.flac";

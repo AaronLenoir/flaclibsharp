@@ -63,6 +63,23 @@ namespace FlacLibSharp.Sandbox
             {
                 using (FlacFile flac = new FlacFile(newFile))
                 {
+                    foreach (var block in flac.Metadata)
+                    {
+                        if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Padding)
+                        {
+                            Console.WriteLine("Before Modif: Padding length in bit: {0}", ((Padding)block).EmptyBitCount);
+                            ((Padding)block).EmptyBitCount = 8; // Remove some padding ...
+                        }
+                    }
+
+                    foreach (var block in flac.Metadata)
+                    {
+                        if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Padding)
+                        {
+                            Console.WriteLine("After Modif: Padding length in bit: {0}", ((Padding)block).EmptyBitCount);
+                        }
+                    }
+
                     // Save flac file
                     flac.Save();
                 }
@@ -71,6 +88,14 @@ namespace FlacLibSharp.Sandbox
                     // This will check whether the save did correctly write back the streaminfo
                     var info = flac.StreamInfo;
                     string md5sum = ByteArrayToString(info.MD5Signature);
+
+                    foreach (var block in flac.Metadata)
+                    {
+                        if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Padding)
+                        {
+                            Console.WriteLine("After Save: Padding length in bit: {0}", ((Padding)block).EmptyBitCount);
+                        }
+                    }
 
                     //Assert.AreEqual(md5sum, "1d2e54a059ea776787ef66f1f93d3e34");
                     //Assert.AreEqual(info.MinimumBlockSize, 4096);

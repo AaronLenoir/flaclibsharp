@@ -50,7 +50,7 @@ namespace FlacLibSharp {
                 // Step 3: Read block of meta data (according to header)
 
                 byte[] blockData = new byte[header.MetaDataBlockLength];
-                data.Read(blockData, 0, header.MetaDataBlockLength);
+                data.Read(blockData, 0, (Int32)header.MetaDataBlockLength);
 
                 // Step 4: Load the meta data into the meta data block instance
 
