@@ -56,7 +56,6 @@ namespace FlacLibSharp.Test
         [TestMethod]
         public void OpenFlacFileAndCheckStreamInfo()
         {
-
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
             {
                 //Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");
@@ -66,15 +65,15 @@ namespace FlacLibSharp.Test
                     {
                         StreamInfo info = (StreamInfo)block;
                         string md5sum = Helpers.ByteHelper.ByteArrayToString(info.MD5Signature);
-                        Assert.AreEqual(md5sum, "1d2e54a059ea776787ef66f1f93d3e34");
-                        Assert.AreEqual(info.MinimumBlockSize, 4096);
-                        Assert.AreEqual(info.MaximumBlockSize, 4096);
-                        Assert.AreEqual(info.MinimumFrameSize, (uint)1427);
-                        Assert.AreEqual(info.MaximumFrameSize, (uint)7211);
-                        Assert.AreEqual(info.SampleRateHz, (uint)44100);
-                        Assert.AreEqual(info.Channels, 1);
-                        Assert.AreEqual(info.BitsPerSample, 16);
-                        Assert.AreEqual(info.Samples, 1703592);
+                        Assert.AreEqual("1d2e54a059ea776787ef66f1f93d3e34", md5sum);
+                        Assert.AreEqual(4096, info.MinimumBlockSize);
+                        Assert.AreEqual(4096, info.MaximumBlockSize);
+                        Assert.AreEqual<uint>(1427, info.MinimumFrameSize);
+                        Assert.AreEqual<uint>(7211, info.MaximumFrameSize);
+                        Assert.AreEqual<uint>(44100, info.SampleRateHz);
+                        Assert.AreEqual(1, info.Channels);
+                        Assert.AreEqual(16, info.BitsPerSample);
+                        Assert.AreEqual(1703592, info.Samples);
                     }
                 }
             }
@@ -110,18 +109,18 @@ namespace FlacLibSharp.Test
                     if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.VorbisComment)
                     {
                         VorbisComment info = (VorbisComment)block;
-                        Assert.AreEqual(info["ARTIST"], "Ziggystar");
-                        Assert.AreEqual(info.Artist, "Ziggystar");
-                        Assert.AreEqual(info["TITLE"], "Roland jx3p demo");
-                        Assert.AreEqual(info.Title, "Roland jx3p demo");
-                        Assert.AreEqual(info["ALBUM"], "Wiki Commons");
-                        Assert.AreEqual(info.Album, "Wiki Commons");
-                        Assert.AreEqual(info["DATE"], "2005");
-                        Assert.AreEqual(info.Date, "2005");
-                        Assert.AreEqual(info["TRACKNUMBER"], "01");
-                        Assert.AreEqual(info.TrackNumber, "01");
-                        Assert.AreEqual(info["GENRE"], "Electronic");
-                        Assert.AreEqual(info.Genre, "Electronic");
+                        Assert.AreEqual("Ziggystar", info["ARTIST"]);
+                        Assert.AreEqual("Ziggystar", info.Artist);
+                        Assert.AreEqual("Roland jx3p demo", info["TITLE"]);
+                        Assert.AreEqual("Roland jx3p demo", info.Title);
+                        Assert.AreEqual("Wiki Commons", info["ALBUM"]);
+                        Assert.AreEqual("Wiki Commons", info.Album);
+                        Assert.AreEqual("2005", info["DATE"]);
+                        Assert.AreEqual("2005", info.Date);
+                        Assert.AreEqual("01", info["TRACKNUMBER"]);
+                        Assert.AreEqual("01", info.TrackNumber);
+                        Assert.AreEqual("Electronic", info["GENRE"]);
+                        Assert.AreEqual("Electronic", info.Genre);
                         Assert.IsFalse(info.ContainsField("UNEXISTINGKEY"));
                     }
                 }
@@ -134,10 +133,10 @@ namespace FlacLibSharp.Test
         [TestMethod]
         public void CheckFastFlacFunctions()
         {
-            Assert.AreEqual(FastFlac.GetTitle(@"Data\testfile1.flac"), "Roland jx3p demo");
-            Assert.AreEqual(FastFlac.GetArtist(@"Data\testfile1.flac"), "Ziggystar");
-            Assert.AreEqual(FastFlac.GetAlbum(@"Data\testfile1.flac"), "Wiki Commons");
-            Assert.AreEqual(FastFlac.GetDuration(@"Data\testfile1.flac"), 38);
+            Assert.AreEqual("Roland jx3p demo", FastFlac.GetTitle(@"Data\testfile1.flac"));
+            Assert.AreEqual("Ziggystar", FastFlac.GetArtist(@"Data\testfile1.flac"));
+            Assert.AreEqual("Wiki Commons", FastFlac.GetAlbum(@"Data\testfile1.flac"));
+            Assert.AreEqual(38, FastFlac.GetDuration(@"Data\testfile1.flac"));
         }
         
         /// <summary>
@@ -155,8 +154,8 @@ namespace FlacLibSharp.Test
                     if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Picture)
                     {
                         Picture info = (Picture)block;
-                        Assert.AreEqual(info.Height, (UInt32)213);
-                        Assert.AreEqual(info.Width, (UInt32)400);
+                        Assert.AreEqual<UInt32>(213, info.Height);
+                        Assert.AreEqual<UInt32>(400, info.Width);
                         Assert.AreEqual(info.PictureType, PictureType.CoverFront);
                         Assert.AreEqual(info.MIMEType, "image/jpeg");
                     }
@@ -196,21 +195,21 @@ namespace FlacLibSharp.Test
                 // There's a seekpoint every 2 seconds so there should be 20 seekpoints ...
                 Assert.AreEqual(20, seekTable.SeekPoints.Count);
                 // We know seekpoint 0 should start at sample number 0, with an offset of 0 and number of samples = 4096
-                Assert.AreEqual(seekTable.SeekPoints.Values[0].FirstSampleNumber, (ulong)0);
-                Assert.AreEqual(seekTable.SeekPoints.Values[0].ByteOffset, (ulong)0);
-                Assert.AreEqual(seekTable.SeekPoints.Values[0].NumberOfSamples, (ushort)4096);
+                Assert.AreEqual<ulong>(0, seekTable.SeekPoints.Values[0].FirstSampleNumber);
+                Assert.AreEqual<ulong>(0, seekTable.SeekPoints.Values[0].ByteOffset);
+                Assert.AreEqual<ulong>(4096, seekTable.SeekPoints.Values[0].NumberOfSamples);
                 // We know seekpoint 2 should start at sample number 176128, with an offset of 121744 and number of samples = 4096
-                Assert.AreEqual(seekTable.SeekPoints.Values[2].FirstSampleNumber, (ulong)176128);
-                Assert.AreEqual(seekTable.SeekPoints.Values[2].ByteOffset, (ulong)121744);
-                Assert.AreEqual(seekTable.SeekPoints.Values[2].NumberOfSamples, (ushort)4096);
+                Assert.AreEqual<ulong>(176128, seekTable.SeekPoints.Values[2].FirstSampleNumber);
+                Assert.AreEqual<ulong>(121744, seekTable.SeekPoints.Values[2].ByteOffset);
+                Assert.AreEqual<ushort>(4096, seekTable.SeekPoints.Values[2].NumberOfSamples);
                 // We know seekpoint 5 should start at sample number 438272, with an offset of 302152 and number of samples = 4096
-                Assert.AreEqual(seekTable.SeekPoints.Values[5].FirstSampleNumber, (ulong)438272);
-                Assert.AreEqual(seekTable.SeekPoints.Values[5].ByteOffset, (ulong)302152);
-                Assert.AreEqual(seekTable.SeekPoints.Values[5].NumberOfSamples, (ushort)4096);
+                Assert.AreEqual<ulong>(438272, seekTable.SeekPoints.Values[5].FirstSampleNumber);
+                Assert.AreEqual<ulong>(302152, seekTable.SeekPoints.Values[5].ByteOffset);
+                Assert.AreEqual<ushort>(4096, seekTable.SeekPoints.Values[5].NumberOfSamples);
                 // We know seekpoint 19 should start at sample number 1675264, with an offset of 1451579 and number of samples = 4096
-                Assert.AreEqual(seekTable.SeekPoints.Values[19].FirstSampleNumber, (ulong)1675264);
-                Assert.AreEqual(seekTable.SeekPoints.Values[19].ByteOffset, (ulong)1451579);
-                Assert.AreEqual(seekTable.SeekPoints.Values[19].NumberOfSamples, (ushort)4096);
+                Assert.AreEqual<ulong>(1675264, seekTable.SeekPoints.Values[19].FirstSampleNumber);
+                Assert.AreEqual<ulong>(1451579, seekTable.SeekPoints.Values[19].ByteOffset);
+                Assert.AreEqual<ushort>(4096, seekTable.SeekPoints.Values[19].NumberOfSamples);
                 // Not testing ALL seekpoints ...
             }
         }
@@ -271,40 +270,40 @@ namespace FlacLibSharp.Test
                 var cueSheet = file.CueSheet;
                 Assert.IsNotNull(cueSheet, "No cuesheet found.");
 
-                Assert.AreEqual(cueSheet.Header.MetaDataBlockLength, (UInt32)600);
-                Assert.AreEqual<ulong>(cueSheet.LeadInSampleCount, 88200);
-                Assert.AreEqual(cueSheet.TrackCount, 4);
-                Assert.AreEqual(cueSheet.MediaCatalog, String.Empty);
+                Assert.AreEqual<UInt32>(600, cueSheet.Header.MetaDataBlockLength);
+                Assert.AreEqual<ulong>(88200, cueSheet.LeadInSampleCount);
+                Assert.AreEqual(4, cueSheet.TrackCount);
+                Assert.AreEqual(String.Empty, cueSheet.MediaCatalog);
                 
                 Assert.AreEqual(cueSheet.TrackCount, cueSheet.Tracks.Count);
                 
-                Assert.AreEqual<ulong>(cueSheet.Tracks[0].TrackOffset, 0);
-                Assert.AreEqual(cueSheet.Tracks[0].IndexPointCount, 1);
-                Assert.AreEqual(cueSheet.Tracks[0].TrackNumber, 1);
-                Assert.AreEqual(cueSheet.Tracks[0].IndexPointCount, cueSheet.Tracks[0].IndexPoints.Count);
-                Assert.AreEqual(cueSheet.Tracks[0].IsAudioTrack, true);
-                Assert.AreEqual(cueSheet.Tracks[0].IsPreEmphasis, false);
-                Assert.AreEqual(cueSheet.Tracks[0].ISRC, String.Empty);
+                Assert.AreEqual<ulong>(0, cueSheet.Tracks[0].TrackOffset);
+                Assert.AreEqual(1, cueSheet.Tracks[0].IndexPointCount);
+                Assert.AreEqual(1, cueSheet.Tracks[0].TrackNumber);
+                Assert.AreEqual(cueSheet.Tracks[0].IndexPoints.Count, cueSheet.Tracks[0].IndexPointCount);
+                Assert.AreEqual(true, cueSheet.Tracks[0].IsAudioTrack);
+                Assert.AreEqual(false, cueSheet.Tracks[0].IsPreEmphasis);
+                Assert.AreEqual(String.Empty, cueSheet.Tracks[0].ISRC);
 
-                Assert.AreEqual<ulong>(cueSheet.Tracks[1].TrackOffset, 661500);
-                Assert.AreEqual(cueSheet.Tracks[1].IndexPointCount, 2);
-                Assert.AreEqual(cueSheet.Tracks[1].TrackNumber, 2);
-                Assert.AreEqual(cueSheet.IsCDCueSheet, false);
-                Assert.AreEqual(cueSheet.Tracks[1].IndexPointCount, cueSheet.Tracks[1].IndexPoints.Count);
-                Assert.AreEqual(cueSheet.Tracks[1].IsAudioTrack, true);
-                Assert.AreEqual(cueSheet.Tracks[1].IsPreEmphasis, false);
-                Assert.AreEqual(cueSheet.Tracks[1].ISRC, String.Empty);
+                Assert.AreEqual<ulong>(661500, cueSheet.Tracks[1].TrackOffset);
+                Assert.AreEqual(2, cueSheet.Tracks[1].IndexPointCount);
+                Assert.AreEqual(2, cueSheet.Tracks[1].TrackNumber);
+                Assert.AreEqual(false, cueSheet.IsCDCueSheet);
+                Assert.AreEqual(cueSheet.Tracks[1].IndexPoints.Count, cueSheet.Tracks[1].IndexPointCount, cueSheet.Tracks[1].IndexPoints.Count);
+                Assert.AreEqual(true, cueSheet.Tracks[1].IsAudioTrack);
+                Assert.AreEqual(false, cueSheet.Tracks[1].IsPreEmphasis);
+                Assert.AreEqual(String.Empty, cueSheet.Tracks[1].ISRC);
 
-                Assert.AreEqual<ulong>(cueSheet.Tracks[2].TrackOffset, 1102500);
-                Assert.AreEqual(cueSheet.Tracks[2].IndexPointCount, 2);
-                Assert.AreEqual(cueSheet.Tracks[2].TrackNumber, 3);
-                Assert.AreEqual(cueSheet.Tracks[2].IndexPointCount, cueSheet.Tracks[2].IndexPoints.Count);
-                Assert.AreEqual(cueSheet.Tracks[2].IsAudioTrack, true);
-                Assert.AreEqual(cueSheet.Tracks[2].IsPreEmphasis, false);
-                Assert.AreEqual(cueSheet.Tracks[2].ISRC, String.Empty);
+                Assert.AreEqual<ulong>(1102500, cueSheet.Tracks[2].TrackOffset);
+                Assert.AreEqual(2, cueSheet.Tracks[2].IndexPointCount);
+                Assert.AreEqual(3, cueSheet.Tracks[2].TrackNumber);
+                Assert.AreEqual(cueSheet.Tracks[2].IndexPoints.Count, cueSheet.Tracks[2].IndexPointCount);
+                Assert.AreEqual(true, cueSheet.Tracks[2].IsAudioTrack);
+                Assert.AreEqual(false, cueSheet.Tracks[2].IsPreEmphasis);
+                Assert.AreEqual(String.Empty, cueSheet.Tracks[2].ISRC);
 
-                Assert.AreEqual<ulong>(cueSheet.Tracks[3].TrackOffset, 1703592);
-                Assert.AreEqual(cueSheet.Tracks[3].TrackNumber, 170); // Lead-out
+                Assert.AreEqual<ulong>(1703592, cueSheet.Tracks[3].TrackOffset);
+                Assert.AreEqual(170, cueSheet.Tracks[3].TrackNumber); // Lead-out
             }
         }
 
