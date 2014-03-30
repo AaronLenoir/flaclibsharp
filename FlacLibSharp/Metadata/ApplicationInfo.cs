@@ -32,7 +32,10 @@ namespace FlacLibSharp {
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
         {
-            throw new NotImplementedException();
+            this.Header.WriteHeaderData(targetStream);
+
+            targetStream.Write(BinaryDataHelper.GetBytesUInt32(this.applicationID), 0, 8);
+            targetStream.Write(this.applicationData, 0, this.applicationData.Length);
         }
 
         /// <summary>

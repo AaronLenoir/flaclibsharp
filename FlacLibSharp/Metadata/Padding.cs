@@ -27,7 +27,7 @@ namespace FlacLibSharp {
         public override void WriteBlockData(Stream targetStream)
         {
             this.Header.WriteHeaderData(targetStream);
-
+            
             // Simply write a bunch of 0 bytes (probably shouldn't do this byte per byte ...)
             UInt32 bytes = this.emptyBitCount / 8;
             for (UInt32 i = 0; i < bytes; i++)
