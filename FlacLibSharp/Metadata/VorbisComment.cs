@@ -54,7 +54,44 @@ namespace FlacLibSharp
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
         {
-            throw new NotImplementedException();
+            uint totalLength = 0;
+
+            long headerPosition = targetStream.Position;
+
+            this.Header.WriteHeaderData(targetStream);
+
+            // Write the vendor string (first write the length as a 32-bit uint and then the actual bytes
+            byte[] vendorData = System.Text.Encoding.UTF8.GetBytes(this.vendor);
+            byte[] number = BinaryDataHelper.GetBytesUInt32((uint)vendorData.Length);
+            targetStream.Write(BinaryDataHelper.SwitchEndianness(number, 0, 4), 0, 4);
+            targetStream.Write(vendorData, 0, vendorData.Length);
+            totalLength += 4 + (uint)vendorData.Length;
+
+            // Length of list of user comments (first a 32-bit uint, then the actual comments)
+            number = BinaryDataHelper.GetBytesUInt32((uint)this.comments.Count);
+            targetStream.Write(BinaryDataHelper.SwitchEndianness(number, 0, 4), 0, 4);
+            totalLength += 4;
+
+            foreach (var comment in this.comments)
+            {
+                string commentText = string.Format("{0}={1}", comment.Key, comment.Value);
+                byte[] commentData = System.Text.Encoding.UTF8.GetBytes(commentText);
+                number = BinaryDataHelper.GetBytesUInt32((uint)commentData.Length);
+                targetStream.Write(BinaryDataHelper.SwitchEndianness(number, 0, 4), 0, 4);
+                targetStream.Write(commentData, 0, commentData.Length);
+                totalLength += 4 + (uint)commentData.Length;
+            }
+
+            long endPosition = targetStream.Position;
+
+            targetStream.Seek(headerPosition, SeekOrigin.Begin);
+
+            this.Header.MetaDataBlockLength = totalLength;
+            this.Header.WriteHeaderData(targetStream);
+
+            targetStream.Seek(endPosition, SeekOrigin.Begin);
+
+            // Note: FLAC does NOT have the framing bit for vorbis so we don't have to write this.
         }
 
         /// <summary>
