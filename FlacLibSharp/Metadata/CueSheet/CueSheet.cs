@@ -20,15 +20,16 @@ namespace FlacLibSharp {
             this.leadInSampleCount = BinaryDataHelper.GetUInt64(data, 128);
             this.isCDCueSheet = BinaryDataHelper.GetBoolean(data, 136, 0);
             // We're skipping 7 bits + 258 bytes which is reserved null data
-            this.trackCount = data[395];
-            if (this.trackCount > 100)
+            byte trackCount = data[395];
+            if (trackCount > 100)
             {
                 // Do we really need to throw an exception here?
                 throw new Exceptions.FlacLibSharpInvalidFormatException("CueSheet has invalid track count. Cannot be more than 100.");
             }
 
             int cueSheetTrackOffset = 396;
-            for (int i = 0; i < this.trackCount; i++) {
+            for (int i = 0; i < trackCount; i++)
+            {
                 CueSheetTrack newTrack = new CueSheetTrack(data, cueSheetTrackOffset);
                 cueSheetTrackOffset += 36 + (12 * newTrack.IndexPointCount); // 36 bytes for the cueSheetTrack and 12 bytes per index point ...
                 this.Tracks.Add(newTrack);
@@ -47,37 +48,47 @@ namespace FlacLibSharp {
         private string mediaCatalog;
 
         /// <summary>
-        /// The media catalog number.
+        /// Gets or sets the media catalog number.
         /// </summary>
         public string MediaCatalog {
             get { return this.mediaCatalog; }
+            set { this.mediaCatalog = value; }
         }
 
         private UInt64 leadInSampleCount;
 
         /// <summary>
-        /// The number of lead-in samples, this field is only relevant for CD-DA cuesheets.
+        /// Gets or sets the number of lead-in samples, this field is only relevant for CD-DA cuesheets.
         /// </summary>
         public UInt64 LeadInSampleCount {
             get { return this.leadInSampleCount; }
+            set { this.leadInSampleCount = value; }
         }
 
         private Boolean isCDCueSheet;
 
         /// <summary>
-        /// True if the cuesheet corresponds to a Compact Disc.
+        /// Gets or sets whether the cuesheet corresponds to a Compact Disc.
         /// </summary>
         public Boolean IsCDCueSheet {
             get { return this.isCDCueSheet; }
+            set { this.isCDCueSheet = true; }
         }
-
-        private byte trackCount;
 
         /// <summary>
         /// The number of tracks.
         /// </summary>
         public byte TrackCount {
-            get { return this.trackCount; }
+            get {
+                if ((uint)this.Tracks.Count > 100)
+                {
+                    return 100;
+                }
+                else
+                {
+                    return (byte)this.Tracks.Count;
+                } 
+            }
         }
 
         private CueSheetTrackCollection tracks;
