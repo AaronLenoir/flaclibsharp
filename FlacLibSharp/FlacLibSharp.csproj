@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\FlacLibSharpException.cs" />
+    <Compile Include="Exceptions\FlacLibSharpMaxTracksExceededException.cs" />
     <Compile Include="Exceptions\FlacLibSharpInvalidFormatException.cs" />
     <Compile Include="Exceptions\FlacLibSharpSaveNotSupported.cs" />
     <Compile Include="Exceptions\FlacLibSharpInvalidPaddingBitCount.cs" />

@@ -7,21 +7,16 @@ namespace FlacLibSharp.Exceptions
     /// <summary>
     /// This exception is raised when you try to load an invalid flac file.
     /// </summary>
-    public class FlacLibSharpInvalidFormatException : FlacLibSharpException
+    public class FlacLibSharpMaxTracksExceededException : FlacLibSharpException
     {
-        /// <summary>
-        /// Technical details on what exactly has gone wrong.
-        /// </summary>
-        public string Details { get; set; }
 
         /// <summary>
         /// Creates a new exception/
         /// </summary>
         /// <param name="details">Technical details on what exactly has gone wrong.</param>
-        public FlacLibSharpInvalidFormatException(string details)
-            : base(string.Format("The file is not a valid FLAC file: {0}", details))
+        public FlacLibSharpMaxTracksExceededException(int maxTracks)
+            : base(String.Format("A cuesheet can have no more than {0} tracks.", maxTracks))
         {
-            this.Details = details;
         }
     }
 }

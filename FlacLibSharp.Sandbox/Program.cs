@@ -17,7 +17,20 @@ namespace FlacLibSharp.Sandbox
         //    Console.WriteLine("Get Duration: " + FastFlac.GetDuration(@"Data\testfile1.flac"));
 
             // CopyOpenEditAndSaveVorbisComments();
-            CopyOpenAndSaveStreamInfo();
+            //CopyOpenAndSaveStreamInfo();
+
+            using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+            {
+                if (file.CueSheet == null)
+                {
+                    file.CueSheet = new CueSheet();
+                }
+
+                for (int i = 0; i < 1000; i++)
+                {
+                    file.CueSheet.Tracks.Add(new CueSheetTrack());                   
+                }
+            }
 
             //using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
             //{

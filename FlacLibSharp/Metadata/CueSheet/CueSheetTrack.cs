@@ -10,6 +10,11 @@ namespace FlacLibSharp {
     /// </summary>
     public class CueSheetTrack {
 
+        public CueSheetTrack()
+        {
+            
+        }
+
         /// <summary>
         /// Initialize the CueSheetTrack
         /// </summary>
