@@ -11,6 +11,13 @@ namespace FlacLibSharp {
     /// </summary>
     public class CueSheet : MetadataBlock {
 
+        // See spec for details
+        private const uint CUESHEET_BLOCK_DATA_LENGTH = 396;
+        private const uint CUESHEET_TRACK_LENGTH = 36;
+        private const uint CUESHEET_TRACK_INDEXPOINT_LENGTH = 12;
+        private const int MEDIACATALOG_MAX_LENGTH = 128;
+        private const int RESERVED_NULLDATA_LENGTH = 258;
+
         /// <summary>
         /// TODO: Parses the binary metadata from the flac file into a CueSheet object.
         /// </summary>
@@ -42,7 +49,31 @@ namespace FlacLibSharp {
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
         {
-            throw new NotImplementedException();
+            // TODO: this value in the header should also update when someone add/removes tracks or track index points ...
+            this.Header.MetaDataBlockLength = CalculateMetaDataBlockLength();
+            this.Header.WriteHeaderData(targetStream);
+
+            targetStream.Write(BinaryDataHelper.GetPaddedAsciiBytes(this.MediaCatalog, MEDIACATALOG_MAX_LENGTH), 0, MEDIACATALOG_MAX_LENGTH);
+            targetStream.Write(BinaryDataHelper.GetBytesUInt64(this.LeadInSampleCount), 0, 8);
+            
+            byte isCDCueSheet = 0;
+            if(this.isCDCueSheet) {
+                isCDCueSheet = 0x80; // Most significant bit should be 1
+            }
+            targetStream.WriteByte(isCDCueSheet);
+
+            // Now we need to write 258 bytes of 0 data ("reserved")
+            byte[] nullData = new byte[RESERVED_NULLDATA_LENGTH];
+            targetStream.Write(nullData, 0, nullData.Length);
+
+            // The number of tracks i 1 byte in size ...
+            targetStream.WriteByte(this.TrackCount);
+
+            foreach (var track in Tracks)
+            {
+                track.WriteBlockData(targetStream);
+            }
+
         }
 
         private string mediaCatalog;
@@ -80,14 +111,7 @@ namespace FlacLibSharp {
         /// </summary>
         public byte TrackCount {
             get {
-                if ((uint)this.Tracks.Count > 100)
-                {
-                    return 100;
-                }
-                else
-                {
-                    return (byte)this.Tracks.Count;
-                } 
+                return (byte)this.Tracks.Count;
             }
         }
 
@@ -103,6 +127,25 @@ namespace FlacLibSharp {
                 }
                 return this.tracks;
             }
+        }
+
+        /// <summary>
+        /// Calculates the total Block Length of this metadata block (for use in the Header)
+        /// </summary>
+        /// <returns></returns>
+        private uint CalculateMetaDataBlockLength()
+        {
+            uint totalLength = CUESHEET_BLOCK_DATA_LENGTH; // See the specs ...
+            // The length of this metadata block is: 
+            // 396 bytes for the CueSheet block data itself (see spec for details)
+            // + 36 bytes per CueSheetTrack
+            // + 12 bytes per CueSheetTrackIndex
+            foreach (var track in this.Tracks)
+            {
+                totalLength += CUESHEET_TRACK_LENGTH + (track.IndexPointCount * CUESHEET_TRACK_INDEXPOINT_LENGTH);
+            }
+
+            return totalLength;
         }
 
     }

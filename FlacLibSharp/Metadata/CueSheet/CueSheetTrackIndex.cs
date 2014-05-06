@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using FlacLibSharp.Helpers;
@@ -10,6 +11,8 @@ namespace FlacLibSharp {
     /// </summary>
     public class CueSheetTrackIndex {
 
+        private const int RESERVED_NULLDATA_LENGTH = 3;
+
         /// <summary>
         /// Creates a new Cue Sheet Track Index based on the binary data provided.
         /// </summary>
@@ -18,6 +21,19 @@ namespace FlacLibSharp {
         public CueSheetTrackIndex(byte[] data, int dataOffset) {
             this.offset = BinaryDataHelper.GetUInt64(data, dataOffset);
             this.indexPointNumber = (byte)BinaryDataHelper.GetUInt64(data, dataOffset + 8, 8);
+        }
+
+        /// <summary>
+        /// Will write the data representing this CueSheet track index point to the given stream.
+        /// </summary>
+        /// <param name="targetStream"></param>
+        public void WriteBlockData(Stream targetStream)
+        {
+            targetStream.Write(BinaryDataHelper.GetBytesUInt64(this.offset), 0, 8);
+            targetStream.WriteByte(this.indexPointNumber);
+
+            byte[] nullData = new byte[RESERVED_NULLDATA_LENGTH];
+            targetStream.Write(nullData, 0, nullData.Length);
         }
 
         private UInt64 offset;

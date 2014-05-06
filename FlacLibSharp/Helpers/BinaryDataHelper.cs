@@ -170,6 +170,27 @@ namespace FlacLibSharp.Helpers {
             return result;
         }
 
+        /// <summary>
+        /// Will return an array of ascii printable characters (values 0x20 to 0x7e) and will pad with zero's so that the array of bytes is always of a given size.
+        /// </summary>
+        /// <param name="value">The text to convert to bytes.</param>
+        /// <param name="size">The total length of the resulting byte array.</param>
+        /// <returns></returns>
+        public static byte[] GetPaddedAsciiBytes(string value, int size)
+        {
+            byte[] result = new byte[size];
+            byte[] data = Encoding.ASCII.GetBytes(value);
+            for (int i = 0; i < result.Length && i < data.Length; i++)
+            {
+                if (data[i] >= 0x20 && data[i] <= 0x7e)
+                {
+                    result[i] = data[i];
+                }
+            }
+
+            return result;
+        }
+
 #endregion
 
         /// <summary>

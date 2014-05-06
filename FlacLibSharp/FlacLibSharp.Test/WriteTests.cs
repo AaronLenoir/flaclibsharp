@@ -185,6 +185,7 @@ namespace FlacLibSharp.Test
         [TestMethod]
         public void CopyOpenEditAndSaveCueSheet()
         {
+            string newMediaCatalog = "test";
             string origFile = @"Data\testfile4.flac";
             string newFile = @"Data\testfile4_temp.flac";
 
@@ -199,7 +200,14 @@ namespace FlacLibSharp.Test
                 var cueSheet = flac.CueSheet;
                 Assert.IsNotNull(cueSheet);
 
-                cueSheet.MediaCatalog = "test";
+                cueSheet.MediaCatalog = newMediaCatalog;
+
+                flac.Save(); 
+            }
+            using (FlacFile flac = new FlacFile(newFile))
+            {
+                Assert.IsNotNull(flac.CueSheet);
+                Assert.AreEqual(flac.CueSheet.MediaCatalog, newMediaCatalog);
             }
         }
 

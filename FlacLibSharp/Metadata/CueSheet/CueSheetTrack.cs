@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using FlacLibSharp.Helpers;
@@ -9,6 +10,9 @@ namespace FlacLibSharp {
     /// TODO: A single track in the cuesheet.
     /// </summary>
     public class CueSheetTrack {
+
+        private const int ISRC_LENGTH = 12;
+        private const int RESERVED_NULLDATA_LENGTH = 13;
 
         public CueSheetTrack()
         {
@@ -43,6 +47,38 @@ namespace FlacLibSharp {
             {
                 this.IndexPoints.Add(new CueSheetTrackIndex(data, dataOffset));
                 dataOffset += 12; // Index points are always 12 bytes long
+            }
+        }
+
+        /// <summary>
+        /// Will write the data representing this CueSheet track to the given stream.
+        /// </summary>
+        /// <param name="targetStream"></param>
+        public void WriteBlockData(Stream targetStream)
+        {
+            targetStream.Write(BinaryDataHelper.GetBytesUInt64(this.trackOffset), 0, 8);
+            targetStream.WriteByte(this.TrackNumber);
+            targetStream.Write(BinaryDataHelper.GetPaddedAsciiBytes(this.isrc, ISRC_LENGTH), 0, ISRC_LENGTH);
+            
+            byte trackAndEmphasis = 0;
+            if (this.IsAudioTrack)
+            {
+                trackAndEmphasis += 0x80; // Most significant bit to 1
+            }
+            if (this.IsPreEmphasis)
+            {
+                trackAndEmphasis += 0x40; // Second most significant bit to 1
+            }
+            targetStream.WriteByte(trackAndEmphasis);
+
+            byte[] nullData = new byte[RESERVED_NULLDATA_LENGTH];
+            targetStream.Write(nullData, 0, nullData.Length);
+
+            targetStream.WriteByte(this.IndexPointCount);
+
+            foreach (var indexPoint in this.IndexPoints)
+            {
+                indexPoint.WriteBlockData(targetStream);
             }
         }
 
