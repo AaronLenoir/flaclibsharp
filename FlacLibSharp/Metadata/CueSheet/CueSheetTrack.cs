@@ -12,7 +12,15 @@ namespace FlacLibSharp {
 
         public CueSheetTrack()
         {
-            
+            // Initializing some "reasonable" defaults
+            this.trackOffset = 0;
+            this.trackNumber = 0;
+            this.isrc = string.Empty;
+            this.isAudioTrack = true;
+            this.isPreEmphasis = false;
+
+            this.indexPoints = new CueSheetTrackIndexCollection();
+            this.indexPointCount = 0;
         }
 
         /// <summary>

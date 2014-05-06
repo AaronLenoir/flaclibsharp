@@ -164,6 +164,24 @@ namespace FlacLibSharp.Test
             }
         }
 
+        [TestMethod, ExpectedException(typeof(FlacLibSharp.Exceptions.FlacLibSharpMaxTracksExceededException))]
+        public void OverflowCueSheetTracks()
+        {
+            string flacFile = @"Data\testfile4.flac";
+
+            using (FlacFile file = new FlacFile(flacFile)) { 
+                file.CueSheet = new CueSheet();
+
+                for (int i = 0; i < 100; i++)
+                {
+                    file.CueSheet.Tracks.Add(new CueSheetTrack());
+                }
+
+                // This guy should throw an exception ...
+                file.CueSheet.Tracks.Add(new CueSheetTrack());
+            }
+        }
+
         [TestMethod]
         public void CopyOpenEditAndSaveCueSheet()
         {
