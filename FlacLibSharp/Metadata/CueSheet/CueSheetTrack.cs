@@ -24,7 +24,6 @@ namespace FlacLibSharp {
             this.isPreEmphasis = false;
 
             this.indexPoints = new CueSheetTrackIndexCollection();
-            this.indexPointCount = 0;
         }
 
         /// <summary>
@@ -39,7 +38,12 @@ namespace FlacLibSharp {
             this.isAudioTrack = !BinaryDataHelper.GetBoolean(data, dataOffset + 21, 1); // 0 for audio
             this.isPreEmphasis = BinaryDataHelper.GetBoolean(data, dataOffset + 21, 2);
             // 6 bits + 13 bytes need to be zero, won't check this
-            this.indexPointCount = (byte)BinaryDataHelper.GetUInt64(data, dataOffset + 35, 8);
+            byte indexPointCount = (byte)BinaryDataHelper.GetUInt64(data, dataOffset + 35, 8);
+
+            if (indexPointCount > 100)
+            {
+                throw new FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException(string.Format("CueSheet track nr {0} has an invalid Track Index Count of {1}. Maximum allowed is 100.", this.TrackNumber, indexPointCount));
+            }
 
             // For all tracks, except the lead-in track, one or more track index points
             dataOffset += 36;
@@ -48,6 +52,13 @@ namespace FlacLibSharp {
                 this.IndexPoints.Add(new CueSheetTrackIndex(data, dataOffset));
                 dataOffset += 12; // Index points are always 12 bytes long
             }
+
+            if (indexPointCount != this.IndexPoints.Count)
+            {
+                // Should we be so strict?
+                throw new FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException(string.Format("CueSheet track nr {0} indicates {1} index points, but actually {2} index points are present.", this.TrackNumber, indexPointCount, this.IndexPoints.Count));
+            }
+
         }
 
         /// <summary>
@@ -89,6 +100,7 @@ namespace FlacLibSharp {
         /// </summary>
         public UInt64 TrackOffset {
             get { return this.trackOffset; }
+            set { this.trackOffset = value;  }
         }
 
         private byte trackNumber;
@@ -98,6 +110,7 @@ namespace FlacLibSharp {
         /// </summary>
         public byte TrackNumber {
             get { return this.trackNumber; }
+            set { this.trackNumber = value;  }
         }
 
         private string isrc;
@@ -107,6 +120,7 @@ namespace FlacLibSharp {
         /// </summary>
         public string ISRC {
             get { return this.isrc; }
+            set { this.isrc = value; }
         }
 
         private bool isAudioTrack;
@@ -116,6 +130,7 @@ namespace FlacLibSharp {
         /// </summary>
         public bool IsAudioTrack {
             get { return this.isAudioTrack; }
+            set { this.isAudioTrack = value; }
         }
 
         private bool isPreEmphasis;
@@ -128,14 +143,11 @@ namespace FlacLibSharp {
             set { this.isPreEmphasis = value; }
         }
 
-        private byte indexPointCount;
-
         /// <summary>
         /// Number of track index points. There must be at least one index in every track in a CUESHEET except for the lead-out track, which must have zero. For CD-DA, this number may be no more than 100.
         /// </summary>
         public byte IndexPointCount {
-            get { return this.indexPointCount; }
-            set { this.indexPointCount = value; }
+            get { return (byte)this.IndexPoints.Count; }
         }
 
         private CueSheetTrackIndexCollection indexPoints;

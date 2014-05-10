@@ -9,7 +9,7 @@ namespace FlacLibSharp.Test
     [TestClass]
     public class ParseTests
     {
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenAndCloseFlacFileWithFilePath()
         {
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
@@ -18,7 +18,7 @@ namespace FlacLibSharp.Test
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenAndCloseFlacFileWithStream()
         {
             using (Stream stream = File.OpenRead(@"Data\testfile1.flac"))
@@ -30,7 +30,7 @@ namespace FlacLibSharp.Test
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         [ExpectedException(typeof(FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException), "Opening an invalid FLAC file was allowed.")]
         public void OpenInvalidFlacFile()
         {
@@ -40,7 +40,7 @@ namespace FlacLibSharp.Test
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckMetadata()
         {
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
@@ -53,7 +53,7 @@ namespace FlacLibSharp.Test
         /// <summary>
         /// Will check some of the streaminfo as read from the testfile1.flac
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckStreamInfo()
         {
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
@@ -79,7 +79,7 @@ namespace FlacLibSharp.Test
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckPadding()
         {
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
@@ -98,7 +98,7 @@ namespace FlacLibSharp.Test
         /// <summary>
         /// Will check some of the streaminfo as read from the testfile1.flac
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckVorbisComment()
         {
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
@@ -130,7 +130,7 @@ namespace FlacLibSharp.Test
         /// <summary>
         /// Will check some of the streaminfo as read from the testfile1.flac
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         public void CheckFastFlacFunctions()
         {
             Assert.AreEqual("Roland jx3p demo", FastFlac.GetTitle(@"Data\testfile1.flac"));
@@ -142,7 +142,7 @@ namespace FlacLibSharp.Test
         /// <summary>
         /// Will check some of the streaminfo as read from the testfile1.flac
         /// </summary>
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckPicture()
         {
 
@@ -186,7 +186,7 @@ namespace FlacLibSharp.Test
         //point 18: sample_number=1585152, stream_offset=1321342, frame_samples=4096
         //point 19: sample_number=1675264, stream_offset=1451579, frame_samples=4096
 
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckSeekTable()
         {
             using (FlacFile file = new FlacFile(@"Data\testfile3.flac"))
@@ -262,7 +262,7 @@ namespace FlacLibSharp.Test
         //      offset: 1703592
         //      number: 170 (LEAD-OUT)
 
-        [TestMethod]
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckCueSheet()
         {
             using (FlacFile file = new FlacFile(@"Data\testfile4.flac"))

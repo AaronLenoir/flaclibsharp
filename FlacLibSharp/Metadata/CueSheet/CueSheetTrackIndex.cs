@@ -14,6 +14,12 @@ namespace FlacLibSharp {
         private const int RESERVED_NULLDATA_LENGTH = 3;
 
         /// <summary>
+        /// Creates a new Cue Sheet Track Index.
+        /// </summary>
+        public CueSheetTrackIndex()
+        { }
+
+        /// <summary>
         /// Creates a new Cue Sheet Track Index based on the binary data provided.
         /// </summary>
         /// <param name="data"></param>

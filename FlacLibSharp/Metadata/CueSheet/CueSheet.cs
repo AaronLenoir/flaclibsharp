@@ -12,6 +12,7 @@ namespace FlacLibSharp {
     public class CueSheet : MetadataBlock {
 
         // See spec for details
+        private const byte CUESHEET_LEADOUT_TRACK_NUMBER = 170;
         private const uint CUESHEET_BLOCK_DATA_LENGTH = 396;
         private const uint CUESHEET_TRACK_LENGTH = 36;
         private const uint CUESHEET_TRACK_INDEXPOINT_LENGTH = 12;
@@ -31,7 +32,7 @@ namespace FlacLibSharp {
             if (trackCount > 100)
             {
                 // Do we really need to throw an exception here?
-                throw new Exceptions.FlacLibSharpInvalidFormatException("CueSheet has invalid track count. Cannot be more than 100.");
+                throw new Exceptions.FlacLibSharpInvalidFormatException(string.Format("CueSheet has invalid track count {0}. Cannot be more than 100.", trackCount));
             }
 
             int cueSheetTrackOffset = 396;
@@ -49,6 +50,19 @@ namespace FlacLibSharp {
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
         {
+            if (this.Tracks.Count > 0)
+            {
+                var lastTrack = this.Tracks[this.Tracks.Count - 1];
+                if (lastTrack.TrackNumber != CUESHEET_LEADOUT_TRACK_NUMBER)
+                {
+                    throw new FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException(string.Format("CueSheet is invalid, last track (nr {0}) is not the lead-out track.", lastTrack.TrackNumber));
+                }
+            }
+            else
+            {
+                throw new FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException("CueSheet is invalid as it has no tracks, it must have at least one track (the lead-out track).");
+            }
+
             // TODO: this value in the header should also update when someone add/removes tracks or track index points ...
             this.Header.MetaDataBlockLength = CalculateMetaDataBlockLength();
             this.Header.WriteHeaderData(targetStream);
