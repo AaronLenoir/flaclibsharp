@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System.IO;
 
+using FlacLibSharp.Test.Helpers;
+
 namespace FlacLibSharp.Test
 {
     [TestClass]
@@ -18,11 +20,8 @@ namespace FlacLibSharp.Test
         {
             string origFile = @"Data\testfile1.flac";
             string newFile = @"Data\testfile1_temp.flac";
-            if (File.Exists(newFile))
-            {
-                File.Delete(newFile);
-            }
-            File.Copy(origFile, newFile);
+            
+            FileHelper.GetNewFile(origFile, newFile);
 
             string newArtist = String.Empty;
             string newTitle = String.Empty;
@@ -68,11 +67,7 @@ namespace FlacLibSharp.Test
             string origFile = @"Data\testfile1.flac";
             string newFile = @"Data\testfile1_temp.flac";
 
-            if (File.Exists(newFile))
-            {
-                File.Delete(newFile);
-            }
-            File.Copy(origFile, newFile);
+            FileHelper.GetNewFile(origFile, newFile);
 
             try
             {
@@ -124,12 +119,8 @@ namespace FlacLibSharp.Test
             string newFile = @"Data\testfile1_temp.flac";
             // Tests if we can load up a flac file, update the artist and title in the vorbis comments
             // save the file and then reload the file and see the changes.
-            if (File.Exists(newFile))
-            {
-                File.Delete(newFile);
-            }
-            File.Copy(origFile, newFile);
-
+            FileHelper.GetNewFile(origFile, newFile);
+            
             string newArtist = String.Empty;
             string newTitle = String.Empty;
 
@@ -169,7 +160,8 @@ namespace FlacLibSharp.Test
         {
             string flacFile = @"Data\testfile4.flac";
 
-            using (FlacFile file = new FlacFile(flacFile)) { 
+            using (FlacFile file = new FlacFile(flacFile))
+            {
                 file.CueSheet = new CueSheet();
 
                 for (int i = 0; i < 100; i++)
@@ -192,29 +184,35 @@ namespace FlacLibSharp.Test
             string origFile = @"Data\testfile4.flac";
             string newFile = @"Data\testfile4_temp.flac";
 
-            if (File.Exists(newFile))
+            FileHelper.GetNewFile(origFile, newFile);
+
+            try
             {
-                File.Delete(newFile);
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    var cueSheet = flac.CueSheet;
+                    Assert.IsNotNull(cueSheet);
+
+                    cueSheet.MediaCatalog = newMediaCatalog;
+                    cueSheet.IsCDCueSheet = newIsCDCueSheet;
+                    cueSheet.LeadInSampleCount = newLeadInSampleCount;
+
+                    flac.Save();
+                }
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    Assert.IsNotNull(flac.CueSheet);
+                    Assert.AreEqual(newMediaCatalog, flac.CueSheet.MediaCatalog);
+                    Assert.AreEqual(newIsCDCueSheet, flac.CueSheet.IsCDCueSheet);
+                    Assert.AreEqual(newLeadInSampleCount, flac.CueSheet.LeadInSampleCount);
+                }
             }
-            File.Copy(origFile, newFile);
-
-            using (FlacFile flac = new FlacFile(newFile))
+            finally
             {
-                var cueSheet = flac.CueSheet;
-                Assert.IsNotNull(cueSheet);
-
-                cueSheet.MediaCatalog = newMediaCatalog;
-                cueSheet.IsCDCueSheet = newIsCDCueSheet;
-                cueSheet.LeadInSampleCount = newLeadInSampleCount;
-
-                flac.Save(); 
-            }
-            using (FlacFile flac = new FlacFile(newFile))
-            {
-                Assert.IsNotNull(flac.CueSheet);
-                Assert.AreEqual(newMediaCatalog, flac.CueSheet.MediaCatalog);
-                Assert.AreEqual(newIsCDCueSheet, flac.CueSheet.IsCDCueSheet);
-                Assert.AreEqual(newLeadInSampleCount, flac.CueSheet.LeadInSampleCount);
+                if (File.Exists(newFile))
+                {
+                    File.Delete(newFile);
+                }
             }
         }
 
