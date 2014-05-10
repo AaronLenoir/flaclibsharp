@@ -103,7 +103,7 @@ namespace FlacLibSharp {
         /// </summary>
         public Boolean IsCDCueSheet {
             get { return this.isCDCueSheet; }
-            set { this.isCDCueSheet = true; }
+            set { this.isCDCueSheet = value; }
         }
 
         /// <summary>

@@ -186,6 +186,9 @@ namespace FlacLibSharp.Test
         public void CopyOpenEditAndSaveCueSheet()
         {
             string newMediaCatalog = "test";
+            Boolean newIsCDCueSheet = false;
+            ulong newLeadInSampleCount = 100;
+
             string origFile = @"Data\testfile4.flac";
             string newFile = @"Data\testfile4_temp.flac";
 
@@ -201,13 +204,17 @@ namespace FlacLibSharp.Test
                 Assert.IsNotNull(cueSheet);
 
                 cueSheet.MediaCatalog = newMediaCatalog;
+                cueSheet.IsCDCueSheet = newIsCDCueSheet;
+                cueSheet.LeadInSampleCount = newLeadInSampleCount;
 
                 flac.Save(); 
             }
             using (FlacFile flac = new FlacFile(newFile))
             {
                 Assert.IsNotNull(flac.CueSheet);
-                Assert.AreEqual(flac.CueSheet.MediaCatalog, newMediaCatalog);
+                Assert.AreEqual(newMediaCatalog, flac.CueSheet.MediaCatalog);
+                Assert.AreEqual(newIsCDCueSheet, flac.CueSheet.IsCDCueSheet);
+                Assert.AreEqual(newLeadInSampleCount, flac.CueSheet.LeadInSampleCount);
             }
         }
 
