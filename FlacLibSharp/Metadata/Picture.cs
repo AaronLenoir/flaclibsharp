@@ -166,30 +166,48 @@ namespace FlacLibSharp
         /// <summary>
         /// What kind of picture this is.
         /// </summary>
-        public PictureType PictureType { get { return this.pictureType; } }
+        public PictureType PictureType { 
+            get { return this.pictureType; }
+            set { this.pictureType = value; }
+        }
 
         /// <summary>
         /// The MIME type of the picture file.
         /// </summary>
-        public string MIMEType { get { return this.mimeType; } }
+        public string MIMEType {
+            get { return this.mimeType; }
+            set { this.mimeType = value; }
+        }
 
         /// <summary>
         /// A description for the picture.
         /// </summary>
-        public string Description { get { return this.description; } }
+        public string Description {
+            get { return this.description; }
+            set { this.description = value; }
+        }
 
         /// <summary>
         /// Width of the picture (in pixels).
         /// </summary>
-        public UInt32 Width { get { return this.width; } }
+        public UInt32 Width {
+            get { return this.width; }
+            set { this.width = value; }
+        }
         /// <summary>
-        /// Width of the picture (in pixels).
+        /// Height of the picture (in pixels).
         /// </summary>
-        public UInt32 Height { get { return this.height; } }
+        public UInt32 Height {
+            get { return this.height; }
+            set { this.height = value; }
+        }
         /// <summary>
         /// The colour depth of the picture.
         /// </summary>
-        public UInt32 ColorDepth { get { return this.colorDepth; } }
+        public UInt32 ColorDepth {
+            get { return this.colorDepth; }
+            set { this.colorDepth = value; }
+        }
         /// <summary>
         /// For color indexed pictures, all of the colours in the picture.
         /// </summary>
@@ -198,7 +216,10 @@ namespace FlacLibSharp
         /// <summary>
         /// The actual picture data in a stream
         /// </summary>
-        public byte[] Data { get { return this.data; } }
+        public byte[] Data {
+            get { return this.data; }
+            set { this.data = value; }
+        }
 
         /// <summary>
         /// The URL for the image if the MIME Type indicates a URL reference (MIME Type = '-->').

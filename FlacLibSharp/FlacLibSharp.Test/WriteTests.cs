@@ -382,5 +382,52 @@ namespace FlacLibSharp.Test
             }
         }
 
+
+        [TestMethod(), TestCategory("Write Tests")]
+        public void CopyOpenAddAndSavePicture()
+        {
+            string origFile = @"Data\testfile2.flac";
+            string newFile = @"Data\testfile2_temp.flac";
+
+            FileHelper.GetNewFile(origFile, newFile);
+
+            try
+            {
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    Assert.IsNotNull(flac.Picture);
+
+                    flac.Picture = new FlacLibSharp.Picture();
+                    flac.Picture.ColorDepth = 24;
+                    flac.Picture.Data = File.ReadAllBytes(@"Data\testimage.png");
+                    flac.Picture.Description = "Small picture test ...";
+                    flac.Picture.Height = 420;
+                    flac.Picture.Width = 410;
+                    flac.Picture.MIMEType = "image/png";
+                    flac.Picture.PictureType = PictureType.ArtistLogotype;
+                    
+                    flac.Save();
+                }
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    Assert.IsNotNull(flac.Picture);
+
+                    Assert.AreEqual<uint>(24, flac.Picture.ColorDepth);
+                    Assert.AreEqual<string>("Small picture test ...", flac.Picture.Description);
+                    Assert.AreEqual<uint>(420, flac.Picture.Height);
+                    Assert.AreEqual<uint>(410, flac.Picture.Width);
+                    Assert.AreEqual<string>("image/png", flac.Picture.MIMEType);
+                    Assert.AreEqual<PictureType>(PictureType.ArtistLogotype, flac.Picture.PictureType);
+                }
+            }
+            finally
+            {
+                if (File.Exists(newFile))
+                {
+                    File.Delete(newFile);
+                }
+            }
+        }
+
     }
 }

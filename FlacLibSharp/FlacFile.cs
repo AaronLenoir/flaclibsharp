@@ -159,7 +159,10 @@ namespace FlacLibSharp
         /// <summary>
         /// Returns the Picture metadata block of the loaded Flac file or null if this block is not available.
         /// </summary>
-        public Picture Picture { get { return this.picture; } }
+        public Picture Picture {
+            get { return this.picture; }
+            set { this.picture = value; }
+        }
         
         /// <summary>
         /// Returns the ApplicationInfo metadata block of the loaded Flac file or null if this block is not available.
