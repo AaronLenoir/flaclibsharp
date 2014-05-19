@@ -18,39 +18,45 @@ namespace FlacLibSharp {
             /// <summary>
             /// An unknown type of metadata.
             /// </summary>
-            None,
+            None = 7,
             /// <summary>
             /// Information on the flac audio stream.
             /// </summary>
-            StreamInfo,
+            StreamInfo = 0,
             /// <summary>
             /// A metadata block that pads some space. It has no further meaning.
             /// </summary>
-            Padding,
+            Padding = 1,
             /// <summary>
             /// A metadata block with application specific information.
             /// </summary>
-            Application,
+            Application = 2,
             /// <summary>
             /// A metadata block that has some information for seektables.
             /// </summary>
-            Seektable,
+            Seektable = 3,
             /// <summary>
             /// A metadata block that contains the vorbis comments (artist, field, ...)
             /// </summary>
-            VorbisComment,
+            VorbisComment = 4,
             /// <summary>
             /// A metadata block containing cue sheet information.
             /// </summary>
-            CueSheet,
+            CueSheet = 5,
             /// <summary>
             /// A metadata block with picture information.
             /// </summary>
-            Picture,
+            Picture = 6,
             /// <summary>
             /// A metadata block that is not valid or could not be parsed.
             /// </summary>
             Invalid
+        }
+
+        public MetadataBlockHeader()
+        {
+            this.Type = MetadataBlockType.None;
+            this.metaDataBlockLength = 0;
         }
 
         /// <summary>
@@ -69,7 +75,7 @@ namespace FlacLibSharp {
             byte data = this.isLastMetaDataBlock ? (byte)128 : (byte)0; // The 128 because the last metadata flag is the most significant bit set to 1 ...
             data += (byte)(this.typeID & 0x7F); // We make sure to chop off the last bit
 
-            targetStream.Write(new byte[] { data }, 0, 1);
+            targetStream.WriteByte(data);
 
             // 24-bit metaDataBlockLength
             targetStream.Write(BinaryDataHelper.GetBytes((UInt64)this.metaDataBlockLength, 3), 0, 3);

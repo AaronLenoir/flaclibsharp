@@ -19,6 +19,12 @@ namespace FlacLibSharp {
         private const int MEDIACATALOG_MAX_LENGTH = 128;
         private const int RESERVED_NULLDATA_LENGTH = 258;
 
+        public CueSheet()
+        {
+            this.Header.Type = MetadataBlockHeader.MetadataBlockType.CueSheet;
+            CalculateMetaDataBlockLength();
+        }
+
         /// <summary>
         /// TODO: Parses the binary metadata from the flac file into a CueSheet object.
         /// </summary>

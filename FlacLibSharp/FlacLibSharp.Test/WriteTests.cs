@@ -395,29 +395,49 @@ namespace FlacLibSharp.Test
             {
                 using (FlacFile flac = new FlacFile(newFile))
                 {
-                    Assert.IsNotNull(flac.Picture);
+                    Picture pict = null;
+                    if (flac.Pictures.Count > 0)
+                    {
+                        pict = flac.Pictures[0];
+                    }
+                    else
+                    {
+                        pict = new Picture();
+                    }
 
-                    flac.Picture = new FlacLibSharp.Picture();
-                    flac.Picture.ColorDepth = 24;
-                    flac.Picture.Data = File.ReadAllBytes(@"Data\testimage.png");
-                    flac.Picture.Description = "Small picture test ...";
-                    flac.Picture.Height = 420;
-                    flac.Picture.Width = 410;
-                    flac.Picture.MIMEType = "image/png";
-                    flac.Picture.PictureType = PictureType.ArtistLogotype;
-                    
+                    pict = new FlacLibSharp.Picture();
+                    pict.ColorDepth = 24;
+                    pict.Data = File.ReadAllBytes(@"Data\testimage.png");
+                    pict.Description = "Small picture test ...";
+                    pict.Height = 420;
+                    pict.Width = 410;
+                    pict.MIMEType = "image/png";
+                    pict.PictureType = PictureType.ArtistLogotype;
+
+                    flac.Metadata.Add(pict);
+
                     flac.Save();
                 }
                 using (FlacFile flac = new FlacFile(newFile))
                 {
-                    Assert.IsNotNull(flac.Picture);
+                    Assert.IsTrue(flac.Pictures.Count > 0);
 
-                    Assert.AreEqual<uint>(24, flac.Picture.ColorDepth);
-                    Assert.AreEqual<string>("Small picture test ...", flac.Picture.Description);
-                    Assert.AreEqual<uint>(420, flac.Picture.Height);
-                    Assert.AreEqual<uint>(410, flac.Picture.Width);
-                    Assert.AreEqual<string>("image/png", flac.Picture.MIMEType);
-                    Assert.AreEqual<PictureType>(PictureType.ArtistLogotype, flac.Picture.PictureType);
+                    bool foundOurImage = false;
+                    foreach (var pict in flac.Pictures)
+                    {
+                        if (pict.Description == "Small picture test ...")
+                        {
+                            Assert.AreEqual<uint>(24, pict.ColorDepth);
+                            Assert.AreEqual<string>("Small picture test ...", pict.Description);
+                            Assert.AreEqual<uint>(420, pict.Height);
+                            Assert.AreEqual<uint>(410, pict.Width);
+                            Assert.AreEqual<string>("image/png", pict.MIMEType);
+                            Assert.AreEqual<PictureType>(PictureType.ArtistLogotype, pict.PictureType);
+                            foundOurImage = true;
+                        }
+                    }
+
+                    Assert.IsTrue(foundOurImage);
                 }
             }
             finally

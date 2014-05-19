@@ -124,7 +124,7 @@ namespace FlacLibSharp
                         this.cueSheet = (CueSheet)lastMetaDataBlock;
                         break;
                     case MetadataBlockHeader.MetadataBlockType.Picture:
-                        this.picture = (Picture)lastMetaDataBlock;
+                        this.Pictures.Add((Picture)lastMetaDataBlock);
                         break;
                     case MetadataBlockHeader.MetadataBlockType.Seektable:
                         this.seekTable = (SeekTable)lastMetaDataBlock;
@@ -156,12 +156,18 @@ namespace FlacLibSharp
         /// </summary>
         public StreamInfo StreamInfo { get { return this.streamInfo; } }
 
+        private List<Picture> pictures;
         /// <summary>
-        /// Returns the Picture metadata block of the loaded Flac file or null if this block is not available.
+        /// Returns a list of all the pictures.
         /// </summary>
-        public Picture Picture {
-            get { return this.picture; }
-            set { this.picture = value; }
+        public List<Picture> Pictures {
+            get {
+                if (this.pictures == null)
+                {
+                    this.pictures = new List<Picture>();
+                }
+                return this.pictures;
+            }
         }
         
         /// <summary>
@@ -201,11 +207,22 @@ namespace FlacLibSharp
                 // First write the magic flac bytes ...
                 fs.Write(magicFlacMarker, 0, magicFlacMarker.Length);
 
-                foreach (MetadataBlock block in this.Metadata)
-                {
+                for (var i = 0; i < this.Metadata.Count; i++) {
+                    MetadataBlock block = this.Metadata[i];
+
+                    // We have to make sure to set the last metadata bit correctly.
+                    if (i == this.Metadata.Count - 1)
+                    {
+                        block.Header.IsLastMetaDataBlock = true;
+                    }
+                    else
+                    {
+                        block.Header.IsLastMetaDataBlock = false;
+                    }
+
                     try
                     {
-                    var startLength = fs.Length;
+                        var startLength = fs.Length;
                         block.WriteBlockData(fs);
                         var writtenBytes = fs.Length - startLength;
 

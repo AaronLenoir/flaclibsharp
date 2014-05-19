@@ -104,6 +104,8 @@ namespace FlacLibSharp
     /// </summary>
     public class Picture : MetadataBlock
     {
+        private const uint FIXED_BLOCK_LENGTH = 8 * 4; // There are 8 32-bit fields = total block size - variable length data
+
         private PictureType pictureType;
 
         private string mimeType;
@@ -115,6 +117,15 @@ namespace FlacLibSharp
         private byte[] data;
 
         private string url;
+
+        public Picture()
+        {
+            this.Header.Type = MetadataBlockHeader.MetadataBlockType.Picture;
+            this.mimeType = string.Empty;
+            this.description = string.Empty;
+            this.data = new byte[] {};
+            CalculateMetadataBlockLength();
+        }
 
         /// <summary>
         /// Loads the picture data from a Metadata block.
@@ -160,7 +171,73 @@ namespace FlacLibSharp
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
         {
-            throw new NotImplementedException();
+            // This is where the header will come
+            long headerPosition = targetStream.Position;
+            // Moving along, we'll write the header last!
+            targetStream.Seek(4, SeekOrigin.Current);
+
+            // 32-bit picture type
+            targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)this.pictureType), 0, 4);
+
+            byte[] mimeTypeData = Encoding.ASCII.GetBytes(this.mimeType);
+            // Length of the MIME type string (in bytes ...)
+            targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)mimeTypeData.Length), 0, 4);
+            // printable ascii characters (0x20 - 0x7e)
+            for (int i = 0; i < mimeTypeData.Length; i++)
+            {
+                if (mimeTypeData[i] < 0x20 || mimeTypeData[i] > 0x7e)
+                {
+                    // Make sure we write the text correctly as specified by the format.
+                    mimeTypeData[i] = 0x20;
+                }
+            }
+            targetStream.Write(mimeTypeData, 0, mimeTypeData.Length);
+
+            byte[] descriptionData = Encoding.UTF8.GetBytes(this.description);
+            // Length of the description string (in bytes ...)
+            targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)descriptionData.Length), 0, 4);
+            // The description of the picture (in UTF-8)
+            targetStream.Write(descriptionData, 0, descriptionData.Length);
+
+            targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)this.width), 0, 4);
+            targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)this.height), 0, 4);
+            targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)this.colorDepth), 0, 4);
+            targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)this.colors), 0, 4);
+
+            targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)this.data.Length), 0, 4);
+            targetStream.Write(this.data, 0, this.data.Length);
+
+            // Writing the header, now we have the required information on the variable length fields
+            CalculateMetadataBlockLength((uint)mimeTypeData.Length, (uint)descriptionData.Length, (uint)this.data.Length);
+            
+            long currentPosition = targetStream.Position;
+            targetStream.Position = headerPosition;
+            this.Header.WriteHeaderData(targetStream);
+            targetStream.Position = currentPosition;
+        }
+
+        /// <summary>
+        /// Calculates the total size of this block, taking into account the lengths of the variable length fields.
+        /// </summary>
+        private void CalculateMetadataBlockLength()
+        {
+            uint mimeLength = (uint)Encoding.ASCII.GetByteCount(this.mimeType);
+            uint descriptionLength = (uint)Encoding.UTF8.GetByteCount(this.description);
+            uint pictureDataLength = (uint)this.data.Length;
+
+            CalculateMetadataBlockLength(mimeLength, descriptionLength, pictureDataLength);
+        }
+
+        /// <summary>
+        /// Calculates the total size of this block, taking into account the lengths of the variable length fields.
+        /// </summary>
+        /// <param name="mimeLength"></param>
+        /// <param name="descriptionLength"></param>
+        /// <param name="pictureDataLength"></param>
+        /// <remarks>If the lengths of the variable length fields are already available, use this function, otherwise use the parameterless override.</remarks>
+        private void CalculateMetadataBlockLength(uint mimeLength, uint descriptionLength, uint pictureDataLength)
+        {
+            this.Header.MetaDataBlockLength = FIXED_BLOCK_LENGTH + mimeLength + descriptionLength + pictureDataLength;
         }
 
         /// <summary>

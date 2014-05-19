@@ -13,7 +13,9 @@ namespace FlacLibSharp {
         /// Creates an empty metadata block
         /// </summary>
         protected MetadataBlock()
-        { }
+        {
+            this.header = new MetadataBlockHeader();
+        }
 
         /// <summary>
         /// When overridden in a derived class, will load the given type of metadata from the data provided.
