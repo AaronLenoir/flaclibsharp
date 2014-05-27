@@ -449,5 +449,78 @@ namespace FlacLibSharp.Test
             }
         }
 
+        [TestMethod(), TestCategory("Write Tests")]
+        public void CopyOpenEditAndSaveSeekTable()
+        {
+            ulong targetSampleNumber = 704512; // Will remove the seekpoint for this sample number ...
+            ulong expectedNumberOfSamples; // Will be set while creating a new seekpoint
+            ulong expectedByteOffset; // Will be set while creating a new seekpoint
+
+            string origFile = @"Data\testfile3.flac";
+            string newFile = @"Data\testfile3_temp.flac";
+
+            FileHelper.GetNewFile(origFile, newFile);
+
+            try
+            {
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    Assert.IsNotNull(flac.SeekTable);
+
+                    // Will remove the at the given sample number ...
+                    SeekPoint oldSeekpoint = flac.SeekTable.SeekPoints[targetSampleNumber];
+                    flac.SeekTable.SeekPoints.Remove(targetSampleNumber);
+
+                    // Create a new Seekpoint, a little further
+                    SeekPoint newSeekpoint = new SeekPoint();
+                    newSeekpoint.FirstSampleNumber = targetSampleNumber + 1000; // Put it a 1000 samples further ...
+                    newSeekpoint.NumberOfSamples = (ushort)(oldSeekpoint.NumberOfSamples - (ushort)1000); // Since we are a 1000 further, we contain a 1000 less samples
+                    expectedNumberOfSamples = newSeekpoint.NumberOfSamples;
+                    newSeekpoint.ByteOffset = oldSeekpoint.ByteOffset;
+                    expectedByteOffset = newSeekpoint.ByteOffset;
+                    flac.SeekTable.SeekPoints.Add(newSeekpoint);
+
+                    // Create a placeholder seekpoint
+                    SeekPoint placeHolder = new SeekPoint();
+                    placeHolder.FirstSampleNumber = ulong.MaxValue;
+                    // The other two values are "undefined"
+                    Assert.IsTrue(placeHolder.IsPlaceHolder); // Already assert that the object itself handles this flac correctly.
+                    flac.SeekTable.SeekPoints.Add(placeHolder);
+
+                    // This should actually be allowed according to the FLAC format (multiple placeHolders are ok, but they must occur at the end of the seektable)
+                    flac.SeekTable.SeekPoints.Add(placeHolder);
+
+                    // Check if we actually get "2" placeholders ...
+                    Assert.AreEqual<int>(2, flac.SeekTable.SeekPoints.Placeholders);
+
+                    flac.Save();
+                }
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    // Now we want to try and find our new SeekPoint
+                    Assert.IsNotNull(flac.SeekTable);
+
+                    Assert.IsFalse(flac.SeekTable.SeekPoints.ContainsKey(targetSampleNumber));
+                    Assert.IsTrue(flac.SeekTable.SeekPoints.ContainsKey(targetSampleNumber + 1000));
+                    SeekPoint newSeekpoint = flac.SeekTable.SeekPoints[targetSampleNumber + 1000];
+
+                    Assert.AreEqual<ulong>(expectedNumberOfSamples, newSeekpoint.NumberOfSamples);
+                    Assert.AreEqual<ulong>(expectedByteOffset, newSeekpoint.ByteOffset);
+
+                    Assert.IsFalse(newSeekpoint.IsPlaceHolder);
+
+                    // Check if we actually get "2" placeholders ...
+                    Assert.AreEqual<int>(2, flac.SeekTable.SeekPoints.Placeholders);
+                }
+            }
+            finally
+            {
+                if (File.Exists(newFile))
+                {
+                    File.Delete(newFile);
+                }
+            }
+        }
+
     }
 }

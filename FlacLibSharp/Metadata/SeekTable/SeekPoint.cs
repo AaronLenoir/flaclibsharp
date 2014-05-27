@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using FlacLibSharp.Helpers;
@@ -24,6 +25,16 @@ namespace FlacLibSharp {
             this.byteOffset = BinaryDataHelper.GetUInt64(data, 8);
             this.numberOfSamples = BinaryDataHelper.GetUInt16(data, 16);
             ValidateIsPlaceholder();
+        }
+
+        /// <summary>
+        /// Will write the data representing this SeekPoint to the given stream.
+        /// </summary>
+        /// <param name="targetStream"></param>
+        public void WriteData(Stream targetStream) {
+            targetStream.Write(BinaryDataHelper.GetBytesUInt64(this.firstSampleNumber), 0, 8);
+            targetStream.Write(BinaryDataHelper.GetBytesUInt64(this.byteOffset), 0, 8);
+            targetStream.Write(BinaryDataHelper.GetBytesUInt16(this.numberOfSamples), 0, 2);
         }
 
         /// <summary>
@@ -69,6 +80,9 @@ namespace FlacLibSharp {
             set { this.isPlaceHolder = value; }
         }
 
+        /// <summary>
+        /// Checks if this SeekPoint is a place holder.
+        /// </summary>
         private void ValidateIsPlaceholder() {
             if (this.FirstSampleNumber == UInt64.MaxValue) {
                 this.isPlaceHolder = true;
