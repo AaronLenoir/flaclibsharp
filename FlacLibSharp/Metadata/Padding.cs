@@ -13,6 +13,15 @@ namespace FlacLibSharp {
         private UInt32 emptyBitCount;
 
         /// <summary>
+        /// Creates an empty metadata block
+        /// </summary>
+        public Padding()
+        {
+            this.Header.Type = MetadataBlockHeader.MetadataBlockType.Padding;
+            this.emptyBitCount = 0;
+        }
+
+        /// <summary>
         /// Loads the padding data from the given data.
         /// </summary>
         /// <param name="data"></param>

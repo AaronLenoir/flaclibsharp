@@ -132,6 +132,9 @@ namespace FlacLibSharp
                     case MetadataBlockHeader.MetadataBlockType.VorbisComment:
                         this.vorbisComment = (VorbisComment)lastMetaDataBlock;
                         break;
+                    case MetadataBlockHeader.MetadataBlockType.Padding:
+                        this.padding = (Padding)lastMetaDataBlock;
+                        break;
                 }
             } while (!lastMetaDataBlock.Header.IsLastMetaDataBlock);
 
@@ -150,6 +153,7 @@ namespace FlacLibSharp
         private VorbisComment vorbisComment;
         private CueSheet cueSheet;
         private SeekTable seekTable;
+        private Padding padding;
 
         /// <summary>
         /// Returns the StreamInfo metedata block of the loaded Flac file.
@@ -189,6 +193,11 @@ namespace FlacLibSharp
         /// Returns the SeekTable metadata block of the loaded Flac file or null if this block is not available.
         /// </summary>
         public SeekTable SeekTable { get { return this.seekTable; } }
+
+        /// <summary>
+        /// Returns the Padding metadata block of the loaded Flac file or null if this block is not available.
+        /// </summary>
+        public Padding Padding { get { return this.padding; } }
 
         #endregion
 
