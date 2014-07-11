@@ -18,6 +18,16 @@ namespace FlacLibSharp
         private string vendor;
 
         /// <summary>
+        /// Initializes a Vorbis comment block (without any content).
+        /// </summary>
+        public VorbisComment()
+        {
+            this.Header.Type = MetadataBlockHeader.MetadataBlockType.VorbisComment;
+            this.comments = new Dictionary<string, string>();
+            this.vendor = string.Empty;
+        }
+
+        /// <summary>
         /// Loads the Vorbis from a block of data.
         /// </summary>
         /// <param name="data"></param>

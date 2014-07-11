@@ -5,6 +5,12 @@ using System.Text;
 
 namespace FlacLibSharp {
     class FLACUnknownMetaDataBlock : MetadataBlock {
+
+        public FLACUnknownMetaDataBlock()
+        {
+            this.Header.Type = MetadataBlockHeader.MetadataBlockType.None;
+        }
+        
         public override void LoadBlockData(byte[] data) {
             // We don't do anything, because this block format is unknown or unsupported...
         }

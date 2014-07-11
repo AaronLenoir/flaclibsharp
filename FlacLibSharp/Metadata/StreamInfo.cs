@@ -32,6 +32,15 @@ namespace FlacLibSharp {
         #endregion
 
         /// <summary>
+        /// Creates a StreamInfo from scratch, setting some sensible defaults.
+        /// </summary>
+        /// <remarks>Not sure why you would need this now, every FLAC already contains this and this library can't create actual FLAC files.</remarks>
+        public StreamInfo()
+        {
+            this.Header.Type = MetadataBlockHeader.MetadataBlockType.StreamInfo;
+        }
+
+        /// <summary>
         /// Loads a new stream info block from the provided data.
         /// </summary>
         /// <param name="data"></param>

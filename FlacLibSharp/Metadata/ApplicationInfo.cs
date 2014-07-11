@@ -15,6 +15,16 @@ namespace FlacLibSharp {
         private byte[] applicationData;
 
         /// <summary>
+        /// Creates an empty ApplicationInfo block, application id will be 0, application data will be empty.
+        /// </summary>
+        public ApplicationInfo()
+        {
+            this.Header.Type = MetadataBlockHeader.MetadataBlockType.Application;
+            this.applicationID = 0;
+            this.applicationData = new byte[0];
+        }
+
+        /// <summary>
         /// Parses the given binary metadata to an ApplicationInfo block
         /// </summary>
         /// <param name="data"></param>
