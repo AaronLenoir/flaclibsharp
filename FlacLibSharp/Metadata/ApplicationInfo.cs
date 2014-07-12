@@ -31,8 +31,10 @@ namespace FlacLibSharp {
         public override void LoadBlockData(byte[] data) {
             this.applicationID = BinaryDataHelper.GetUInt32(data, 0);
             this.applicationData = new byte[data.Length - 4];
-            for (int i = 3; i < data.Length; i++) {
-                this.applicationData[i - 3] = data[i];
+
+            for (int i = 0; i < this.applicationData.Length; i++)
+            {
+                this.applicationData[i] = data[i + 4]; // + 4 because the first four bytes are the application ID!
             }
         }
 
@@ -42,9 +44,10 @@ namespace FlacLibSharp {
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
         {
+            this.Header.MetaDataBlockLength = 4 + (uint)this.applicationData.Length;
             this.Header.WriteHeaderData(targetStream);
 
-            targetStream.Write(BinaryDataHelper.GetBytesUInt32(this.applicationID), 0, 8);
+            targetStream.Write(BinaryDataHelper.GetBytesUInt32(this.applicationID), 0, 4);
             targetStream.Write(this.applicationData, 0, this.applicationData.Length);
         }
 
@@ -53,6 +56,7 @@ namespace FlacLibSharp {
         /// </summary>
         public UInt32 ApplicationID {
             get { return this.applicationID; }
+            set { this.applicationID = value; }
         }
 
         /// <summary>
@@ -60,6 +64,7 @@ namespace FlacLibSharp {
         /// </summary>
         public byte[] ApplicationData {
             get { return this.applicationData; }
+            set { this.applicationData = value; }
         }
 
     }
