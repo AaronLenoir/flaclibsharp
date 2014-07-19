@@ -97,6 +97,17 @@ namespace FlacLibSharp.Helpers {
         public static UInt64 GetUInt64(byte[] data, int byteOffset, int bitCount, byte bitOffset) {
             UInt64 result = 0;
 
+            // Check input
+            if (bitCount > 64)
+            {
+                throw new ArgumentOutOfRangeException("bitCount", bitCount, "Should be a value lower than or equal to 64.");
+            }
+            
+            if (bitOffset > 8)
+            {
+                throw new ArgumentOutOfRangeException("bitOffset", bitOffset, "Should be a value between 0 and 7.");
+            }
+
             // Total amount of bits to read (the rest is masked)
             int totalBitCount = bitCount + bitOffset; 
             
@@ -106,6 +117,11 @@ namespace FlacLibSharp.Helpers {
                 byteCount += 1;
             } // Math.Ceiling
 
+            // Check if we won't read more bytes than there are available.
+            if (byteCount > (data.Length - byteOffset))
+            {
+                throw new ArgumentOutOfRangeException("Provided arguments would require reading outside of the data array upper bounds.");
+            }
 
             // The first byte needs to be masked with the bitOffset, as we might not read the first few bits
             result = (byte)(((data[byteOffset] << bitOffset) & 0xFF) >> bitOffset);
