@@ -388,6 +388,7 @@ namespace FlacLibSharp.Test
         {
             string origFile = @"Data\testfile2.flac";
             string newFile = @"Data\testfile2_temp.flac";
+            byte[] imageData = File.ReadAllBytes(@"Data\testimage.png");
 
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -396,18 +397,10 @@ namespace FlacLibSharp.Test
                 using (FlacFile flac = new FlacFile(newFile))
                 {
                     Picture pict = null;
-                    if (flac.Pictures.Count > 0)
-                    {
-                        pict = flac.Pictures[0];
-                    }
-                    else
-                    {
-                        pict = new Picture();
-                    }
-
+                    
                     pict = new FlacLibSharp.Picture();
                     pict.ColorDepth = 24;
-                    pict.Data = File.ReadAllBytes(@"Data\testimage.png");
+                    pict.Data = imageData;
                     pict.Description = "Small picture test ...";
                     pict.Height = 420;
                     pict.Width = 410;
@@ -416,14 +409,27 @@ namespace FlacLibSharp.Test
 
                     flac.Metadata.Add(pict);
 
+                    pict = new FlacLibSharp.Picture();
+                    pict.ColorDepth = 24;
+                    pict.Description = "Small URL picture test ...";
+                    pict.Height = 768;
+                    pict.Width = 1024;
+                    pict.MIMEType = "-->";
+                    pict.PictureType = PictureType.BrightColouredFish;
+                    pict.URL = "http://38.media.tumblr.com/0e954b0469c281a9a09eb1378daada3e/tumblr_mh0cpm19zR1s3yrubo1_1280.jpg";
+
+                    flac.Metadata.Add(pict);
+
                     flac.Save();
                 }
                 using (FlacFile flac = new FlacFile(newFile))
                 {
-                    Assert.IsTrue(flac.Pictures.Count > 0);
+                    List<Picture> pictures = flac.GetPictures();
+                    Assert.IsTrue(pictures.Count > 0);
 
                     bool foundOurImage = false;
-                    foreach (var pict in flac.Pictures)
+                    bool foundOurURL = false;
+                    foreach (var pict in pictures)
                     {
                         if (pict.Description == "Small picture test ...")
                         {
@@ -433,11 +439,32 @@ namespace FlacLibSharp.Test
                             Assert.AreEqual<uint>(410, pict.Width);
                             Assert.AreEqual<string>("image/png", pict.MIMEType);
                             Assert.AreEqual<PictureType>(PictureType.ArtistLogotype, pict.PictureType);
+
+                            Assert.IsNotNull(pict.Data.Length);
+                            Assert.AreEqual<int>(imageData.Length, pict.Data.Length);
+                            for (int i = 0; i < imageData.Length; i++)
+                            {
+                                Assert.AreEqual<byte>(imageData[i], pict.Data[i], "Written picture data does not match read picture data.");
+                            }
+
                             foundOurImage = true;
+                        }
+
+                        if (pict.Description == "Small URL picture test ...")
+                        {
+                            Assert.AreEqual<uint>(24, pict.ColorDepth);
+                            Assert.AreEqual<string>("Small URL picture test ...", pict.Description);
+                            Assert.AreEqual<uint>(768, pict.Height);
+                            Assert.AreEqual<uint>(1024, pict.Width);
+                            Assert.AreEqual<string>("-->", pict.MIMEType);
+                            Assert.AreEqual<PictureType>(PictureType.BrightColouredFish, pict.PictureType);
+                            Assert.AreEqual<string>("http://38.media.tumblr.com/0e954b0469c281a9a09eb1378daada3e/tumblr_mh0cpm19zR1s3yrubo1_1280.jpg", pict.URL);
+                            foundOurURL = true;
                         }
                     }
 
                     Assert.IsTrue(foundOurImage);
+                    Assert.IsTrue(foundOurURL);
                 }
             }
             finally

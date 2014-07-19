@@ -101,6 +101,10 @@ namespace FlacLibSharp
             }
         }
 
+        #endregion
+
+        #region Reading
+
         /// <summary>
         /// Tries to parse all the metadata blocks available in the file.
         /// </summary>
@@ -123,9 +127,6 @@ namespace FlacLibSharp
                     case MetadataBlockHeader.MetadataBlockType.CueSheet:
                         this.cueSheet = (CueSheet)lastMetaDataBlock;
                         break;
-                    case MetadataBlockHeader.MetadataBlockType.Picture:
-                        this.Pictures.Add((Picture)lastMetaDataBlock);
-                        break;
                     case MetadataBlockHeader.MetadataBlockType.Seektable:
                         this.seekTable = (SeekTable)lastMetaDataBlock;
                         break;
@@ -145,10 +146,13 @@ namespace FlacLibSharp
             frameStart = this.dataStream.Position;
         }
 
+#endregion
+
+        #region Quick metadata access
+
         /* Direct access to different meta data */
 
         private StreamInfo streamInfo;
-        private Picture picture;
         private ApplicationInfo applicationInfo;
         private VorbisComment vorbisComment;
         private CueSheet cueSheet;
@@ -159,20 +163,6 @@ namespace FlacLibSharp
         /// Returns the StreamInfo metedata block of the loaded Flac file.
         /// </summary>
         public StreamInfo StreamInfo { get { return this.streamInfo; } }
-
-        private List<Picture> pictures;
-        /// <summary>
-        /// Returns a list of all the pictures.
-        /// </summary>
-        public List<Picture> Pictures {
-            get {
-                if (this.pictures == null)
-                {
-                    this.pictures = new List<Picture>();
-                }
-                return this.pictures;
-            }
-        }
         
         /// <summary>
         /// Returns the ApplicationInfo metadata block of the loaded Flac file or null if this block is not available.
@@ -198,6 +188,25 @@ namespace FlacLibSharp
         /// Returns the Padding metadata block of the loaded Flac file or null if this block is not available.
         /// </summary>
         public Padding Padding { get { return this.padding; } }
+
+        /// <summary>
+        /// Will return all Picture blocks available in the Flac file, or an empty list of none are found.
+        /// </summary>
+        /// <returns></returns>
+        public List<Picture> GetPictures()
+        {
+            List<Picture> result = new List<Picture>();
+
+            foreach (MetadataBlock block in this.Metadata)
+            {
+                if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Picture)
+                {
+                    result.Add((Picture)block);
+                }
+            }
+
+            return result;
+        }
 
         #endregion
 

@@ -159,6 +159,10 @@ namespace FlacLibSharp
 
             int dataLength = (int)BinaryDataHelper.GetUInt32(data, byteOffset);
             this.data = BinaryDataHelper.GetDataSubset(data, byteOffset + 4, dataLength);
+
+            // According to the FLAC format, if the mimeType is the string -->, the data contains
+            // a URL, pointing to the image. A URL should be ASCII encoded, but using UTF-8 seems 
+            // more sensible.
             if (mimeType == "-->")
             {
                 this.url = Encoding.UTF8.GetString(this.data);
@@ -182,7 +186,7 @@ namespace FlacLibSharp
             byte[] mimeTypeData = Encoding.ASCII.GetBytes(this.mimeType);
             // Length of the MIME type string (in bytes ...)
             targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)mimeTypeData.Length), 0, 4);
-            // printable ascii characters (0x20 - 0x7e)
+            // Only allows printable ascii characters (0x20 - 0x7e)
             for (int i = 0; i < mimeTypeData.Length; i++)
             {
                 if (mimeTypeData[i] < 0x20 || mimeTypeData[i] > 0x7e)
@@ -203,6 +207,17 @@ namespace FlacLibSharp
             targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)this.height), 0, 4);
             targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)this.colorDepth), 0, 4);
             targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)this.colors), 0, 4);
+
+            // If --> is the mime type, the data contains the URL ...
+            if (this.mimeType == "-->")
+            {
+                this.data = Encoding.ASCII.GetBytes(this.url);
+            }
+
+            if (this.data == null)
+            {
+                this.data = new byte[] {};
+            }
 
             targetStream.Write(BinaryDataHelper.GetBytesUInt32((uint)this.data.Length), 0, 4);
             targetStream.Write(this.data, 0, this.data.Length);
@@ -288,7 +303,10 @@ namespace FlacLibSharp
         /// <summary>
         /// For color indexed pictures, all of the colours in the picture.
         /// </summary>
-        public UInt32 Colors { get { return this.colors; } }
+        public UInt32 Colors {
+            get { return this.colors; }
+            set { this.colors = value;  }
+        }
 
         /// <summary>
         /// The actual picture data in a stream
@@ -301,7 +319,10 @@ namespace FlacLibSharp
         /// <summary>
         /// The URL for the image if the MIME Type indicates a URL reference (MIME Type = '-->').
         /// </summary>
-        public string URL { get { return this.url; } }
+        public string URL {
+            get { return this.url; }
+            set { this.url = value;  }
+        }
 
     }
 }
