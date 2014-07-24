@@ -150,5 +150,36 @@ namespace FlacLibSharp.Test
                 }
             }
         }
+    
+        /// <summary>
+        /// Will create a vorbis comment block of metadata, save the file and re-open it.
+        /// </summary>
+        [TestMethod]
+        public void CreateVorbisComment()
+        {
+            string albumName = "Test Album";
+
+            FileHelper.GetNewFile(origFile, newFile);
+
+            using (FlacFile flac = new FlacFile(newFile))
+            {
+                VorbisComment vorbisComment = new VorbisComment();
+
+                vorbisComment.Album = albumName;
+
+                flac.Metadata.Add(vorbisComment);
+
+                flac.Save();
+            }
+
+            using (FlacFile flac = new FlacFile(newFile))
+            {
+                VorbisComment vorbisComment = flac.VorbisComment;
+
+                Assert.AreEqual<string>(albumName, vorbisComment.Album);
+
+            }
+        }
+    
     }
 }
