@@ -162,15 +162,15 @@ namespace FlacLibSharp.Test
 
             using (FlacFile file = new FlacFile(flacFile))
             {
-                file.CueSheet = new CueSheet();
+                CueSheet sheet = new CueSheet();
 
                 for (int i = 0; i < 100; i++)
                 {
-                    file.CueSheet.Tracks.Add(new CueSheetTrack());
+                    sheet.Tracks.Add(new CueSheetTrack());
                 }
 
                 // This guy should throw an exception ...
-                file.CueSheet.Tracks.Add(new CueSheetTrack());
+                sheet.Tracks.Add(new CueSheetTrack());
             }
         }
 
@@ -181,17 +181,17 @@ namespace FlacLibSharp.Test
 
             using (FlacFile file = new FlacFile(flacFile))
             {
-                file.CueSheet = new CueSheet();
+                CueSheet sheet = new CueSheet();
 
-                file.CueSheet.Tracks.Add(new CueSheetTrack());
+                sheet.Tracks.Add(new CueSheetTrack());
 
                 for (int i = 0; i < 100; i++)
                 {
-                    file.CueSheet.Tracks[0].IndexPoints.Add(new CueSheetTrackIndex());
+                    sheet.Tracks[0].IndexPoints.Add(new CueSheetTrackIndex());
                 }
 
                 // This guy should throw an exception ...
-                file.CueSheet.Tracks[0].IndexPoints.Add(new CueSheetTrackIndex());
+                sheet.Tracks[0].IndexPoints.Add(new CueSheetTrackIndex());
             }
         }
 

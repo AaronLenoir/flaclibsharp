@@ -197,6 +197,24 @@ namespace FlacLibSharp.Test
                 Assert.AreEqual<string>(title2, vorbisComment[titleTag]);
             }
         }
-    
+
+        /// <summary>
+        /// Will create a cuesheet with no tracks, should raise an exception on Save.
+        /// </summary>
+        [TestMethod, ExpectedException(typeof(FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException))]
+        public void CreateInvalidCueSheet()
+        {
+            FileHelper.GetNewFile(origFile, newFile);
+
+            using (FlacFile flac = new FlacFile(newFile))
+            {
+                CueSheet sheet = new CueSheet();
+
+                flac.Metadata.Add(sheet);
+
+                flac.Save();
+            }
+        }
+
     }
 }

@@ -22,11 +22,12 @@ namespace FlacLibSharp {
         public CueSheet()
         {
             this.Header.Type = MetadataBlockHeader.MetadataBlockType.CueSheet;
+
             CalculateMetaDataBlockLength();
         }
 
         /// <summary>
-        /// TODO: Parses the binary metadata from the flac file into a CueSheet object.
+        /// Parses the binary metadata from the flac file into a CueSheet object.
         /// </summary>
         /// <param name="data">The binary data from the flac file.</param>
         public override void LoadBlockData(byte[] data) {

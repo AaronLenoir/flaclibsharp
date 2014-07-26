@@ -177,7 +177,7 @@ namespace FlacLibSharp
         /// <summary>
         /// Returns the CueSheet metadata block of the loaded Flac file or null if this block is not available.
         /// </summary>
-        public CueSheet CueSheet { get { return this.cueSheet; } set { this.cueSheet = value; } }
+        public CueSheet CueSheet { get { return this.cueSheet; } }
 
         /// <summary>
         /// Returns the SeekTable metadata block of the loaded Flac file or null if this block is not available.
