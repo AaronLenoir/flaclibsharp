@@ -157,7 +157,15 @@ namespace FlacLibSharp.Test
         [TestMethod]
         public void CreateVorbisComment()
         {
+            string artist = "Some Artist";
             string albumName = "Test Album";
+            string customTag = "PROJECT";
+            string customTagValue = "FlacLibSharp";
+            string customTag2 = "Author";
+            string customTag2Value = "Aaron";
+            string title = "Test Track";
+            string title2 = "Title modified";
+            string titleTag = "Title";
 
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -166,6 +174,11 @@ namespace FlacLibSharp.Test
                 VorbisComment vorbisComment = new VorbisComment();
 
                 vorbisComment.Album = albumName;
+                vorbisComment.Artist = artist;
+                vorbisComment[customTag] = customTagValue;
+                vorbisComment[customTag2] = customTag2Value;
+                vorbisComment.Title = title;
+                vorbisComment[titleTag] = title2;
 
                 flac.Metadata.Add(vorbisComment);
 
@@ -177,7 +190,11 @@ namespace FlacLibSharp.Test
                 VorbisComment vorbisComment = flac.VorbisComment;
 
                 Assert.AreEqual<string>(albumName, vorbisComment.Album);
-
+                Assert.AreEqual<string>(artist, vorbisComment.Artist);
+                Assert.AreEqual<string>(customTagValue, vorbisComment[customTag]);
+                Assert.AreEqual<string>(customTag2Value, vorbisComment[customTag2.ToUpper()]);
+                Assert.AreEqual<string>(title2, vorbisComment.Title);
+                Assert.AreEqual<string>(title2, vorbisComment[titleTag]);
             }
         }
     

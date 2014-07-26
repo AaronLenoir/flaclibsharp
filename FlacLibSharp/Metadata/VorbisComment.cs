@@ -23,7 +23,7 @@ namespace FlacLibSharp
         public VorbisComment()
         {
             this.Header.Type = MetadataBlockHeader.MetadataBlockType.VorbisComment;
-            this.comments = new Dictionary<string, string>();
+            this.comments = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             this.vendor = string.Empty;
         }
 
@@ -33,11 +33,6 @@ namespace FlacLibSharp
         /// <param name="data"></param>
         public override void LoadBlockData(byte[] data)
         {
-            if (this.comments == null)
-            {
-                this.comments = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            }
-
             UInt32 vendorLength = BinaryDataHelper.GetUInt32(BinaryDataHelper.SwitchEndianness(data, 0, 4), 0);
             this.vendor = Encoding.UTF8.GetString(BinaryDataHelper.GetDataSubset(data, 4, (int)vendorLength));
 
