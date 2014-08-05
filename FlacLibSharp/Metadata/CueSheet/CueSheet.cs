@@ -12,7 +12,7 @@ namespace FlacLibSharp {
     public class CueSheet : MetadataBlock {
 
         // See spec for details
-        private const byte CUESHEET_LEADOUT_TRACK_NUMBER = 170;
+        public static readonly byte CUESHEET_LEADOUT_TRACK_NUMBER = 170; // Exposing this value for now - will try to HIDE leadout track creation later ...
         private const uint CUESHEET_BLOCK_DATA_LENGTH = 396;
         private const uint CUESHEET_TRACK_LENGTH = 36;
         private const uint CUESHEET_TRACK_INDEXPOINT_LENGTH = 12;
@@ -103,7 +103,13 @@ namespace FlacLibSharp {
         /// Gets or sets the media catalog number.
         /// </summary>
         public string MediaCatalog {
-            get { return this.mediaCatalog; }
+            get {
+                if (this.mediaCatalog == null)
+                {
+                    this.mediaCatalog = string.Empty;
+                }
+                return this.mediaCatalog;
+            }
             set { this.mediaCatalog = value; }
         }
 

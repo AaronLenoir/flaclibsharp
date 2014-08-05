@@ -216,5 +216,75 @@ namespace FlacLibSharp.Test
             }
         }
 
+        [TestMethod]
+        public void CreateValidCueSheet()
+        {
+            string anISRC = "JMK401400212";
+
+            byte firstIndexPointNr = 4;
+            ulong firstIndexPointOffset = 356;
+            byte secondIndexPointNr = 5;
+            ulong secondIndexPointOffset = 1000;
+
+            FileHelper.GetNewFile(origFile, newFile);
+
+            using (FlacFile flac = new FlacFile(newFile))
+            {
+                CueSheet cueSheet = new CueSheet();
+
+                CueSheetTrack newTrack = new CueSheetTrack();
+                newTrack.IsAudioTrack = true;
+                newTrack.IsPreEmphasis = false;
+                newTrack.ISRC = anISRC;
+                newTrack.TrackNumber = 1;
+                newTrack.TrackOffset = 0;
+
+                CueSheetTrackIndex indexPoint = new CueSheetTrackIndex();
+                indexPoint.IndexPointNumber = firstIndexPointNr;
+                indexPoint.Offset = firstIndexPointOffset;
+                newTrack.IndexPoints.Add(indexPoint);
+                indexPoint = new CueSheetTrackIndex();
+                indexPoint.IndexPointNumber = secondIndexPointNr;
+                indexPoint.Offset = secondIndexPointOffset;
+                newTrack.IndexPoints.Add(indexPoint);
+
+                cueSheet.Tracks.Add(newTrack);
+
+                // Create the lead-out track
+
+                CueSheetTrack leadOut = new CueSheetTrack();
+                leadOut.IsAudioTrack = false;
+                leadOut.TrackNumber = CueSheet.CUESHEET_LEADOUT_TRACK_NUMBER;
+                cueSheet.Tracks.Add(leadOut);
+
+                flac.Metadata.Add(cueSheet);
+
+                flac.Save();
+            }
+
+            using (FlacFile flac = new FlacFile(newFile))
+            {
+                CueSheet cueSheet = flac.CueSheet;
+                Assert.IsNotNull(cueSheet);
+
+                Assert.AreEqual<byte>(2, cueSheet.TrackCount);
+
+                CueSheetTrack track = cueSheet.Tracks[0];
+
+                Assert.AreEqual<bool>(true, track.IsAudioTrack);
+                Assert.AreEqual<bool>(false, track.IsPreEmphasis);
+                Assert.AreEqual<string>(anISRC, track.ISRC);
+                Assert.AreEqual<byte>(1, track.TrackNumber);
+                Assert.AreEqual<ulong>(0, track.TrackOffset);
+
+                Assert.AreEqual<byte>(2, track.IndexPointCount);
+                Assert.AreEqual<byte>(firstIndexPointNr, track.IndexPoints[0].IndexPointNumber);
+                Assert.AreEqual<ulong>(firstIndexPointOffset, track.IndexPoints[0].Offset);
+                Assert.AreEqual<byte>(secondIndexPointNr, track.IndexPoints[1].IndexPointNumber);
+                Assert.AreEqual<ulong>(secondIndexPointOffset, track.IndexPoints[1].Offset);
+            }
+
+        }
+
     }
 }
