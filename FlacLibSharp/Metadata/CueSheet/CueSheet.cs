@@ -12,7 +12,8 @@ namespace FlacLibSharp {
     public class CueSheet : MetadataBlock {
 
         // See spec for details
-        public static readonly byte CUESHEET_LEADOUT_TRACK_NUMBER = 170; // Exposing this value for now - will try to HIDE leadout track creation later ...
+        public static readonly byte CUESHEET_LEADOUT_TRACK_NUMBER_CDDA = 170;
+        public static readonly byte CUESHEET_LEADOUT_TRACK_NUMBER_NON_CDDA = 255;
         private const uint CUESHEET_BLOCK_DATA_LENGTH = 396;
         private const uint CUESHEET_TRACK_LENGTH = 36;
         private const uint CUESHEET_TRACK_INDEXPOINT_LENGTH = 12;
@@ -60,7 +61,7 @@ namespace FlacLibSharp {
             if (this.Tracks.Count > 0)
             {
                 var lastTrack = this.Tracks[this.Tracks.Count - 1];
-                if (lastTrack.TrackNumber != CUESHEET_LEADOUT_TRACK_NUMBER)
+                if (!lastTrack.IsLeadOut)
                 {
                     throw new FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException(string.Format("CueSheet is invalid, last track (nr {0}) is not the lead-out track.", lastTrack.TrackNumber));
                 }

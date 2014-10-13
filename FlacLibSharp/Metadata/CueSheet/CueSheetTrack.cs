@@ -144,6 +144,25 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
+        /// Checks whether or not the track is a lead-out track (meaning track number is either 170 or 255, depending on CD-DA or not)
+        /// </summary>
+        public bool IsLeadOut
+        {
+            get
+            {
+                if (this.TrackNumber == CueSheet.CUESHEET_LEADOUT_TRACK_NUMBER_CDDA ||
+                    this.trackNumber == CueSheet.CUESHEET_LEADOUT_TRACK_NUMBER_NON_CDDA)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
         /// Number of track index points. There must be at least one index in every track in a CUESHEET except for the lead-out track, which must have zero. For CD-DA, this number may be no more than 100.
         /// </summary>
         public byte IndexPointCount {

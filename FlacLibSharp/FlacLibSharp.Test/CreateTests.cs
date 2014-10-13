@@ -254,7 +254,7 @@ namespace FlacLibSharp.Test
 
                 CueSheetTrack leadOut = new CueSheetTrack();
                 leadOut.IsAudioTrack = false;
-                leadOut.TrackNumber = CueSheet.CUESHEET_LEADOUT_TRACK_NUMBER;
+                leadOut.TrackNumber = CueSheet.CUESHEET_LEADOUT_TRACK_NUMBER_CDDA;
                 cueSheet.Tracks.Add(leadOut);
 
                 flac.Metadata.Add(cueSheet);
