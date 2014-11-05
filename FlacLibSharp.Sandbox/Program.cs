@@ -11,6 +11,8 @@ namespace FlacLibSharp.Sandbox
     {
         static void Main(string[] args)
         {
+            DuplicateMetadata();
+
             using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
             {
                 // Access to the StreamInfo class (actually this should ALWAYS be there ...)
@@ -31,6 +33,71 @@ namespace FlacLibSharp.Sandbox
             }
 
             Console.ReadLine();
+        }
+
+        public static void DuplicateMetadata()
+        {
+            File.Copy(@"Data\testfile4.flac", @"Data\testfile4_tmp.flac", true);
+            using (FlacFile file = new FlacFile(@"Data\testfile4_tmp.flac"))
+            {
+                /* Appinfo is fine! */
+                /*
+                var appInfo = file.ApplicationInfo;
+                if (appInfo == null)
+                {
+                    appInfo = new ApplicationInfo();
+                    appInfo.ApplicationID = 10;
+                    appInfo.ApplicationData = new byte[] { 10, 20, 30 };
+                    file.Metadata.Add(appInfo);
+                    file.Metadata.Add(appInfo);
+                }
+                */
+                
+                /* Cuesheet is fine ?*/
+                /*
+                var cueSheet = file.CueSheet;
+                file.Metadata.Add(cueSheet);
+                */
+
+                /* Vorbis also fine! */
+                /*
+                var vorbis = file.VorbisComment;
+                if (vorbis == null)
+                {
+                    vorbis = new VorbisComment();
+
+                    vorbis.Album = "My Test Album";
+
+                    file.Metadata.Add(vorbis);
+
+                    file.Metadata.Add(vorbis);
+                }
+                
+                file.Metadata.Add(vorbis);
+                */
+                
+                /* Metadata not fine! */
+                /*
+                var streaminfo = file.StreamInfo;
+                file.Metadata.Add(streaminfo);
+                */
+
+                /* SeekTable is fine */
+                /*
+                var seekTable = new SeekTable();
+                seekTable.SeekPoints.Add(new SeekPoint() { ByteOffset = 0, FirstSampleNumber = 0, IsPlaceHolder = false, NumberOfSamples = 100 });
+                file.Metadata.Add(seekTable);
+                file.Metadata.Add(seekTable);
+                */
+
+                /* We know picture is fine */
+
+                /* Padding is fine */
+
+                /* So everything fine, except StreamInfo */
+
+                file.Save();
+            }
         }
 
         public static void CopyOpenAndSaveStreamInfo()
