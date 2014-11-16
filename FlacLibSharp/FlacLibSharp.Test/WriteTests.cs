@@ -424,7 +424,7 @@ namespace FlacLibSharp.Test
                 }
                 using (FlacFile flac = new FlacFile(newFile))
                 {
-                    List<Picture> pictures = flac.GetPictures();
+                    List<Picture> pictures = flac.GetAllPictures();
                     Assert.IsTrue(pictures.Count > 0);
 
                     bool foundOurImage = false;
@@ -538,6 +538,146 @@ namespace FlacLibSharp.Test
 
                     // Check if we actually get "2" placeholders ...
                     Assert.AreEqual<int>(2, flac.SeekTable.SeekPoints.Placeholders);
+                }
+            }
+            finally
+            {
+                if (File.Exists(newFile))
+                {
+                    File.Delete(newFile);
+                }
+            }
+        }
+
+        [TestMethod, TestCategory("WriteTests")]
+        public void OpenFlacFileAndCreateMultipleApplicationInfo()
+        {
+            int appInfoCount = 0;
+            string origFile = @"Data\testfile3.flac";
+            string newFile = @"Data\testfile3_temp.flac";
+
+            FileHelper.GetNewFile(origFile, newFile);
+
+            try
+            {
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    if (flac.ApplicationInfo != null)
+                    {
+                        appInfoCount = 1;
+                    }
+
+                    ApplicationInfo appInfo = new ApplicationInfo();
+                    appInfo.ApplicationID = 10;
+                    appInfo.ApplicationData = new byte[] { 10, 20, 30 };
+
+                    flac.Metadata.Add(appInfo);
+
+                    appInfo = new ApplicationInfo();
+                    appInfo.ApplicationID = 20;
+                    appInfo.ApplicationData = new byte[] { 40, 50, 60 };
+
+                    flac.Metadata.Add(appInfo);
+
+                    appInfoCount += 2;
+
+                    flac.Save();
+                }
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    IEnumerable<ApplicationInfo> appInfo = flac.GetAllApplicationInfo();
+
+                    Assert.AreEqual<int>(appInfoCount, appInfo.Count());
+
+                    Assert.AreEqual<uint>(10, appInfo.ElementAt(appInfoCount - 2).ApplicationID);
+                    Assert.AreEqual<uint>(20, appInfo.ElementAt(appInfoCount - 1).ApplicationID);
+                }
+            }
+            finally
+            {
+                if (File.Exists(newFile))
+                {
+                    File.Delete(newFile);
+                }
+            }
+        }
+
+        [TestMethod, TestCategory("WriteTests")]
+        public void OpenFlacFileAndCreateMultipleCueSheets()
+        {
+            int cueSheetCount = 0;
+            string origFile = @"Data\testfile4.flac";
+            string newFile = @"Data\testfile4_temp.flac";
+
+            FileHelper.GetNewFile(origFile, newFile);
+
+            try
+            {
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    if (flac.CueSheet != null)
+                    {
+                        cueSheetCount = 1;
+                    }
+
+                    // Add a second (empty) cuesheet
+                    CueSheet newCueSheet = new CueSheet();
+                    newCueSheet.Tracks.Add(new CueSheetTrack() { TrackNumber = CueSheet.CUESHEET_LEADOUT_TRACK_NUMBER_CDDA });
+                    flac.Metadata.Add(newCueSheet);
+                    // Add a third (empty) cuesheet
+                    newCueSheet = new CueSheet();
+                    newCueSheet.Tracks.Add(new CueSheetTrack() { TrackNumber = CueSheet.CUESHEET_LEADOUT_TRACK_NUMBER_CDDA });
+                    flac.Metadata.Add(newCueSheet);
+
+                    cueSheetCount += 2;
+
+                    flac.Save();
+                }
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    Assert.AreEqual<int>(cueSheetCount, flac.GetAllCueSheets().Count());
+                }
+            }
+            finally
+            {
+                if (File.Exists(newFile))
+                {
+                    File.Delete(newFile);
+                }
+            }
+        }
+
+
+        [TestMethod, TestCategory("WriteTests")]
+        public void OpenFlacFileAndCreateMultiplePadding()
+        {
+            int paddingCount = 0;
+            string origFile = @"Data\testfile4.flac";
+            string newFile = @"Data\testfile4_temp.flac";
+
+            FileHelper.GetNewFile(origFile, newFile);
+
+            try
+            {
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    if (flac.Padding != null)
+                    {
+                        paddingCount = 1;
+                    }
+
+                    Padding newPadding = new Padding() { EmptyBitCount = 8 };
+                    flac.Metadata.Add(newPadding);
+                     newPadding = new Padding() { EmptyBitCount = 8 };
+                    flac.Metadata.Add(newPadding);
+
+                    paddingCount += 2;
+
+                    flac.Save();
+                }
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    Assert.AreEqual<int>(paddingCount, flac.GetAllPadding().Count());
                 }
             }
             finally

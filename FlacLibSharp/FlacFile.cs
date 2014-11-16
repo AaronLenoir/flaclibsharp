@@ -165,9 +165,26 @@ namespace FlacLibSharp
         public StreamInfo StreamInfo { get { return this.streamInfo; } }
         
         /// <summary>
-        /// Returns the ApplicationInfo metadata block of the loaded Flac file or null if this block is not available.
+        /// Returns the first ApplicationInfo metadata block of the loaded Flac file or null if this block is not available.
         /// </summary>
         public ApplicationInfo ApplicationInfo { get { return this.applicationInfo; } }
+
+        /// <summary>
+        /// Returns all ApplicationInfo metadata blocks (if there are any) of the loaded Flac file.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<ApplicationInfo> GetAllApplicationInfo()
+        {
+            List<ApplicationInfo> result = new List<ApplicationInfo>();
+            foreach (MetadataBlock block in this.Metadata)
+            {
+                if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Application)
+                {
+                    result.Add((ApplicationInfo)block);
+                }
+            }
+            return result;
+        }
 
         /// <summary>
         /// Returns the VorbisComment metadata block of the loaded Flac file or null if this block is not available.
@@ -180,6 +197,22 @@ namespace FlacLibSharp
         public CueSheet CueSheet { get { return this.cueSheet; } }
 
         /// <summary>
+        /// Returns all CueSheet metadata blocks (if there are any) of the loaded Flac file.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<CueSheet> GetAllCueSheets() {
+            List<CueSheet> result = new List<CueSheet>();
+            foreach (MetadataBlock block in this.Metadata)
+            {
+                if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.CueSheet)
+                {
+                    result.Add((CueSheet)block);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Returns the SeekTable metadata block of the loaded Flac file or null if this block is not available.
         /// </summary>
         public SeekTable SeekTable { get { return this.seekTable; } }
@@ -190,10 +223,27 @@ namespace FlacLibSharp
         public Padding Padding { get { return this.padding; } }
 
         /// <summary>
+        /// Returns all Padding metadata blocks (if there are any) of the loaded Flac file.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Padding> GetAllPadding()
+        {
+            List<Padding> result = new List<Padding>();
+            foreach (MetadataBlock block in this.Metadata)
+            {
+                if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.Padding)
+                {
+                    result.Add((Padding)block);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Will return all Picture blocks available in the Flac file, or an empty list of none are found.
         /// </summary>
         /// <returns></returns>
-        public List<Picture> GetPictures()
+        public List<Picture> GetAllPictures()
         {
             List<Picture> result = new List<Picture>();
 
