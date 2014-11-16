@@ -7,6 +7,7 @@ namespace FlacLibSharp.Exceptions
     /// <summary>
     /// A padding block of metadata was set to an invalid bit length.
     /// </summary>
+    [Serializable]
     public class FlacLibSharpInvalidPaddingBitCount : FlacLibSharpException
     {
         /// <summary>

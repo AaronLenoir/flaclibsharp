@@ -7,6 +7,7 @@ namespace FlacLibSharp.Exceptions
     /// <summary>
     /// This exception is raised when too many index points are added to a CueSheet Track.
     /// </summary>
+    [Serializable]
     public class FlacLibSharpMaxTrackIndicesExceededException : FlacLibSharpException
     {
 

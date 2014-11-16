@@ -21,11 +21,25 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("ParseTests")]
         public void OpenAndCloseFlacFileWithStream()
         {
-            using (Stream stream = File.OpenRead(@"Data\testfile1.flac"))
+            // To avoid CA2202 (http://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k%28CA2202%29;k%28TargetFrameworkMoniker-.NETFramework)
+            // we only use "using" for the inner resource. This ensure the Dispose of the Stream isn't called twice.
+
+            Stream stream = null;
+
+            try
             {
+                stream = File.OpenRead(@"Data\testfile1.flac");
                 using (FlacFile file = new FlacFile(stream))
                 {
-                    // Doing nothing
+                    stream = null;
+                    // Doing nothing, just testing an open and close action.
+                }
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Dispose();
                 }
             }
         }

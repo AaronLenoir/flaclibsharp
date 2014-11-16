@@ -281,11 +281,21 @@ namespace FlacLibSharp
         /// </summary>
         public void Dispose()
         {
-            if (dataStream != null)
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                dataStream.Close();
-                dataStream = null;
+                // Clean up managed resources
+                if (dataStream != null)
+                {
+                    dataStream.Dispose();
+                    dataStream = null;
+                }
             }
         }
-    }
+
+     }
 }
