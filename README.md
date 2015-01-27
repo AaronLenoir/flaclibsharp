@@ -49,7 +49,7 @@ using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
 Modify a vorbis comment, create a vorbis block if none exists:
 
 ```csharp
-using (FlacFile flac = new FlacFile(@"C:\Users\aaron\Music\ALBUMCollection\Aeroplane\We Can't Fly\example.flac"))
+using (FlacFile flac = new FlacFile("example.flac"))
 {
     // First get the existing VorbisComment (if any)
     var comment = flac.VorbisComment;
