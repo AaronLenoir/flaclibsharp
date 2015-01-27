@@ -8,7 +8,7 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
     <projectUrl>https://github.com/AaronLenoir/flaclibsharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A .NET library for reading FLAC metadata.</description>
+    <description>A .NET library for reading and writing FLAC metadata.</description>
     <copyright>Copyright 2015</copyright>
   </metadata>
   <files>
