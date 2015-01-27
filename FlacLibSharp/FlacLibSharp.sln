@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp", "FlacLibSharp.csproj", "{5A129A9A-D6D8-43C3-90AC-34108918BDC6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp.Sandbox", "..\FlacLibSharp.Sandbox\FlacLibSharp.Sandbox.csproj", "{7E00A2A9-38ED-4005-A368-581373DFD08E}"
