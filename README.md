@@ -18,7 +18,7 @@ For 1.5 (which also edits metadata):
 
     PM> Install-Package FlacLibSharp -Pre
 
-Or go to the nuget page: http://www.nuget.org/packages/FlacLibSharp
+Or go to the nuget page: https://www.nuget.org/packages/FlacLibSharp
 
 ### Usage example
 
