@@ -70,4 +70,4 @@ using (FlacFile flac = new FlacFile("example.flac"))
 }
 ```
 
-More examples to come ... Check out the tests in the source code for now (or use the Object Browser in Visual Studio).
+Check out the tests in the source code for more examples.
