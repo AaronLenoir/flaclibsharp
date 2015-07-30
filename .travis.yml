@@ -1,2 +1,2 @@
 language: csharp
-solution: FlacLibSharp/solution-name.sln
+solution: FlacLibSharp/FlacLibSharp.sln
