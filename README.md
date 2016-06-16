@@ -30,7 +30,7 @@ using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
     // Access to the StreamInfo class (actually this should ALWAYS be there ...)
     var streamInfo = file.StreamInfo;
     if (streamInfo != null) {
-        Console.WriteLine("Flac audio length in seconds: {0}", file.StreamInfo.Duration);
+        Console.WriteLine("Flac audio length in seconds: {0}", streamInfo.Duration);
     }
 
     // Access to the VorbisComment IF it exists in the file
