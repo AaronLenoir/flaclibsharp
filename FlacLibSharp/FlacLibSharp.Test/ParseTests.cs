@@ -123,18 +123,18 @@ namespace FlacLibSharp.Test
                     if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.VorbisComment)
                     {
                         VorbisComment info = (VorbisComment)block;
-                        Assert.AreEqual("Ziggystar", info["ARTIST"]);
-                        Assert.AreEqual("Ziggystar", info.Artist);
-                        Assert.AreEqual("Roland jx3p demo", info["TITLE"]);
-                        Assert.AreEqual("Roland jx3p demo", info.Title);
-                        Assert.AreEqual("Wiki Commons", info["ALBUM"]);
-                        Assert.AreEqual("Wiki Commons", info.Album);
-                        Assert.AreEqual("2005", info["DATE"]);
-                        Assert.AreEqual("2005", info.Date);
-                        Assert.AreEqual("01", info["TRACKNUMBER"]);
-                        Assert.AreEqual("01", info.TrackNumber);
-                        Assert.AreEqual("Electronic", info["GENRE"]);
-                        Assert.AreEqual("Electronic", info.Genre);
+                        Assert.AreEqual("Ziggystar", info["ARTIST"].First);
+                        Assert.AreEqual("Ziggystar", info.Artist.First);
+                        Assert.AreEqual("Roland jx3p demo", info["TITLE"].First);
+                        Assert.AreEqual("Roland jx3p demo", info.Title.First);
+                        Assert.AreEqual("Wiki Commons", info["ALBUM"].First);
+                        Assert.AreEqual("Wiki Commons", info.Album.First);
+                        Assert.AreEqual("2005", info["DATE"].First);
+                        Assert.AreEqual("2005", info.Date.First);
+                        Assert.AreEqual("01", info["TRACKNUMBER"].First);
+                        Assert.AreEqual("01", info.TrackNumber.First);
+                        Assert.AreEqual("Electronic", info["GENRE"].First);
+                        Assert.AreEqual("Electronic", info.Genre.First);
                         Assert.IsFalse(info.ContainsField("UNEXISTINGKEY"));
                     }
                 }

@@ -151,6 +151,18 @@ namespace FlacLibSharp
             AddComment(key, value);
         }
 
+        protected void AddComment(string fieldName, VorbisCommentValues values)
+        {
+            if (this.comments.ContainsKey(fieldName))
+            {
+                this.comments[fieldName].AddRange(values);
+            }
+            else
+            {
+                this.comments.Add(fieldName, values);
+            }
+        }
+
         /// <summary>
         /// Adds a comment to the list of vorbis comments.
         /// </summary>
@@ -177,43 +189,26 @@ namespace FlacLibSharp
         /// </summary>
         /// <param name="key">The key of the vorbis comment field.</param>
         /// <returns>The value of the vorbis comment field.</returns>
-        public string this[string key]
+        public VorbisCommentValues this[string key]
         {
             get
             {
-                return this.comments[key].First;
+                if (!this.comments.ContainsKey(key))
+                {
+                    this.comments.Add(key, new VorbisCommentValues());
+                }
+
+                return this.comments[key];
             }
             set
             {
                 if (!this.comments.ContainsKey(key))
                 {
-                    this.comments.Add(key, new VorbisCommentValues(value));
+                    this.comments.Add(key, value);
                 } else
                 {
-                    this.comments[key].First = value;
+                    this.comments[key] = value;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Gets all values for a given field name.
-        /// </summary>
-        public VorbisCommentValues GetAllValues(string key) {
-            return this.comments[key];
-        }
-
-        /// <summary>
-        /// Sets all values for a given field name.
-        /// </summary>
-        public void SetAllValues(string key, VorbisCommentValues values)
-        {
-            if (!this.comments.ContainsKey(key))
-            {
-                this.comments.Add(key, values);
-            }
-            else
-            {
-                this.comments[key] = values;
             }
         }
 
@@ -231,55 +226,54 @@ namespace FlacLibSharp
         /// Gets or sets the Artist if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string Artist {
-            get { if (this.ContainsField("ARTIST")) return this["ARTIST"]; else return string.Empty; }
-            set { if (this.ContainsField("ARTIST")) this["ARTIST"] = value; else AddComment("ARTIST", value); }
+        public VorbisCommentValues Artist {
+            get { return this["ARTIST"]; }
+            set { this["ARTIST"] = value; }
         }
 
         /// <summary>
         /// Gets or sets the Title if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string Title {
-            get { if (this.ContainsField("TITLE")) return this["TITLE"]; else return string.Empty; }
-            set { if (this.ContainsField("TITLE")) this["TITLE"] = value; else AddComment("TITLE", value); }
+        public VorbisCommentValues Title {
+            get { return this["TITLE"]; }
+            set { this["TITLE"] = value; }
         }
 
         /// <summary>
         /// Gets or sets the Album if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string Album {
-            get { if (this.ContainsField("ALBUM")) return this["ALBUM"]; else return string.Empty; }
-            set { if (this.ContainsField("ALBUM")) this["ALBUM"] = value; else AddComment("ALBUM", value); }
+        public VorbisCommentValues Album {
+            get { return this["ALBUM"]; }
+            set { this["ALBUM"] = value; }
         }
 
         /// <summary>
         /// Gets or sets the Date if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string Date {
-            get { if (this.ContainsField("DATE")) return this["DATE"]; else return string.Empty; }
-            set { if (this.ContainsField("DATE")) this["DATE"] = value; else AddComment("DATE", value); }
+        public VorbisCommentValues Date {
+            get { return this["DATE"]; }
+            set { this["DATE"] = value; }
         }
 
         /// <summary>
         /// Gets or sets the Tacknumber if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string TrackNumber {
-            get { if (this.ContainsField("TRACKNUMBER")) return this["TRACKNUMBER"]; else return string.Empty; }
-            set { if (this.ContainsField("TRACKNUMBER")) this["TRACKNUMBER"] = value; else AddComment("TRACKNUMBER", value); }
+        public VorbisCommentValues TrackNumber {
+            get { return this["TRACKNUMBER"]; }
+            set { this["TRACKNUMBER"] = value; }
         }
 
         /// <summary>
         /// Gets or sets the Genre if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string Genre {
-            get { if (this.ContainsField("GENRE")) return this["GENRE"]; else return string.Empty; }
-            set { if (this.ContainsField("GENRE")) this["GENRE"] = value; else AddComment("GENRE", value); }
+        public VorbisCommentValues Genre {
+            get { return this["GENRE"]; }
+            set { this["GENRE"] = value; }
         }
-
     }
 }
