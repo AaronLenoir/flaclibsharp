@@ -142,8 +142,47 @@ namespace FlacLibSharp.Test
                 using (FlacFile flac = new FlacFile(newFile))
                 {
                     Assert.IsNotNull(flac.VorbisComment);
-                    Assert.AreEqual(flac.VorbisComment.Title, newTitle);
-                    Assert.AreEqual(flac.VorbisComment.Artist, newArtist);
+                    Assert.AreEqual(newTitle, flac.VorbisComment.Title);
+                    Assert.AreEqual(newArtist, flac.VorbisComment.Artist);
+                }
+            }
+            finally
+            {
+                if (File.Exists(newFile))
+                {
+                    File.Delete(newFile);
+                }
+            }
+        }
+
+        [TestMethod, TestCategory("Write Tests")]
+        public void AddMultipleVorbisFields()
+        {
+            string origFile = @"Data\testfile1.flac";
+            string newFile = @"Data\testfile1_temp.flac";
+            // Tests if we can load up a flac file, update the artist and title in the vorbis comments
+            // save the file and then reload the file and see the changes.
+            FileHelper.GetNewFile(origFile, newFile);
+
+            try
+            {
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    flac.VorbisComment.SetAllValues("ARTIST", 
+                        new VorbisCommentValues
+                        {
+                            "Aaron", "dgadelha"
+                        });
+                    
+                    // Save flac file
+                    flac.Save();
+                }
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    VorbisCommentValues values = flac.VorbisComment.GetAllValues("ARTIST");
+                    Assert.AreEqual(2, values.Count);
+                    Assert.AreEqual("Aaron", values[0]);
+                    Assert.AreEqual("dgadelha", values[1]);
                 }
             }
             finally

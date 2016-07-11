@@ -8,13 +8,49 @@ using FlacLibSharp.Helpers;
 namespace FlacLibSharp
 {
     /// <summary>
+    /// The value or values of a single Vorbis Comment Field.
+    /// </summary>
+    public class VorbisCommentValues : List<string>
+    {
+        /// <summary>
+        /// Creates an empty vorbis comment.
+        /// </summary>
+        public VorbisCommentValues() { }
+
+        /// <summary>
+        /// Creates a vorbis comment with one value.
+        /// </summary>
+        public VorbisCommentValues(string value)
+        {
+            this.Add(value);
+        }
+
+        /// <summary>
+        /// The first value of the list of values.
+        /// </summary>
+        /// <remarks></remarks>
+        public string First {
+            get
+            {
+                if (this.Count == 0) { return string.Empty; }
+                return this[0];
+            }
+            set
+            {
+                if (this.Count == 0) { this.Add(value); }
+                else { this[0] = value; }
+            }
+        }
+    }
+
+    /// <summary>
     /// A metadata block contain the "Vorbis Comment" (artist, ...)
     /// </summary>
     public class VorbisComment : MetadataBlock
     {
         // Vorbis format: http://www.xiph.org/vorbis/doc/v-comment.html
 
-        private Dictionary<string, string> comments;
+        private Dictionary<string, VorbisCommentValues> comments;
         private string vendor;
 
         /// <summary>
@@ -23,7 +59,7 @@ namespace FlacLibSharp
         public VorbisComment()
         {
             this.Header.Type = MetadataBlockHeader.MetadataBlockType.VorbisComment;
-            this.comments = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            this.comments = new Dictionary<string, VorbisCommentValues>(StringComparer.OrdinalIgnoreCase);
             this.vendor = string.Empty;
         }
 
@@ -79,12 +115,15 @@ namespace FlacLibSharp
 
             foreach (var comment in this.comments)
             {
-                string commentText = string.Format("{0}={1}", comment.Key, comment.Value);
-                byte[] commentData = System.Text.Encoding.UTF8.GetBytes(commentText);
-                number = BinaryDataHelper.GetBytesUInt32((uint)commentData.Length);
-                targetStream.Write(BinaryDataHelper.SwitchEndianness(number, 0, 4), 0, 4);
-                targetStream.Write(commentData, 0, commentData.Length);
-                totalLength += 4 + (uint)commentData.Length;
+                foreach (var value in comment.Value)
+                {
+                    string commentText = string.Format("{0}={1}", comment.Key, value);
+                    byte[] commentData = System.Text.Encoding.UTF8.GetBytes(commentText);
+                    number = BinaryDataHelper.GetBytesUInt32((uint)commentData.Length);
+                    targetStream.Write(BinaryDataHelper.SwitchEndianness(number, 0, 4), 0, 4);
+                    targetStream.Write(commentData, 0, commentData.Length);
+                    totalLength += 4 + (uint)commentData.Length;
+                }
             }
 
             long endPosition = targetStream.Position;
@@ -119,7 +158,13 @@ namespace FlacLibSharp
         /// <param name="value"></param>
         protected void AddComment(string fieldName, string value)
         {
-            this.comments.Add(fieldName, value);
+            if (this.comments.ContainsKey(fieldName))
+            {
+                this.comments[fieldName].Add(value);
+            } else
+            {
+                this.comments.Add(fieldName, new VorbisCommentValues(value));
+            }
         }
 
         /// <summary>
@@ -132,15 +177,43 @@ namespace FlacLibSharp
         /// </summary>
         /// <param name="key">The key of the vorbis comment field.</param>
         /// <returns>The value of the vorbis comment field.</returns>
-        public String this[string key]
+        public string this[string key]
         {
             get
             {
-                return this.comments[key];
+                return this.comments[key].First;
             }
             set
             {
-                this.comments[key] = value;
+                if (!this.comments.ContainsKey(key))
+                {
+                    this.comments.Add(key, new VorbisCommentValues(value));
+                } else
+                {
+                    this.comments[key].First = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets all values for a given field name.
+        /// </summary>
+        public VorbisCommentValues GetAllValues(string key) {
+            return this.comments[key];
+        }
+
+        /// <summary>
+        /// Sets all values for a given field name.
+        /// </summary>
+        public void SetAllValues(string key, VorbisCommentValues values)
+        {
+            if (!this.comments.ContainsKey(key))
+            {
+                this.comments.Add(key, values);
+            }
+            else
+            {
+                this.comments[key] = values;
             }
         }
 
