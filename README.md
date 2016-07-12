@@ -1,22 +1,12 @@
 # FlacLibSharp
 
-A .NET library for reading (and writing) FLAC metadata.
+A .NET library for reading and writing FLAC metadata.
 
-The stable version (1.0) can only read metadata. The beta release, version 1.5, can also modify metadata.
-
-At the moment, it looks like version 1.5 will remain in beta unless someone actually wants to use it. I personally do not have a need for this so the motivation is hard to find and I would rather do something else. But if there's somebody actually using this library, I will make sure to do more extenstive testing and make a stable release.
-
-That said, I think version 1.5 is not too bad. So use it, but only if your FLAC files are backed up somewhere ...
-
-Version 2.0 will also decode FLAC audio streams. But these plans are currently in the freezer, unless I feel like picking the project back up again.
+***Note:*** This is about Version 2.0 which is not yet out on nuget (soon!). Version 1.0 doesn't support writing metadata.
 
 ### Installation
 
     PM> Install-Package FlacLibSharp
-
-For 1.5 (which also edits metadata):
-
-    PM> Install-Package FlacLibSharp -Pre
 
 Or go to the nuget page: https://www.nuget.org/packages/FlacLibSharp
 
@@ -38,6 +28,14 @@ using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
     if (vorbisComment != null) {
         Console.WriteLine("Artist - Title: {0} - {1}", vorbisComment.Artist.Value, vorbisComment.Title.Value);
     }
+
+    // Access to the VorbisComment IF it exists in the file, with multiple values for a single field
+    var vorbisComment = file.VorbisComment;
+    if (vorbisComment != null) {
+        foreach(var value in vorbisComment.Artist) {
+            Console.WriteLine("Artist: {0}", value);
+        }
+    }
     
     // Get all other types of metdata blocks:
     var metadata = file.Metadata;
@@ -47,7 +45,7 @@ using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
 }
 ```
 
-#### Editing Metadata (Only in 1.5.0.0-beta)
+#### Writing Metadata
 
 Modify a vorbis comment, create a vorbis block if none exists:
 
@@ -65,8 +63,8 @@ using (FlacFile flac = new FlacFile("example.flac"))
     }
     
     // Update the fields
-    comment.Artist = "Aaron";
-    comment.Title = "Hello World";
+    comment.Artist.Value = "Aaron";
+    comment.Title.Value = "Hello World";
 
     // Write the changes back to the FLAC file
     flac.Save();
