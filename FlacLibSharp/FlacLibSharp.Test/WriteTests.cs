@@ -129,12 +129,12 @@ namespace FlacLibSharp.Test
                 using (FlacFile flac = new FlacFile(newFile))
                 {
                     Assert.IsNotNull(flac.VorbisComment);
-                    string artist = flac.VorbisComment["ARTIST"];
-                    string title = flac.VorbisComment.Title;
+                    string artist = flac.VorbisComment["ARTIST"].Value;
+                    string title = flac.VorbisComment.Title.Value;
                     newArtist = String.Format("{0}_Edited", artist);
                     newTitle = String.Format("{0}_Edited", title);
-                    flac.VorbisComment["ARTIST"] = newArtist;
-                    flac.VorbisComment.Title = newTitle;
+                    flac.VorbisComment["ARTIST"].Value = newArtist;
+                    flac.VorbisComment.Title.Value = newTitle;
 
                     // Save flac file
                     flac.Save();
@@ -142,8 +142,65 @@ namespace FlacLibSharp.Test
                 using (FlacFile flac = new FlacFile(newFile))
                 {
                     Assert.IsNotNull(flac.VorbisComment);
-                    Assert.AreEqual(flac.VorbisComment.Title, newTitle);
-                    Assert.AreEqual(flac.VorbisComment.Artist, newArtist);
+                    Assert.AreEqual(newTitle, flac.VorbisComment.Title.Value);
+                    Assert.AreEqual(newArtist, flac.VorbisComment.Artist.Value);
+                }
+            }
+            finally
+            {
+                if (File.Exists(newFile))
+                {
+                    File.Delete(newFile);
+                }
+            }
+        }
+
+        [TestMethod, TestCategory("Write Tests")]
+        public void AddMultipleVorbisFields()
+        {
+            string origFile = @"Data\testfile1.flac";
+            string newFile = @"Data\testfile1_temp.flac";
+            // Tests if we can load up a flac file, update the artist and title in the vorbis comments
+            // save the file and then reload the file and see the changes.
+            FileHelper.GetNewFile(origFile, newFile);
+
+            try
+            {
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    flac.VorbisComment["ARTIST"] = new VorbisCommentValues();
+                    flac.VorbisComment["ARTIST"].Add("Aaron");
+                    flac.VorbisComment["ARTIST"].Add("dgadelha");
+
+                    flac.VorbisComment["TITLE"] = new VorbisCommentValues(new string[] { "Title A", "Title B", "Title C" });
+
+                    flac.VorbisComment["ALBUM"] = new VorbisCommentValues("Album");
+
+                    // Save flac file
+                    flac.Save();
+                }
+                using (FlacFile flac = new FlacFile(newFile))
+                {
+                    var values = flac.VorbisComment["ARTIST"];
+                    Assert.AreEqual(2, values.Count);
+                    Assert.AreEqual("Aaron", values[0]);
+                    Assert.AreEqual("dgadelha", values[1]);
+
+                    values = flac.VorbisComment["TITLE"];
+                    Assert.AreEqual(3, values.Count);
+                    Assert.AreEqual("Title A", values[0]);
+                    Assert.AreEqual("Title B", values[1]);
+                    Assert.AreEqual("Title C", values[2]);
+
+                    var value = flac.VorbisComment["TITLE"].Value;
+                    Assert.AreEqual("Title A", value);
+
+                    values = flac.VorbisComment["ALBUM"];
+                    Assert.AreEqual(1, values.Count);
+                    Assert.AreEqual("Album", values[0]);
+
+                    value = flac.VorbisComment["ALBUM"].Value;
+                    Assert.AreEqual("Album", value);
                 }
             }
             finally

@@ -8,13 +8,57 @@ using FlacLibSharp.Helpers;
 namespace FlacLibSharp
 {
     /// <summary>
+    /// The value or values of a single Vorbis Comment Field.
+    /// </summary>
+    public class VorbisCommentValues : List<string>
+    {
+        /// <summary>
+        /// Creates an empty vorbis comment.
+        /// </summary>
+        public VorbisCommentValues() { }
+
+        /// <summary>
+        /// Creates a vorbis comment with one value.
+        /// </summary>
+        public VorbisCommentValues(string value)
+        {
+            this.Add(value);
+        }
+
+        /// <summary>
+        /// Creates a vorbis comment with the given values.
+        /// </summary>
+        public VorbisCommentValues(IEnumerable<string> values)
+        {
+            this.AddRange(values);
+        }
+
+        /// <summary>
+        /// The first value of the list of values.
+        /// </summary>
+        /// <remarks></remarks>
+        public string Value {
+            get
+            {
+                if (this.Count == 0) { return string.Empty; }
+                return this[0];
+            }
+            set
+            {
+                if (this.Count == 0) { this.Add(value); }
+                else { this[0] = value; }
+            }
+        }
+    }
+
+    /// <summary>
     /// A metadata block contain the "Vorbis Comment" (artist, ...)
     /// </summary>
     public class VorbisComment : MetadataBlock
     {
         // Vorbis format: http://www.xiph.org/vorbis/doc/v-comment.html
 
-        private Dictionary<string, string> comments;
+        private Dictionary<string, VorbisCommentValues> comments;
         private string vendor;
 
         /// <summary>
@@ -23,7 +67,7 @@ namespace FlacLibSharp
         public VorbisComment()
         {
             this.Header.Type = MetadataBlockHeader.MetadataBlockType.VorbisComment;
-            this.comments = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            this.comments = new Dictionary<string, VorbisCommentValues>(StringComparer.OrdinalIgnoreCase);
             this.vendor = string.Empty;
         }
 
@@ -79,12 +123,15 @@ namespace FlacLibSharp
 
             foreach (var comment in this.comments)
             {
-                string commentText = string.Format("{0}={1}", comment.Key, comment.Value);
-                byte[] commentData = System.Text.Encoding.UTF8.GetBytes(commentText);
-                number = BinaryDataHelper.GetBytesUInt32((uint)commentData.Length);
-                targetStream.Write(BinaryDataHelper.SwitchEndianness(number, 0, 4), 0, 4);
-                targetStream.Write(commentData, 0, commentData.Length);
-                totalLength += 4 + (uint)commentData.Length;
+                foreach (var value in comment.Value)
+                {
+                    string commentText = string.Format("{0}={1}", comment.Key, value);
+                    byte[] commentData = System.Text.Encoding.UTF8.GetBytes(commentText);
+                    number = BinaryDataHelper.GetBytesUInt32((uint)commentData.Length);
+                    targetStream.Write(BinaryDataHelper.SwitchEndianness(number, 0, 4), 0, 4);
+                    targetStream.Write(commentData, 0, commentData.Length);
+                    totalLength += 4 + (uint)commentData.Length;
+                }
             }
 
             long endPosition = targetStream.Position;
@@ -112,6 +159,18 @@ namespace FlacLibSharp
             AddComment(key, value);
         }
 
+        protected void AddComment(string fieldName, VorbisCommentValues values)
+        {
+            if (this.comments.ContainsKey(fieldName))
+            {
+                this.comments[fieldName].AddRange(values);
+            }
+            else
+            {
+                this.comments.Add(fieldName, values);
+            }
+        }
+
         /// <summary>
         /// Adds a comment to the list of vorbis comments.
         /// </summary>
@@ -119,7 +178,13 @@ namespace FlacLibSharp
         /// <param name="value"></param>
         protected void AddComment(string fieldName, string value)
         {
-            this.comments.Add(fieldName, value);
+            if (this.comments.ContainsKey(fieldName))
+            {
+                this.comments[fieldName].Add(value);
+            } else
+            {
+                this.comments.Add(fieldName, new VorbisCommentValues(value));
+            }
         }
 
         /// <summary>
@@ -132,15 +197,26 @@ namespace FlacLibSharp
         /// </summary>
         /// <param name="key">The key of the vorbis comment field.</param>
         /// <returns>The value of the vorbis comment field.</returns>
-        public String this[string key]
+        public VorbisCommentValues this[string key]
         {
             get
             {
+                if (!this.comments.ContainsKey(key))
+                {
+                    this.comments.Add(key, new VorbisCommentValues());
+                }
+
                 return this.comments[key];
             }
             set
             {
-                this.comments[key] = value;
+                if (!this.comments.ContainsKey(key))
+                {
+                    this.comments.Add(key, value);
+                } else
+                {
+                    this.comments[key] = value;
+                }
             }
         }
 
@@ -158,55 +234,54 @@ namespace FlacLibSharp
         /// Gets or sets the Artist if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string Artist {
-            get { if (this.ContainsField("ARTIST")) return this["ARTIST"]; else return string.Empty; }
-            set { if (this.ContainsField("ARTIST")) this["ARTIST"] = value; else AddComment("ARTIST", value); }
+        public VorbisCommentValues Artist {
+            get { return this["ARTIST"]; }
+            set { this["ARTIST"] = value; }
         }
 
         /// <summary>
         /// Gets or sets the Title if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string Title {
-            get { if (this.ContainsField("TITLE")) return this["TITLE"]; else return string.Empty; }
-            set { if (this.ContainsField("TITLE")) this["TITLE"] = value; else AddComment("TITLE", value); }
+        public VorbisCommentValues Title {
+            get { return this["TITLE"]; }
+            set { this["TITLE"] = value; }
         }
 
         /// <summary>
         /// Gets or sets the Album if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string Album {
-            get { if (this.ContainsField("ALBUM")) return this["ALBUM"]; else return string.Empty; }
-            set { if (this.ContainsField("ALBUM")) this["ALBUM"] = value; else AddComment("ALBUM", value); }
+        public VorbisCommentValues Album {
+            get { return this["ALBUM"]; }
+            set { this["ALBUM"] = value; }
         }
 
         /// <summary>
         /// Gets or sets the Date if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string Date {
-            get { if (this.ContainsField("DATE")) return this["DATE"]; else return string.Empty; }
-            set { if (this.ContainsField("DATE")) this["DATE"] = value; else AddComment("DATE", value); }
+        public VorbisCommentValues Date {
+            get { return this["DATE"]; }
+            set { this["DATE"] = value; }
         }
 
         /// <summary>
         /// Gets or sets the Tacknumber if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string TrackNumber {
-            get { if (this.ContainsField("TRACKNUMBER")) return this["TRACKNUMBER"]; else return string.Empty; }
-            set { if (this.ContainsField("TRACKNUMBER")) this["TRACKNUMBER"] = value; else AddComment("TRACKNUMBER", value); }
+        public VorbisCommentValues TrackNumber {
+            get { return this["TRACKNUMBER"]; }
+            set { this["TRACKNUMBER"] = value; }
         }
 
         /// <summary>
         /// Gets or sets the Genre if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>
-        public string Genre {
-            get { if (this.ContainsField("GENRE")) return this["GENRE"]; else return string.Empty; }
-            set { if (this.ContainsField("GENRE")) this["GENRE"] = value; else AddComment("GENRE", value); }
+        public VorbisCommentValues Genre {
+            get { return this["GENRE"]; }
+            set { this["GENRE"] = value; }
         }
-
     }
 }

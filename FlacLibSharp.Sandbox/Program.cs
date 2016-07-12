@@ -190,12 +190,12 @@ namespace FlacLibSharp.Sandbox
             {
                 using (FlacFile flac = new FlacFile(newFile))
                 {
-                    string artist = flac.VorbisComment["ARTIST"];
-                    string title = flac.VorbisComment.Title;
+                    string artist = flac.VorbisComment["ARTIST"].Value;
+                    string title = flac.VorbisComment.Title.Value;
                     newArtist = String.Format("{0}_Edited", artist);
                     newTitle = String.Format("{0}_Edited", title);
-                    flac.VorbisComment["ARTIST"] = newArtist;
-                    flac.VorbisComment.Title = newTitle;
+                    flac.VorbisComment["ARTIST"].Value = newArtist;
+                    flac.VorbisComment.Title.Value = newTitle;
 
                     // Save flac file
                     flac.Save();

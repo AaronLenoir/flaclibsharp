@@ -173,12 +173,12 @@ namespace FlacLibSharp.Test
             {
                 VorbisComment vorbisComment = new VorbisComment();
 
-                vorbisComment.Album = albumName;
-                vorbisComment.Artist = artist;
-                vorbisComment[customTag] = customTagValue;
-                vorbisComment[customTag2] = customTag2Value;
-                vorbisComment.Title = title;
-                vorbisComment[titleTag] = title2;
+                vorbisComment.Album.Value = albumName;
+                vorbisComment.Artist.Value = artist;
+                vorbisComment[customTag].Value = customTagValue;
+                vorbisComment[customTag2].Value = customTag2Value;
+                vorbisComment.Title.Value = title;
+                vorbisComment[titleTag].Value = title2;
 
                 flac.Metadata.Add(vorbisComment);
 
@@ -189,12 +189,12 @@ namespace FlacLibSharp.Test
             {
                 VorbisComment vorbisComment = flac.VorbisComment;
 
-                Assert.AreEqual<string>(albumName, vorbisComment.Album);
-                Assert.AreEqual<string>(artist, vorbisComment.Artist);
-                Assert.AreEqual<string>(customTagValue, vorbisComment[customTag]);
-                Assert.AreEqual<string>(customTag2Value, vorbisComment[customTag2.ToUpper()]);
-                Assert.AreEqual<string>(title2, vorbisComment.Title);
-                Assert.AreEqual<string>(title2, vorbisComment[titleTag]);
+                Assert.AreEqual<string>(albumName, vorbisComment.Album.Value);
+                Assert.AreEqual<string>(artist, vorbisComment.Artist.Value);
+                Assert.AreEqual<string>(customTagValue, vorbisComment[customTag].Value);
+                Assert.AreEqual<string>(customTag2Value, vorbisComment[customTag2.ToUpper()].Value);
+                Assert.AreEqual<string>(title2, vorbisComment.Title.Value);
+                Assert.AreEqual<string>(title2, vorbisComment[titleTag].Value);
             }
         }
 

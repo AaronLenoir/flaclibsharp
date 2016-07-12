@@ -62,7 +62,7 @@ namespace FlacLibSharp
         /// <param name="path"></param>
         /// <param name="fieldName"></param>
         /// <returns>The value of the field or an empty string if the field is not available.</returns>
-        public static string GetVorbisField(string path, string fieldName)
+        public static VorbisCommentValues GetVorbisField(string path, string fieldName)
         {
             using (FlacFile flac = new FlacFile(path))
             {
@@ -70,58 +70,58 @@ namespace FlacLibSharp
                 {
                     return flac.VorbisComment[fieldName];
                 }
-                return string.Empty;
+                return new VorbisCommentValues();
             }
         }
 
         /// <summary>
-        /// Gets the artist of the track.
+        /// Gets the first artist of the track.
         /// </summary>
         /// <param name="path"></param>
         /// <returns>Empty string if the track number isn't specified in the metadata</returns>
         public static string GetArtist(string path)
         {
-            return GetVorbisField(path, "ARTIST");
+            return GetVorbisField(path, "ARTIST").Value;
         }
         
         /// <summary>
-        /// Gets the title of the track.
+        /// Gets the first title of the track.
         /// </summary>
         /// <param name="path"></param>
         /// <returns>Empty string if the track number isn't specified in the metadata</returns>
         public static string GetTitle(string path)
         {
-            return GetVorbisField(path, "TITLE");
+            return GetVorbisField(path, "TITLE").Value;
         }
 
         /// <summary>
-        /// Gets the album name.
+        /// Gets the first album name.
         /// </summary>
         /// <param name="path"></param>
         /// <returns>Empty string if the track number isn't specified in the metadata</returns>
         public static string GetAlbum(string path)
         {
-            return GetVorbisField(path, "ALBUM");
+            return GetVorbisField(path, "ALBUM").Value;
         }
 
         /// <summary>
-        /// Gets the track number.
+        /// Gets the first track number.
         /// </summary>
         /// <param name="path"></param>
         /// <returns>Empty string if the track number isn't specified in the metadata</returns>
         public static string GetTrackNumber(string path)
         {
-            return GetVorbisField(path, "TRACKNUMBER");
+            return GetVorbisField(path, "TRACKNUMBER").Value;
         }
 
         /// <summary>
-        /// Gets the genre of the track.
+        /// Gets the first genre of the track.
         /// </summary>
         /// <param name="path"></param>
         /// <returns>Empty string if no genre is specified in the metadata.</returns>
         public static string GetGenre(string path)
         {
-            return GetVorbisField(path, "GENRE");
+            return GetVorbisField(path, "GENRE").Value;
         }
 
         /// <summary>
