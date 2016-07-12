@@ -173,12 +173,12 @@ namespace FlacLibSharp.Test
             {
                 VorbisComment vorbisComment = new VorbisComment();
 
-                vorbisComment.Album.First = albumName;
-                vorbisComment.Artist.First = artist;
-                vorbisComment[customTag].First = customTagValue;
-                vorbisComment[customTag2].First = customTag2Value;
-                vorbisComment.Title.First = title;
-                vorbisComment[titleTag].First = title2;
+                vorbisComment.Album.Value = albumName;
+                vorbisComment.Artist.Value = artist;
+                vorbisComment[customTag].Value = customTagValue;
+                vorbisComment[customTag2].Value = customTag2Value;
+                vorbisComment.Title.Value = title;
+                vorbisComment[titleTag].Value = title2;
 
                 flac.Metadata.Add(vorbisComment);
 
@@ -189,12 +189,12 @@ namespace FlacLibSharp.Test
             {
                 VorbisComment vorbisComment = flac.VorbisComment;
 
-                Assert.AreEqual<string>(albumName, vorbisComment.Album.First);
-                Assert.AreEqual<string>(artist, vorbisComment.Artist.First);
-                Assert.AreEqual<string>(customTagValue, vorbisComment[customTag].First);
-                Assert.AreEqual<string>(customTag2Value, vorbisComment[customTag2.ToUpper()].First);
-                Assert.AreEqual<string>(title2, vorbisComment.Title.First);
-                Assert.AreEqual<string>(title2, vorbisComment[titleTag].First);
+                Assert.AreEqual<string>(albumName, vorbisComment.Album.Value);
+                Assert.AreEqual<string>(artist, vorbisComment.Artist.Value);
+                Assert.AreEqual<string>(customTagValue, vorbisComment[customTag].Value);
+                Assert.AreEqual<string>(customTag2Value, vorbisComment[customTag2.ToUpper()].Value);
+                Assert.AreEqual<string>(title2, vorbisComment.Title.Value);
+                Assert.AreEqual<string>(title2, vorbisComment[titleTag].Value);
             }
         }
 

@@ -26,10 +26,18 @@ namespace FlacLibSharp
         }
 
         /// <summary>
+        /// Creates a vorbis comment with the given values.
+        /// </summary>
+        public VorbisCommentValues(IEnumerable<string> values)
+        {
+            this.AddRange(values);
+        }
+
+        /// <summary>
         /// The first value of the list of values.
         /// </summary>
         /// <remarks></remarks>
-        public string First {
+        public string Value {
             get
             {
                 if (this.Count == 0) { return string.Empty; }

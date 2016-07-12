@@ -123,18 +123,18 @@ namespace FlacLibSharp.Test
                     if (block.Header.Type == MetadataBlockHeader.MetadataBlockType.VorbisComment)
                     {
                         VorbisComment info = (VorbisComment)block;
-                        Assert.AreEqual("Ziggystar", info["ARTIST"].First);
-                        Assert.AreEqual("Ziggystar", info.Artist.First);
-                        Assert.AreEqual("Roland jx3p demo", info["TITLE"].First);
-                        Assert.AreEqual("Roland jx3p demo", info.Title.First);
-                        Assert.AreEqual("Wiki Commons", info["ALBUM"].First);
-                        Assert.AreEqual("Wiki Commons", info.Album.First);
-                        Assert.AreEqual("2005", info["DATE"].First);
-                        Assert.AreEqual("2005", info.Date.First);
-                        Assert.AreEqual("01", info["TRACKNUMBER"].First);
-                        Assert.AreEqual("01", info.TrackNumber.First);
-                        Assert.AreEqual("Electronic", info["GENRE"].First);
-                        Assert.AreEqual("Electronic", info.Genre.First);
+                        Assert.AreEqual("Ziggystar", info["ARTIST"].Value);
+                        Assert.AreEqual("Ziggystar", info.Artist.Value);
+                        Assert.AreEqual("Roland jx3p demo", info["TITLE"].Value);
+                        Assert.AreEqual("Roland jx3p demo", info.Title.Value);
+                        Assert.AreEqual("Wiki Commons", info["ALBUM"].Value);
+                        Assert.AreEqual("Wiki Commons", info.Album.Value);
+                        Assert.AreEqual("2005", info["DATE"].Value);
+                        Assert.AreEqual("2005", info.Date.Value);
+                        Assert.AreEqual("01", info["TRACKNUMBER"].Value);
+                        Assert.AreEqual("01", info.TrackNumber.Value);
+                        Assert.AreEqual("Electronic", info["GENRE"].Value);
+                        Assert.AreEqual("Electronic", info.Genre.Value);
                         Assert.IsFalse(info.ContainsField("UNEXISTINGKEY"));
                     }
                 }

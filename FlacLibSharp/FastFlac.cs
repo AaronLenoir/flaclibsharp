@@ -81,7 +81,7 @@ namespace FlacLibSharp
         /// <returns>Empty string if the track number isn't specified in the metadata</returns>
         public static string GetArtist(string path)
         {
-            return GetVorbisField(path, "ARTIST").First;
+            return GetVorbisField(path, "ARTIST").Value;
         }
         
         /// <summary>
@@ -91,7 +91,7 @@ namespace FlacLibSharp
         /// <returns>Empty string if the track number isn't specified in the metadata</returns>
         public static string GetTitle(string path)
         {
-            return GetVorbisField(path, "TITLE").First;
+            return GetVorbisField(path, "TITLE").Value;
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace FlacLibSharp
         /// <returns>Empty string if the track number isn't specified in the metadata</returns>
         public static string GetAlbum(string path)
         {
-            return GetVorbisField(path, "ALBUM").First;
+            return GetVorbisField(path, "ALBUM").Value;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace FlacLibSharp
         /// <returns>Empty string if the track number isn't specified in the metadata</returns>
         public static string GetTrackNumber(string path)
         {
-            return GetVorbisField(path, "TRACKNUMBER").First;
+            return GetVorbisField(path, "TRACKNUMBER").Value;
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace FlacLibSharp
         /// <returns>Empty string if no genre is specified in the metadata.</returns>
         public static string GetGenre(string path)
         {
-            return GetVorbisField(path, "GENRE").First;
+            return GetVorbisField(path, "GENRE").Value;
         }
 
         /// <summary>

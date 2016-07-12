@@ -36,7 +36,7 @@ using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
     // Access to the VorbisComment IF it exists in the file
     var vorbisComment = file.VorbisComment;
     if (vorbisComment != null) {
-        Console.WriteLine("Artist - Title: {0} - {1}", vorbisComment.Artist, vorbisComment.Title);
+        Console.WriteLine("Artist - Title: {0} - {1}", vorbisComment.Artist.Value, vorbisComment.Title.Value);
     }
     
     // Get all other types of metdata blocks:
