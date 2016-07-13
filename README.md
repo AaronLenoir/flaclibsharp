@@ -2,8 +2,6 @@
 
 A .NET library for reading and writing FLAC metadata.
 
-***Note:*** This is about Version 2.0 which is not yet out on nuget (soon!). Version 1.0 doesn't support writing metadata.
-
 ### Installation
 
     PM> Install-Package FlacLibSharp
