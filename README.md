@@ -8,6 +8,12 @@ A .NET library for reading and writing FLAC metadata.
 
 Or go to the nuget page: https://www.nuget.org/packages/FlacLibSharp
 
+### Warning
+
+If you use this for anything important, make sure your files are backed up. Since this was a hobby project I cannot guarantee anything in terms of quality.
+
+Please evaluate carefully and report any issues you find here on GitHub.
+
 ### Usage example
 
 #### Reading Metadata
