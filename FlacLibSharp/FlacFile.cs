@@ -297,7 +297,7 @@ namespace FlacLibSharp
                         // minus 4 bytes because the MetaDataBlockLength excludes the size of the header
                         if (writtenBytes - 4 != block.Header.MetaDataBlockLength)
                         {
-                            throw new ApplicationException(String.Format("The header of metadata block of type {0} claims a length of {1} bytes but the total amount of data written was {2} + 4 bytes",
+                            throw new Exception(String.Format("The header of metadata block of type {0} claims a length of {1} bytes but the total amount of data written was {2} + 4 bytes",
                                 block.Header.Type, block.Header.MetaDataBlockLength, writtenBytes));
                         }
                     }
@@ -318,7 +318,7 @@ namespace FlacLibSharp
                 } while (read > 0);
             }
 
-            this.dataStream.Close();
+            this.dataStream.Dispose();
 
             File.Delete(this.filePath);
             File.Move(bufferFile, this.filePath);

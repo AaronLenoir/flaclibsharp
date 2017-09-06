@@ -26,16 +26,5 @@ namespace FlacLibSharp.Exceptions
         {
             this.Details = String.Empty;
         }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-            {
-                throw new ArgumentNullException("info");
-            }
-            base.GetObjectData(info, context);
-            info.AddValue("Details", this.Details);
-        }
     }
 }
