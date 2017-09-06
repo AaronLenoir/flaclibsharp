@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp", "FlacLibSharp.csproj", "{5A129A9A-D6D8-43C3-90AC-34108918BDC6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp.Sandbox", "..\FlacLibSharp.Sandbox\FlacLibSharp.Sandbox.csproj", "{7E00A2A9-38ED-4005-A368-581373DFD08E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp.Test", "FlacLibSharp.Test\FlacLibSharp.Test.csproj", "{E5678FBB-75BA-4A94-BBB3-863DE420F84A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp.DotNetStandard", "..\FlacLibSharp.DotNetStandard\FlacLibSharp.DotNetStandard.csproj", "{637AB33C-0C27-4715-B7C9-92DA539C632A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{E5678FBB-75BA-4A94-BBB3-863DE420F84A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5678FBB-75BA-4A94-BBB3-863DE420F84A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5678FBB-75BA-4A94-BBB3-863DE420F84A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{637AB33C-0C27-4715-B7C9-92DA539C632A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{637AB33C-0C27-4715-B7C9-92DA539C632A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{637AB33C-0C27-4715-B7C9-92DA539C632A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{637AB33C-0C27-4715-B7C9-92DA539C632A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
