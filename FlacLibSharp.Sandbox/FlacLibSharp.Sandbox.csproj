@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FlacLibSharp.DotNetStandard, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\FlacLibSharp\packages\FlacLibSharp.3.0.0\lib\net20\FlacLibSharp.DotNetStandard.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -58,12 +61,7 @@
     <Content Include="Data\testfile4.flac">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FlacLibSharp\FlacLibSharp.csproj">
-      <Project>{5a129a9a-d6d8-43c3-90ac-34108918bdc6}</Project>
-      <Name>FlacLibSharp</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FlacLibSharp.Exceptions
 {
     /// <summary>
     /// This exception is raised when too many tracks are added to a CueSheet.
     /// </summary>
-    [Serializable]
     public class FlacLibSharpMaxTracksExceededException : FlacLibSharpException
     {
 

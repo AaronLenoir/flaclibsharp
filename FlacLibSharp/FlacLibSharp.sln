@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp.Sandbox", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp.Test", "FlacLibSharp.Test\FlacLibSharp.Test.csproj", "{E5678FBB-75BA-4A94-BBB3-863DE420F84A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp.DotNetStandard", "..\FlacLibSharp.DotNetStandard\FlacLibSharp.DotNetStandard.csproj", "{637AB33C-0C27-4715-B7C9-92DA539C632A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlacLibSharp.DotNetStandard", "..\FlacLibSharp.DotNetStandard\FlacLibSharp.DotNetStandard.csproj", "{637AB33C-0C27-4715-B7C9-92DA539C632A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

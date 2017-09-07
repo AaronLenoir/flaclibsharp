@@ -1,7 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFrameworks>netstandard1.3;net20</TargetFrameworks>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>FlacLibSharp</PackageId>
+    <Version>3.0.0</Version>
+    <Authors>Aaron Lenoir</Authors>
+    <Company />
+    <Product>FlacLibSharp</Product>
+    <Description>A .NET library for reading and writing FLAC metadata.</Description>
+    <Copyright>Copyright 2017</Copyright>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/AaronLenoir/flaclibsharp</PackageProjectUrl>
+    <PackageReleaseNotes>* Support for .NET Standard 1.3 platforms</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/AaronLenoir/flaclibsharp</RepositoryUrl>
+    <PackageTags />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.3\FlacLibSharp.DotNetStandard.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

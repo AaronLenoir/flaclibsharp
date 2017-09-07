@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-using System.Text;
 
 namespace FlacLibSharp.Exceptions
 {
     /// <summary>
     /// This exception is raised when you try to load an invalid flac file.
     /// </summary>
-    [Serializable]
     public class FlacLibSharpSaveNotSupportedException : FlacLibSharpException
     {
         /// <summary>
