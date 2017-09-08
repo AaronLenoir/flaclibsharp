@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-using System.Text;
 
 namespace FlacLibSharp.Exceptions
 {
     /// <summary>
     /// This exception is raised when you try to load an invalid flac file.
     /// </summary>
-    [Serializable]
     public class FlacLibSharpSaveNotSupportedException : FlacLibSharpException
     {
         /// <summary>
@@ -25,17 +20,6 @@ namespace FlacLibSharp.Exceptions
             : base("This flac was opened from a stream (not from a filepath) so cannot save the data back, to allow save open the flac from a file and ensure the filestream is seekable.")
         {
             this.Details = String.Empty;
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-            {
-                throw new ArgumentNullException("info");
-            }
-            base.GetObjectData(info, context);
-            info.AddValue("Details", this.Details);
         }
     }
 }

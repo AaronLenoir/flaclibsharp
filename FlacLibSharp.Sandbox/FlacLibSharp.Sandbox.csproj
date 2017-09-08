@@ -58,10 +58,11 @@
     <Content Include="Data\testfile4.flac">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlacLibSharp\FlacLibSharp.csproj">
-      <Project>{5a129a9a-d6d8-43c3-90ac-34108918bdc6}</Project>
+      <Project>{637ab33c-0c27-4715-b7c9-92da539c632a}</Project>
       <Name>FlacLibSharp</Name>
     </ProjectReference>
   </ItemGroup>

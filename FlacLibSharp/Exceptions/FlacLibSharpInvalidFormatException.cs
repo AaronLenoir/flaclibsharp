@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-using System.Text;
-
-namespace FlacLibSharp.Exceptions
+﻿namespace FlacLibSharp.Exceptions
 {
     /// <summary>
     /// This exception is raised when you try to load an invalid flac file.
     /// </summary>
-    [Serializable]
     public class FlacLibSharpInvalidFormatException : FlacLibSharpException
     {
         /// <summary>
@@ -26,17 +19,5 @@ namespace FlacLibSharp.Exceptions
         {
             this.Details = details;
         }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-            {
-                throw new ArgumentNullException("info");
-            }
-            base.GetObjectData(info, context);
-            info.AddValue("Details", this.Details);
-        }
-
     }
 }
