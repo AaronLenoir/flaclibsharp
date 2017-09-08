@@ -1,85 +1,31 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5A129A9A-D6D8-43C3-90AC-34108918BDC6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FlacLibSharp</RootNamespace>
-    <AssemblyName>FlacLibSharp</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>netstandard1.3;net20</TargetFrameworks>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>FlacLibSharp</PackageId>
+    <Version>3.0.0</Version>
+    <Authors>Aaron Lenoir</Authors>
+    <Company />
+    <Product>FlacLibSharp</Product>
+    <Description>A .NET library for reading and writing FLAC metadata.</Description>
+    <Copyright>Copyright 2017</Copyright>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/AaronLenoir/flaclibsharp</PackageProjectUrl>
+    <PackageReleaseNotes>* Support for .NET Standard 1.3 platforms</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/AaronLenoir/flaclibsharp</RepositoryUrl>
+    <PackageTags />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.3\FlacLibSharp.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>Bin\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>Bin\Release\FlacLibSharp.xml</DocumentationFile>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Metadata\CueSheet\" />
+    <Folder Include="Metadata\SeekTable\" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Exceptions\FlacLibSharpException.cs" />
-    <Compile Include="Exceptions\FlacLibSharpMaxTracksExceededException.cs" />
-    <Compile Include="Exceptions\FlacLibSharpMaxTrackIndicesExceededException.cs" />
-    <Compile Include="Exceptions\FlacLibSharpInvalidFormatException.cs" />
-    <Compile Include="Exceptions\FlacLibSharpSaveNotSupported.cs" />
-    <Compile Include="Exceptions\FlacLibSharpInvalidPaddingBitCount.cs" />
-    <Compile Include="Exceptions\FlacLibSharpStreamInfoMissing.cs" />
-    <Compile Include="FastFlac.cs" />
-    <Compile Include="FlacFile.cs" />
-    <Compile Include="Helpers\BinaryDataHelper.cs" />
-    <Compile Include="Metadata\ApplicationInfo.cs" />
-    <Compile Include="Metadata\CueSheet\CueSheet.cs" />
-    <Compile Include="Metadata\CueSheet\CueSheetTrack.cs" />
-    <Compile Include="Metadata\CueSheet\CueSheetTrackCollection.cs" />
-    <Compile Include="Metadata\CueSheet\CueSheetTrackIndex.cs" />
-    <Compile Include="Metadata\CueSheet\CueSheetTrackIndexCollection.cs" />
-    <Compile Include="Metadata\Picture.cs" />
-    <Compile Include="Metadata\SeekTable\SeekPoint.cs" />
-    <Compile Include="Metadata\SeekTable\SeekPointCollection.cs" />
-    <Compile Include="Metadata\SeekTable\SeekTable.cs" />
-    <Compile Include="Metadata\Padding.cs" />
-    <Compile Include="Metadata\UnknownMetadataBlock.cs" />
-    <Compile Include="Metadata\StreamInfo.cs" />
-    <Compile Include="Metadata\MetadataBlockHeader.cs" />
-    <Compile Include="Metadata\MetadataBlock.cs" />
-    <Compile Include="Metadata\VorbisComment.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
