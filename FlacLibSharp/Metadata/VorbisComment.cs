@@ -49,6 +49,14 @@ namespace FlacLibSharp
                 else { this[0] = value; }
             }
         }
+
+        /// <summary>
+        /// If the comment has at least one value, the first value is returned, otherwise an empty string.
+        /// </summary>
+        public override string ToString()
+        {
+            return this.Value;
+        }
     }
 
     /// <summary>
