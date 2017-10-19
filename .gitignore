@@ -109,3 +109,4 @@ UpgradeLog*.XML
 FlacLibSharp.Sandbox/ProfilingSessions/
 FlacLibSharp/ProfilingSessions/
 FlacLibSharp/*.me5
+/.vs/FlacLibSharp/v15/sqlite3
