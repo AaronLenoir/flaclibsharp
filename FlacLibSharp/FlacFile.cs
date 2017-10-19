@@ -262,6 +262,9 @@ namespace FlacLibSharp
 
         #region Writing
 
+        /// <summary>
+        /// Writes the metadata back to the flacfile, overwriting the original file.
+        /// </summary>
         public void Save()
         {
             if (String.IsNullOrEmpty(this.filePath) || !this.dataStream.CanSeek)
@@ -320,8 +323,10 @@ namespace FlacLibSharp
 
             this.dataStream.Dispose();
 
-            File.Delete(this.filePath);
-            File.Move(bufferFile, this.filePath);
+            // Issue #35: Cannot use "File.Move" because it does not retain the original file's attributes.
+            //            File.Copy does: https://docs.microsoft.com/en-us/dotnet/api/system.io.file.copy?view=netframework-4.7#System_IO_File_Copy_System_String_System_String_System_Boolean_
+            File.Copy(bufferFile, this.filePath, true);
+            File.Delete(bufferFile);
         }
 
         #endregion

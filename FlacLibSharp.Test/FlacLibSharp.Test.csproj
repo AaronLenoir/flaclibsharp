@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="FileAccessRightTests.cs" />
     <Compile Include="Helpers\ByteHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="ParseTests.cs" />
@@ -63,6 +64,9 @@
     </Content>
     <Content Include="Data\noflacfile.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\issue35_01.flac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\testimage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
