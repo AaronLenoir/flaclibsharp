@@ -1,15 +1,15 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using FlacLibSharp.Test.Helpers;
+using System.IO;
 
 namespace FlacLibSharp.Test
 {
     [TestClass]
     public class CreateTests
     {
-        private string origFile = @"Data\testfile5.flac";
-        private string newFile = @"Data\testfile5_temp.flac";
+        private string origFile = Path.Combine("Data", "testfile5.flac");
+        private string newFile = Path.Combine("Data", "testfile5_temp.flac");
 
         /// <summary>
         /// Will create and add a block of padding, save the file and re-open it.
@@ -89,7 +89,7 @@ namespace FlacLibSharp.Test
         {
             uint colorDepth = 24;
             uint colors = 256;
-            byte[] data = System.IO.File.ReadAllBytes(@"Data\testimage.png");
+            byte[] data = System.IO.File.ReadAllBytes(Path.Combine("Data", "testimage.png"));
             string description = "Test Picture";
             uint height = 213;
             uint width = 400;
