@@ -18,8 +18,8 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("Write Tests")]
         public void CopyOpenAndSaveStreamInfo()
         {
-            string origFile = @"Data\testfile1.flac";
-            string newFile = @"Data\testfile1_temp.flac";
+            string origFile = Path.Combine("Data", "testfile1.flac");
+            string newFile = Path.Combine("Data", "testfile1_temp.flac");
             
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -64,8 +64,8 @@ namespace FlacLibSharp.Test
         {
             UInt32 newPaddingSize = 8 * 2; // 2 bytes of padding
 
-            string origFile = @"Data\testfile1.flac";
-            string newFile = @"Data\testfile1_temp.flac";
+            string origFile = Path.Combine("Data", "testfile1.flac");
+            string newFile = Path.Combine("Data", "testfile1_temp.flac");
 
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -115,8 +115,8 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("Write Tests")]
         public void CopyOpenEditAndSaveVorbisComments()
         {
-            string origFile = @"Data\testfile1.flac";
-            string newFile = @"Data\testfile1_temp.flac";
+            string origFile = Path.Combine("Data", "testfile1.flac");
+            string newFile = Path.Combine("Data", "testfile1_temp.flac");
             // Tests if we can load up a flac file, update the artist and title in the vorbis comments
             // save the file and then reload the file and see the changes.
             FileHelper.GetNewFile(origFile, newFile);
@@ -158,8 +158,8 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("Write Tests")]
         public void AddMultipleVorbisFields()
         {
-            string origFile = @"Data\testfile1.flac";
-            string newFile = @"Data\testfile1_temp.flac";
+            string origFile = Path.Combine("Data", "testfile1.flac");
+            string newFile = Path.Combine("Data", "testfile1_temp.flac");
             // Tests if we can load up a flac file, update the artist and title in the vorbis comments
             // save the file and then reload the file and see the changes.
             FileHelper.GetNewFile(origFile, newFile);
@@ -215,7 +215,7 @@ namespace FlacLibSharp.Test
         [TestMethod, ExpectedException(typeof(FlacLibSharp.Exceptions.FlacLibSharpMaxTracksExceededException)), TestCategory("Write Tests")]
         public void OverflowCueSheetTracks()
         {
-            string flacFile = @"Data\testfile4.flac";
+            string flacFile = Path.Combine("Data", "testfile4.flac");
 
             using (FlacFile file = new FlacFile(flacFile))
             {
@@ -234,7 +234,7 @@ namespace FlacLibSharp.Test
         [TestMethod, ExpectedException(typeof(FlacLibSharp.Exceptions.FlacLibSharpMaxTrackIndicesExceededException)), TestCategory("Write Tests")]
         public void OverflowCueSheetTrackIndexPoints()
         {
-            string flacFile = @"Data\testfile4.flac";
+            string flacFile = Path.Combine("Data", "testfile4.flac");
 
             using (FlacFile file = new FlacFile(flacFile))
             {
@@ -259,8 +259,8 @@ namespace FlacLibSharp.Test
             Boolean newIsCDCueSheet = false;
             ulong newLeadInSampleCount = 100;
 
-            string origFile = @"Data\testfile4.flac";
-            string newFile = @"Data\testfile4_temp.flac";
+            string origFile = Path.Combine("Data", "testfile4.flac");
+            string newFile = Path.Combine("Data", "testfile4_temp.flac");
 
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -297,8 +297,8 @@ namespace FlacLibSharp.Test
         [TestMethod(), ExpectedException(typeof(FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException)), TestCategory("Write Tests")]
         public void SaveCueSheetWithoutCorrectLeadOutTrack()
         {
-            string origFile = @"Data\testfile4.flac";
-            string newFile = @"Data\testfile4_temp.flac";
+            string origFile = Path.Combine("Data", "testfile4.flac");
+            string newFile = Path.Combine("Data", "testfile4_temp.flac");
 
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -332,8 +332,8 @@ namespace FlacLibSharp.Test
         [TestMethod(), ExpectedException(typeof(FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException)), TestCategory("Write Tests")]
         public void SaveCueSheetWithoutTracks()
         {
-            string origFile = @"Data\testfile4.flac";
-            string newFile = @"Data\testfile4_temp.flac";
+            string origFile = Path.Combine("Data", "testfile4.flac");
+            string newFile = Path.Combine("Data", "testfile4_temp.flac");
 
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -362,8 +362,8 @@ namespace FlacLibSharp.Test
         [TestMethod(), TestCategory("Write Tests")]
         public void CopyOpenAddAndSaveCueSheetTracks()
         {
-            string origFile = @"Data\testfile4.flac";
-            string newFile = @"Data\testfile4_temp.flac";
+            string origFile = Path.Combine("Data", "testfile4.flac");
+            string newFile = Path.Combine("Data", "testfile4_temp.flac");
 
             byte oldTrackCount = 0;
             ulong oldOffset = 0;
@@ -443,9 +443,9 @@ namespace FlacLibSharp.Test
         [TestMethod(), TestCategory("Write Tests")]
         public void CopyOpenAddAndSavePicture()
         {
-            string origFile = @"Data\testfile2.flac";
-            string newFile = @"Data\testfile2_temp.flac";
-            byte[] imageData = File.ReadAllBytes(@"Data\testimage.png");
+            string origFile = Path.Combine("Data", "testfile2.flac");
+            string newFile = Path.Combine("Data", "testfile2_temp.flac");
+            byte[] imageData = File.ReadAllBytes(Path.Combine("Data", "testimage.png"));
 
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -540,8 +540,8 @@ namespace FlacLibSharp.Test
             ulong expectedNumberOfSamples; // Will be set while creating a new seekpoint
             ulong expectedByteOffset; // Will be set while creating a new seekpoint
 
-            string origFile = @"Data\testfile3.flac";
-            string newFile = @"Data\testfile3_temp.flac";
+            string origFile = Path.Combine("Data", "testfile3.flac");
+            string newFile = Path.Combine("Data", "testfile3_temp.flac");
 
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -610,8 +610,8 @@ namespace FlacLibSharp.Test
         public void OpenFlacFileAndCreateMultipleApplicationInfo()
         {
             int appInfoCount = 0;
-            string origFile = @"Data\testfile3.flac";
-            string newFile = @"Data\testfile3_temp.flac";
+            string origFile = Path.Combine("Data", "testfile3.flac");
+            string newFile = Path.Combine("Data", "testfile3_temp.flac");
 
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -663,8 +663,8 @@ namespace FlacLibSharp.Test
         public void OpenFlacFileAndCreateMultipleCueSheets()
         {
             int cueSheetCount = 0;
-            string origFile = @"Data\testfile4.flac";
-            string newFile = @"Data\testfile4_temp.flac";
+            string origFile = Path.Combine("Data", "testfile4.flac");
+            string newFile = Path.Combine("Data", "testfile4_temp.flac");
 
             FileHelper.GetNewFile(origFile, newFile);
 
@@ -709,8 +709,8 @@ namespace FlacLibSharp.Test
         public void OpenFlacFileAndCreateMultiplePadding()
         {
             int paddingCount = 0;
-            string origFile = @"Data\testfile4.flac";
-            string newFile = @"Data\testfile4_temp.flac";
+            string origFile = Path.Combine("Data", "testfile4.flac");
+            string newFile = Path.Combine("Data", "testfile4_temp.flac");
 
             FileHelper.GetNewFile(origFile, newFile);
 

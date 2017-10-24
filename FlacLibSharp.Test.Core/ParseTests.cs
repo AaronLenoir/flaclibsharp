@@ -12,7 +12,7 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("ParseTests")]
         public void OpenAndCloseFlacFileWithFilePath()
         {
-            using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile1.flac")))
             {
                 // Doing nothing
             }
@@ -28,7 +28,7 @@ namespace FlacLibSharp.Test
 
             try
             {
-                stream = File.OpenRead(@"Data\testfile1.flac");
+                stream = File.OpenRead(Path.Combine("Data", "testfile1.flac"));
                 using (FlacFile file = new FlacFile(stream))
                 {
                     stream = null;
@@ -48,7 +48,7 @@ namespace FlacLibSharp.Test
         [ExpectedException(typeof(FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException), "Opening an invalid FLAC file was allowed.")]
         public void OpenInvalidFlacFile()
         {
-            using (FlacFile file = new FlacFile(@"Data\noflacfile.ogg"))
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "noflacfile.ogg")))
             {
                 // Doing nothing
             }
@@ -57,7 +57,7 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckMetadata()
         {
-            using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile1.flac")))
             {
                 Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");
             }
@@ -70,7 +70,7 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckStreamInfo()
         {
-            using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile1.flac")))
             {
                 //Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");
                 foreach (MetadataBlock block in file.Metadata)
@@ -96,7 +96,7 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckPadding()
         {
-            using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile1.flac")))
             {
                 //Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");
                 foreach (MetadataBlock block in file.Metadata)
@@ -115,7 +115,7 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckVorbisComment()
         {
-            using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile1.flac")))
             {
                 //Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");
                 foreach (MetadataBlock block in file.Metadata)
@@ -147,10 +147,10 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("ParseTests")]
         public void CheckFastFlacFunctions()
         {
-            Assert.AreEqual("Roland jx3p demo", FastFlac.GetTitle(@"Data\testfile1.flac"));
-            Assert.AreEqual("Ziggystar", FastFlac.GetArtist(@"Data\testfile1.flac"));
-            Assert.AreEqual("Wiki Commons", FastFlac.GetAlbum(@"Data\testfile1.flac"));
-            Assert.AreEqual(38, FastFlac.GetDuration(@"Data\testfile1.flac"));
+            Assert.AreEqual("Roland jx3p demo", FastFlac.GetTitle(Path.Combine("Data", "testfile1.flac")));
+            Assert.AreEqual("Ziggystar", FastFlac.GetArtist(Path.Combine("Data", "testfile1.flac")));
+            Assert.AreEqual("Wiki Commons", FastFlac.GetAlbum(Path.Combine("Data", "testfile1.flac")));
+            Assert.AreEqual(38, FastFlac.GetDuration(Path.Combine("Data", "testfile1.flac")));
         }
         
         /// <summary>
@@ -160,7 +160,7 @@ namespace FlacLibSharp.Test
         public void OpenFlacFileAndCheckPicture()
         {
 
-            using (FlacFile file = new FlacFile(@"Data\testfile2.flac"))
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile2.flac")))
             {
                 //Assert.IsTrue(file.Metadata.Count > 0, "No metadata blocks were found for the test file, this is not correct!");
                 foreach (MetadataBlock block in file.Metadata)
@@ -203,7 +203,7 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckSeekTable()
         {
-            using (FlacFile file = new FlacFile(@"Data\testfile3.flac"))
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile3.flac")))
             {
                 var seekTable = file.SeekTable;
                 // There's a seekpoint every 2 seconds so there should be 20 seekpoints ...
@@ -279,7 +279,7 @@ namespace FlacLibSharp.Test
         [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckCueSheet()
         {
-            using (FlacFile file = new FlacFile(@"Data\testfile4.flac"))
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile4.flac")))
             {
                 var cueSheet = file.CueSheet;
                 Assert.IsNotNull(cueSheet, "No cuesheet found.");
@@ -288,9 +288,9 @@ namespace FlacLibSharp.Test
                 Assert.AreEqual<ulong>(88200, cueSheet.LeadInSampleCount);
                 Assert.AreEqual(4, cueSheet.TrackCount);
                 Assert.AreEqual(String.Empty, cueSheet.MediaCatalog);
-                
+
                 Assert.AreEqual(cueSheet.TrackCount, cueSheet.Tracks.Count);
-                
+
                 Assert.AreEqual<ulong>(0, cueSheet.Tracks[0].TrackOffset);
                 Assert.AreEqual(1, cueSheet.Tracks[0].IndexPointCount);
                 Assert.AreEqual(1, cueSheet.Tracks[0].TrackNumber);
