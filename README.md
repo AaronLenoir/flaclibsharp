@@ -80,3 +80,21 @@ using (FlacFile flac = new FlacFile("example.flac"))
 ```
 
 Check out the tests in the source code for more examples.
+
+## Build and Test with .NET Core
+
+    $ git clone https://github.com/AaronLenoir/flaclibsharp.git
+    $ cd flaclibsharp/FlacLibSharp.Test.Core
+    $ dotnet test
+
+## Build and Test with Visual Studio
+
+* Open the solution in Visual Studio
+* Go to "Test Explorer"
+* Click "Run all"
+
+## Build NuGet Package
+
+* Open the solution in Visual Studio
+* Build project "FlacLibSharp"
+* The NuGet package can be found in bin\Release
