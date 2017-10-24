@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp.Test.Core", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp.Test.Windows", "FlacLibSharp.Test.Windows\FlacLibSharp.Test.Windows.csproj", "{E5678FBB-75BA-4A94-BBB3-863DE420F84A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlacLibSharp.Core", "FlacLibSharp.Core\FlacLibSharp.Core.csproj", "{FC53D7F8-0F83-44BF-90D9-21CE70420002}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E5678FBB-75BA-4A94-BBB3-863DE420F84A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5678FBB-75BA-4A94-BBB3-863DE420F84A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5678FBB-75BA-4A94-BBB3-863DE420F84A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC53D7F8-0F83-44BF-90D9-21CE70420002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC53D7F8-0F83-44BF-90D9-21CE70420002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC53D7F8-0F83-44BF-90D9-21CE70420002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC53D7F8-0F83-44BF-90D9-21CE70420002}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
