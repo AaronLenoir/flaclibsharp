@@ -110,3 +110,4 @@ FlacLibSharp.Sandbox/ProfilingSessions/
 FlacLibSharp/ProfilingSessions/
 FlacLibSharp/*.me5
 /.vs/FlacLibSharp/v15/sqlite3
+/.vs/FlacLibSharp/v15/Server/sqlite3

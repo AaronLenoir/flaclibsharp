@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard1.3;net20</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>FlacLibSharp</PackageId>
-    <Version>3.0.2</Version>
+    <Version>3.0.3</Version>
     <Authors>Aaron Lenoir</Authors>
     <Company />
     <Product>FlacLibSharp</Product>
@@ -14,11 +14,11 @@
     <PackageProjectUrl>https://github.com/AaronLenoir/flaclibsharp</PackageProjectUrl>
     <PackageReleaseNotes>* 3.0.0: Support for .NET Standard 1.3 platforms
 * 3.0.1: Bugfix: ToString on VorbisCommentValues collection to show first item in list
-* 3.0.2: Bugfix: Save did not retain attributes and ACL of the original file</PackageReleaseNotes>
+* 3.0.3: Bugfix: Save did not retain attributes and ACL of the original file</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/AaronLenoir/flaclibsharp</RepositoryUrl>
     <PackageTags />
-    <AssemblyVersion>3.0.2.0</AssemblyVersion>
-    <FileVersion>3.0.2.0</FileVersion>
+    <AssemblyVersion>3.0.3.0</AssemblyVersion>
+    <FileVersion>3.0.3.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
