@@ -6,3 +6,4 @@ script:
  - cd FlacLibSharp.Test.Core
  - dotnet restore
  - dotnet build
+ - dotnet test
