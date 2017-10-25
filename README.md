@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/AaronLenoir/flaclibsharp.svg?branch=master)](https://travis-ci.org/AaronLenoir/flaclibsharp)
+
 # FlacLibSharp
 
 A .NET library for reading and writing FLAC metadata.
