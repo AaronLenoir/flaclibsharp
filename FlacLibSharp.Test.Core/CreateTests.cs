@@ -33,7 +33,7 @@ namespace FlacLibSharp.Test
             using (FlacFile flac = new FlacFile(newFile))
             {
                 Padding padding = flac.Padding;
-                Assert.AreEqual<uint>(emptyBitCount+1, padding.EmptyBitCount);
+                Assert.AreEqual<uint>(emptyBitCount, padding.EmptyBitCount);
             }
         }
 
