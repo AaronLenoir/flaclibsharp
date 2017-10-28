@@ -1,6 +1,6 @@
 | Linux (.NET Core) | Windows |
 |-------------------|---------|
-| [![Linux Build Status](https://travis-ci.org/AaronLenoir/flaclibsharp.svg?branch=master)](https://travis-ci.org/AaronLenoir/flaclibsharp) | [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/AaronLenoir/flaclibsharp?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/AaronLenoir/flaclibsharp?branch=master&svg=true) |
+| [![Linux Build Status](https://travis-ci.org/AaronLenoir/flaclibsharp.svg?branch=master)](https://travis-ci.org/AaronLenoir/flaclibsharp) | [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/AaronLenoir/flaclibsharp?branch=master&svg=true)](https://ci.appveyor.com/project/AaronLenoir/flaclibsharp) |
 
 # FlacLibSharp
 
