@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -62,7 +63,7 @@ namespace FlacLibSharp
     /// <summary>
     /// A metadata block contain the "Vorbis Comment" (artist, ...)
     /// </summary>
-    public class VorbisComment : MetadataBlock
+    public class VorbisComment : MetadataBlock, IEnumerable<KeyValuePair<string, VorbisCommentValues>>
     {
         // Vorbis format: http://www.xiph.org/vorbis/doc/v-comment.html
 
@@ -152,6 +153,22 @@ namespace FlacLibSharp
             targetStream.Seek(endPosition, SeekOrigin.Begin);
 
             // Note: FLAC does NOT have the framing bit for vorbis so we don't have to write this.
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through all VorbisComments.
+        /// </summary>
+        public IEnumerator<KeyValuePair<string, VorbisCommentValues>> GetEnumerator()
+        {
+            return this.comments.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through all VorbisComments.
+        /// </summary>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.comments.GetEnumerator();
         }
 
         /// <summary>
