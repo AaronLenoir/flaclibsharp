@@ -27,36 +27,55 @@ Please evaluate carefully and report any issues you find here on GitHub.
 #### Reading Metadata
 
 ```csharp
+// Access to the StreamInfo class (actually this should ALWAYS be there ...)
 using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
 {
-	// Access to the StreamInfo class (actually this should ALWAYS be there ...)
 	var streamInfo = file.StreamInfo;
-	if (streamInfo != null) {
+	if (streamInfo != null)
+	{
 		Console.WriteLine("Flac audio length in seconds: {0}", file.StreamInfo.Duration);
 	}
+}
 
-	// Access to the VorbisComment IF it exists in the file
+// Access to the VorbisComment IF it exists in the file
+using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+{
 	var vorbisComment = file.VorbisComment;
-	if (vorbisComment != null) { 
+	if (vorbisComment != null)
+	{
 		Console.WriteLine("Artist - Title: {0} - {1}", vorbisComment.Artist, vorbisComment.Title);
+	}
+}
 
-		// Access to the VorbisComment with multiple values for a single field
-		if (vorbisComment != null)
+// Access to the VorbisComment with multiple values for a single field
+using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+{
+	var vorbisComment = file.VorbisComment;
+	if (vorbisComment != null)
+	{
+		foreach (var value in vorbisComment.Artist)
 		{
-			foreach (var value in vorbisComment.Artist)
-			{
-				Console.WriteLine("Artist: {0}", value);
-			}
+			Console.WriteLine("Artist: {0}", value);
 		}
+	}
+}
 
-		// Loop through all VorbisComment tags
+// Iterate through all VorbisComment tags
+using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+{
+	var vorbisComment = file.VorbisComment;
+	if (vorbisComment != null)
+	{
 		foreach (var tag in vorbisComment)
 		{
 			Console.WriteLine("{0}: {1}", tag.Key, tag.Value);
 		}
 	}
+}
 
-	// Get all other types of metdata blocks:
+// Get all other types of metdata blocks
+using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
+{
 	var metadata = file.Metadata;
 	foreach (MetadataBlock block in metadata) { 
 		Console.WriteLine("{0} metadata block.", block.Header.Type);
