@@ -29,31 +29,38 @@ Please evaluate carefully and report any issues you find here on GitHub.
 ```csharp
 using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
 {
-    // Access to the StreamInfo class (actually this should ALWAYS be there ...)
-    var streamInfo = file.StreamInfo;
-    if (streamInfo != null) {
-        Console.WriteLine("Flac audio length in seconds: {0}", streamInfo.Duration);
-    }
+	// Access to the StreamInfo class (actually this should ALWAYS be there ...)
+	var streamInfo = file.StreamInfo;
+	if (streamInfo != null) {
+		Console.WriteLine("Flac audio length in seconds: {0}", file.StreamInfo.Duration);
+	}
 
-    // Access to the VorbisComment IF it exists in the file
-    var vorbisComment = file.VorbisComment;
-    if (vorbisComment != null) {
-        Console.WriteLine("Artist - Title: {0} - {1}", vorbisComment.Artist.Value, vorbisComment.Title.Value);
-    }
+	// Access to the VorbisComment IF it exists in the file
+	var vorbisComment = file.VorbisComment;
+	if (vorbisComment != null) { 
+		Console.WriteLine("Artist - Title: {0} - {1}", vorbisComment.Artist, vorbisComment.Title);
 
-    // Access to the VorbisComment IF it exists in the file, with multiple values for a single field
-    var vorbisComment = file.VorbisComment;
-    if (vorbisComment != null) {
-        foreach(var value in vorbisComment.Artist) {
-            Console.WriteLine("Artist: {0}", value);
-        }
-    }
-    
-    // Get all other types of metdata blocks:
-    var metadata = file.Metadata;
-    foreach (MetadataBlock block in metadata) {
-        Console.WriteLine("{0} metadata block.", block.Header.Type);
-    }
+		// Access to the VorbisComment with multiple values for a single field
+		if (vorbisComment != null)
+		{
+			foreach (var value in vorbisComment.Artist)
+			{
+				Console.WriteLine("Artist: {0}", value);
+			}
+		}
+
+		// Loop through all VorbisComment tags
+		foreach (var tag in vorbisComment)
+		{
+			Console.WriteLine("{0}: {1}", tag.Key, tag.Value);
+		}
+	}
+
+	// Get all other types of metdata blocks:
+	var metadata = file.Metadata;
+	foreach (MetadataBlock block in metadata) { 
+		Console.WriteLine("{0} metadata block.", block.Header.Type);
+	}
 }
 ```
 
