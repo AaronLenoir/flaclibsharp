@@ -27,14 +27,10 @@ Please evaluate carefully and report any issues you find here on GitHub.
 #### Reading Metadata
 
 ```csharp
-// Access to the StreamInfo class (actually this should ALWAYS be there ...)
+// Access to the StreamInfo class
 using (FlacFile file = new FlacFile(@"Data\testfile1.flac"))
 {
-	var streamInfo = file.StreamInfo;
-	if (streamInfo != null)
-	{
-		Console.WriteLine("Flac audio length in seconds: {0}", file.StreamInfo.Duration);
-	}
+	Console.WriteLine("Flac audio length in seconds: {0}", file.StreamInfo.Duration);
 }
 
 // Access to the VorbisComment IF it exists in the file
