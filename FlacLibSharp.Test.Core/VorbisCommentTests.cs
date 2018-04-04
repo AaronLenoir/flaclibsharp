@@ -72,8 +72,6 @@ namespace FlacLibSharp.Test
         {
             string origFile = Path.Combine("Data", "testfile5.flac");
             string newFile = Path.Combine("Data", "testfile5_temp.flac");
-            // Tests if we can load up a flac file, update the artist and title in the vorbis comments
-            // save the file and then reload the file and see the changes.
             FileHelper.GetNewFile(origFile, newFile);
 
             using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile5_temp.flac")))
