@@ -125,8 +125,19 @@ namespace FlacLibSharp
             targetStream.Write(vendorData, 0, vendorData.Length);
             totalLength += 4 + (uint)vendorData.Length;
 
-            // Length of list of user comments (first a 32-bit uint, then the actual comments)
-            number = BinaryDataHelper.GetBytesUInt32((uint)this.comments.Count);
+            // In FlacLibSharp a single comment can have multiple values, but
+            // in the FLAC format each value is a comment by itself. So
+            // we can't use this.comments.Count, since 1 comment could have 10
+            // values, which results in 10 comments in the FLAC file.
+            var totalValueCount = 0;
+            foreach(var comment in this.comments)
+            {
+                foreach (var value in comment.Value)
+                {
+                    totalValueCount++;
+                }
+            }
+            number = BinaryDataHelper.GetBytesUInt32((uint)totalValueCount);
             targetStream.Write(BinaryDataHelper.SwitchEndianness(number, 0, 4), 0, 4);
             totalLength += 4;
 

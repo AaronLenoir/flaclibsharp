@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard1.3;net20</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>FlacLibSharp</PackageId>
-    <Version>3.1.0</Version>
+    <Version>3.1.1</Version>
     <Authors>Aaron Lenoir</Authors>
     <Company />
     <Product>FlacLibSharp</Product>
@@ -12,11 +12,12 @@
     <Copyright>Copyright 2017</Copyright>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/AaronLenoir/flaclibsharp</PackageProjectUrl>
-    <PackageReleaseNotes>* 3.1.0: Adds ability to iterate through all VorbisComments</PackageReleaseNotes>
+    <PackageReleaseNotes>* 3.1.1: Multiple values for VorbisComment not written correctly (Issue #45)
+* 3.1.0: Adds ability to iterate through all VorbisComments</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/AaronLenoir/flaclibsharp</RepositoryUrl>
     <PackageTags />
-    <AssemblyVersion>3.1.0.0</AssemblyVersion>
-    <FileVersion>3.1.0.0</FileVersion>
+    <AssemblyVersion>3.1.1.0</AssemblyVersion>
+    <FileVersion>3.1.1.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FlacLibSharp.Test.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
 
@@ -13,7 +14,7 @@ namespace FlacLibSharp.Test
             using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile1.flac")))
             {
                 var counter = 0;
-                foreach(var vorbisComment in file.VorbisComment)
+                foreach (var vorbisComment in file.VorbisComment)
                 {
                     counter++;
                 }
@@ -36,7 +37,8 @@ namespace FlacLibSharp.Test
                     if (expectedTags.Contains(vorbisComment.Key))
                     {
                         expectedTags.Remove(vorbisComment.Key);
-                    } else
+                    }
+                    else
                     {
                         Assert.Fail($"Found unexpected vorbis comment, key = {vorbisComment.Key}");
                     }
@@ -62,6 +64,34 @@ namespace FlacLibSharp.Test
                         Assert.AreEqual("Roland jx3p demo", vorbisComment.Value.Value, "Title did not have the expected value.");
                     }
                 }
+            }
+        }
+
+        [TestMethod, TestCategory("VorbisCommentTests")]
+        public void WritingTwoArtistsShouldResultInTwoArtistsRead()
+        {
+            string origFile = Path.Combine("Data", "testfile5.flac");
+            string newFile = Path.Combine("Data", "testfile5_temp.flac");
+            FileHelper.GetNewFile(origFile, newFile);
+
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile5_temp.flac")))
+            {
+                var vorbisComment = new VorbisComment();
+
+                vorbisComment["ARTIST"] = new VorbisCommentValues(new string[] { "Artist A", "Artist B" });
+
+                file.Metadata.Add(vorbisComment);
+
+                file.Save();
+            }
+
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile5_temp.flac")))
+            {
+                Assert.IsNotNull(file.VorbisComment);
+                var artistValues = file.VorbisComment["ARTIST"];
+                Assert.AreEqual(2, artistValues.Count);
+                Assert.AreEqual("Artist A", artistValues[0]);
+                Assert.AreEqual("Artist B", artistValues[1]);
             }
         }
     }
