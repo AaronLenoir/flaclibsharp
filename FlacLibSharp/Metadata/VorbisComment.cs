@@ -319,5 +319,15 @@ namespace FlacLibSharp
             get { return this["GENRE"]; }
             set { this["GENRE"] = value; }
         }
+
+        /// <summary>
+        /// Gets or sets the embedded CueSheet if available.
+        /// </summary>
+        /// <remarks>If not found an empty VorbisCommentValues instance is returned.</remarks>
+        public VorbisCommentValues CueSheet
+        {
+            get { return this["CUESHEET"]; }
+            set { this["CUESHEET"] = value; }
+        }
     }
 }

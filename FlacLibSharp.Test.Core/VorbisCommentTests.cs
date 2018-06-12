@@ -94,5 +94,33 @@ namespace FlacLibSharp.Test
                 Assert.AreEqual("Artist B", artistValues[1]);
             }
         }
+
+        [TestMethod, TestCategory("VorbisCommentTests")]
+        public void CueSheetVorbisCommentShouldBeInProperty()
+        {
+            var cueSheetPath = Path.Combine("Data", "cuesheet.txt");
+            var cueSheetData = File.ReadAllText(cueSheetPath);
+
+            string origFile = Path.Combine("Data", "testfile5.flac");
+            string newFile = Path.Combine("Data", "testfile5_temp.flac");
+            FileHelper.GetNewFile(origFile, newFile);
+
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile5_temp.flac")))
+            {
+                var vorbisComment = new VorbisComment();
+
+                vorbisComment["CUESHEET"] = new VorbisCommentValues(cueSheetData);
+
+                file.Metadata.Add(vorbisComment);
+
+                file.Save();
+            }
+
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile5_temp.flac")))
+            {
+                var cueSheetDataFromFile = file.VorbisComment.CueSheet;
+                Assert.AreEqual(cueSheetData, cueSheetDataFromFile.Value);
+            }
+        }
     }
 }
