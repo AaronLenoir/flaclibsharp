@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\FlacLibSharp\Exceptions\FlacLibSharpDuplicatedVorbisCommentException.cs" Link="Exceptions\FlacLibSharpDuplicatedVorbisCommentException.cs" />
     <Compile Include="..\FlacLibSharp\Exceptions\FlacLibSharpException.cs" Link="Exceptions\FlacLibSharpException.cs" />
     <Compile Include="..\FlacLibSharp\Exceptions\FlacLibSharpInvalidFormatException.cs" Link="Exceptions\FlacLibSharpInvalidFormatException.cs" />
     <Compile Include="..\FlacLibSharp\Exceptions\FlacLibSharpInvalidPaddingBitCount.cs" Link="Exceptions\FlacLibSharpInvalidPaddingBitCount.cs" />

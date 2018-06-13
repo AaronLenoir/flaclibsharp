@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
+using FlacLibSharp.Exceptions;
 using FlacLibSharp.Helpers;
 
 namespace FlacLibSharp
@@ -277,6 +277,38 @@ namespace FlacLibSharp
             {
                 this.comments.Remove(key);
             }
+        }
+
+        /// <summary>
+        /// Adds a new Vorbis Comment with the given key and a single value.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be removed.</param>
+        /// <param name="value">The one, and only, value for this comment.</param>
+        /// <exception cref="FlacLibSharp"
+        public void Add(string key, string value)
+        {
+            if (this.ContainsField(key))
+            {
+                throw new FlacLibSharpDuplicatedVorbisCommentException(key);
+            }
+
+            this[key] = new VorbisCommentValues(value);
+        }
+
+        /// <summary>
+        /// Adds a new Vorbis Comment with the given key and a list of values.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be removed.</param>
+        /// <param name="values">The values for this comment.</param>
+        /// <exception cref="FlacLibSharp"
+        public void Add(string key, IEnumerable<string> values)
+        {
+            if (this.ContainsField(key))
+            {
+                throw new FlacLibSharpDuplicatedVorbisCommentException(key);
+            }
+
+            this[key] = new VorbisCommentValues(values);
         }
 
         /// <summary>

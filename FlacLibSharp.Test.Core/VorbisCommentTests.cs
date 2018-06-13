@@ -138,5 +138,42 @@ namespace FlacLibSharp.Test
             var vorbisComment = new VorbisComment();
             vorbisComment.Remove("BLABLABLA");
         }
+
+        [TestMethod, TestCategory("VorbisCommentTests")]
+        public void AddMethodShouldAddSingleValueTag()
+        {
+            var vorbisComment = new VorbisComment();
+            vorbisComment.Add("ARTIST", "Aaron");
+            Assert.AreEqual(1, vorbisComment.Artist.Count);
+            Assert.AreEqual("Aaron", vorbisComment.Artist.Value);
+        }
+
+        [TestMethod, TestCategory("VorbisCommentTests"), 
+            ExpectedException(typeof(Exceptions.FlacLibSharpDuplicatedVorbisCommentException))]
+        public void AddMethodShouldThrowErrorWhenAddingExistingTag()
+        {
+            var vorbisComment = new VorbisComment();
+            vorbisComment.Add("ARTIST", "Aaron");
+            vorbisComment.Add("ARTIST", "Aaron");
+        }
+
+        [TestMethod, TestCategory("VorbisCommentTests")]
+        public void AddMethodShouldAddMultipleValues()
+        {
+            var vorbisComment = new VorbisComment();
+            vorbisComment.Add("ARTIST", new string[] { "Aaron", "Lenoir" });
+            Assert.AreEqual(2, vorbisComment.Artist.Count);
+            Assert.AreEqual("Aaron", vorbisComment.Artist[0]);
+            Assert.AreEqual("Lenoir", vorbisComment.Artist[1]);
+        }
+
+        [TestMethod, TestCategory("VorbisCommentTests"),
+            ExpectedException(typeof(Exceptions.FlacLibSharpDuplicatedVorbisCommentException))]
+        public void AddMethodMultipleValuesShouldThrowErrorWhenAddingExistingTag()
+        {
+            var vorbisComment = new VorbisComment();
+            vorbisComment.Add("ARTIST", new string[] { "Aaron", "Lenoir" });
+            vorbisComment.Add("ARTIST", new string[] { "Aaron", "Lenoir" });
+        }
     }
 }
