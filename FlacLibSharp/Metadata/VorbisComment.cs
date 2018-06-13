@@ -267,6 +267,19 @@ namespace FlacLibSharp
         }
 
         /// <summary>
+        /// Removes all Vobis Comment values for the given key.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be removed.</param>
+        /// <remarks>Does nothing if no Vorbis Comments with the key are found.</remarks>
+        public void Remove(string key)
+        {
+            if (this.comments.ContainsKey(key))
+            {
+                this.comments.Remove(key);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the Artist if available.
         /// </summary>
         /// <remarks>If not found an empty string is returned.</remarks>

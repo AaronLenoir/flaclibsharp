@@ -122,5 +122,36 @@ namespace FlacLibSharp.Test
                 Assert.AreEqual(cueSheetData, cueSheetDataFromFile.Value);
             }
         }
+
+        [TestMethod, TestCategory("VorbisCommentTests")]
+        public void RemoveMethodShouldRemoveTag()
+        {
+            var artist = "Aaron";
+
+            string origFile = Path.Combine("Data", "testfile5.flac");
+            string newFile = Path.Combine("Data", "testfile5_temp.flac");
+            FileHelper.GetNewFile(origFile, newFile);
+
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile5_temp.flac")))
+            {
+                var vorbisComment = new VorbisComment();
+
+                vorbisComment["ARTIST"] = new VorbisCommentValues("Aaron");
+
+                file.Metadata.Add(vorbisComment);
+
+                file.Save();
+            }
+
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile5_temp.flac")))
+            {
+                var artistFromFile = file.VorbisComment.Artist;
+                Assert.AreEqual(artist, artistFromFile.Value, "Test data was not correctly written to file, test preparation failed.");
+
+                file.VorbisComment.Remove("ARTIST");
+                artistFromFile = file.VorbisComment.Artist;
+                Assert.IsTrue(artistFromFile.Count == 0, "Tag was not removed.");
+            }
+        }
     }
 }
