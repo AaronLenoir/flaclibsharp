@@ -280,19 +280,39 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Adds a new Vorbis Comment with the given key and a single value.
+        /// Removes the given value from the VorbisComment.
         /// </summary>
         /// <param name="key">The key of the vorbis comment field to be removed.</param>
-        /// <param name="value">The one, and only, value for this comment.</param>
-        /// <exception cref="FlacLibSharp"
+        /// <remarks>Does nothing if no Vorbis Comments with the key are found.</remarks>
+        public void Remove(string key, string value)
+        {
+            if (this.comments.ContainsKey(key))
+            {
+                for(var i = this.comments[key].Count - 1; i >= 0; i--)
+                {
+                    if (this.comments[key][i].Equals(value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        this.comments[key].RemoveAt(i);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds a new Vorbis Comment with the given key and a single value.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be added.</param>
+        /// <param name="value">The value for this comment.</param>
+        /// <remarks>If a tag with the key already exists, the value is appended.</remarks>
         public void Add(string key, string value)
         {
             if (this.ContainsField(key))
             {
-                throw new FlacLibSharpDuplicatedVorbisCommentException(key);
+                this[key].Add(value);
+            } else
+            {
+                this[key] = new VorbisCommentValues(value);
             }
-
-            this[key] = new VorbisCommentValues(value);
         }
 
         /// <summary>
@@ -300,14 +320,35 @@ namespace FlacLibSharp
         /// </summary>
         /// <param name="key">The key of the vorbis comment field to be removed.</param>
         /// <param name="values">The values for this comment.</param>
-        /// <exception cref="FlacLibSharp"
+        /// <remarks>If a tag with the key already exists, the values are appended.</remarks>
         public void Add(string key, IEnumerable<string> values)
         {
             if (this.ContainsField(key))
             {
-                throw new FlacLibSharpDuplicatedVorbisCommentException(key);
+                this[key].AddRange(values);
+            } else
+            {
+                this[key] = new VorbisCommentValues(values);
             }
+        }
 
+        /// <summary>
+        /// Replaces all the values (if any) for a given tag with the given value.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be replaced.</param>
+        /// <param name="values">The values for this comment.</param>
+        public void Replace(string key, string value)
+        {
+            this[key] = new VorbisCommentValues(value);
+        }
+
+        /// <summary>
+        /// Replaces all the values (if any) for a given tag with the given value.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be replaced.</param>
+        /// <param name="values">The values for this comment.</param>
+        public void Replace(string key, IEnumerable<string> values)
+        {
             this[key] = new VorbisCommentValues(values);
         }
 
