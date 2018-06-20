@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
+using FlacLibSharp.Exceptions;
 using FlacLibSharp.Helpers;
 
 namespace FlacLibSharp
@@ -264,6 +264,92 @@ namespace FlacLibSharp
         public bool ContainsField(string key)
         {
             return this.comments.ContainsKey(key);
+        }
+
+        /// <summary>
+        /// Removes all Vobis Comment values for the given key.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be removed.</param>
+        /// <remarks>Does nothing if no Vorbis Comments with the key are found.</remarks>
+        public void Remove(string key)
+        {
+            if (this.comments.ContainsKey(key))
+            {
+                this.comments.Remove(key);
+            }
+        }
+
+        /// <summary>
+        /// Removes the given value from the VorbisComment.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be removed.</param>
+        /// <remarks>Does nothing if no Vorbis Comments with the key are found.</remarks>
+        public void Remove(string key, string value)
+        {
+            if (this.comments.ContainsKey(key))
+            {
+                for(var i = this.comments[key].Count - 1; i >= 0; i--)
+                {
+                    if (this.comments[key][i].Equals(value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        this.comments[key].RemoveAt(i);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds a new Vorbis Comment with the given key and a single value.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be added.</param>
+        /// <param name="value">The value for this comment.</param>
+        /// <remarks>If a tag with the key already exists, the value is appended.</remarks>
+        public void Add(string key, string value)
+        {
+            if (this.ContainsField(key))
+            {
+                this[key].Add(value);
+            } else
+            {
+                this[key] = new VorbisCommentValues(value);
+            }
+        }
+
+        /// <summary>
+        /// Adds a new Vorbis Comment with the given key and a list of values.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be removed.</param>
+        /// <param name="values">The values for this comment.</param>
+        /// <remarks>If a tag with the key already exists, the values are appended.</remarks>
+        public void Add(string key, IEnumerable<string> values)
+        {
+            if (this.ContainsField(key))
+            {
+                this[key].AddRange(values);
+            } else
+            {
+                this[key] = new VorbisCommentValues(values);
+            }
+        }
+
+        /// <summary>
+        /// Replaces all the values (if any) for a given tag with the given value.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be replaced.</param>
+        /// <param name="values">The values for this comment.</param>
+        public void Replace(string key, string value)
+        {
+            this[key] = new VorbisCommentValues(value);
+        }
+
+        /// <summary>
+        /// Replaces all the values (if any) for a given tag with the given value.
+        /// </summary>
+        /// <param name="key">The key of the vorbis comment field to be replaced.</param>
+        /// <param name="values">The values for this comment.</param>
+        public void Replace(string key, IEnumerable<string> values)
+        {
+            this[key] = new VorbisCommentValues(values);
         }
 
         /// <summary>

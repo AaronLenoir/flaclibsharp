@@ -25,7 +25,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\" />
     <Folder Include="Helpers\" />
     <Folder Include="Metadata\CueSheet\" />
     <Folder Include="Metadata\SeekTable\" />
