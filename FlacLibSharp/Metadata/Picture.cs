@@ -9,7 +9,7 @@ using FlacLibSharp.Helpers;
 namespace FlacLibSharp
 {
     /// <summary>
-    /// What kind of picture is in the flac file, picture type according to the ID3v2 APIC frame.
+    /// Picture type according to the ID3v2 APIC frame.
     /// </summary>
     public enum PictureType
     {
@@ -130,7 +130,6 @@ namespace FlacLibSharp
         /// <summary>
         /// Loads the picture data from a Metadata block.
         /// </summary>
-        /// <param name="data"></param>
         public override void LoadBlockData(byte[] data)
         {
             // First 32-bit: picture type according to the ID3v2 APIC frame
@@ -170,7 +169,7 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Will write the data describing this metadata block to the given stream.
+        /// Writes the data describing this metadata block to the given stream.
         /// </summary>
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
@@ -280,19 +279,21 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Width of the picture (in pixels).
+        /// Width of the picture, in pixels.
         /// </summary>
         public UInt32 Width {
             get { return this.width; }
             set { this.width = value; }
         }
+
         /// <summary>
-        /// Height of the picture (in pixels).
+        /// Height of the picture, in pixels.
         /// </summary>
         public UInt32 Height {
             get { return this.height; }
             set { this.height = value; }
         }
+
         /// <summary>
         /// The colour depth of the picture.
         /// </summary>
@@ -300,6 +301,7 @@ namespace FlacLibSharp
             get { return this.colorDepth; }
             set { this.colorDepth = value; }
         }
+
         /// <summary>
         /// For color indexed pictures, all of the colours in the picture.
         /// </summary>
@@ -309,7 +311,7 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// The actual picture data in a stream
+        /// The actual picture data in a stream.
         /// </summary>
         public byte[] Data {
             get { return this.data; }

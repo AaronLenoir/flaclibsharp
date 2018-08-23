@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 using FlacLibSharp.Helpers;
 
@@ -39,7 +37,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Will write the data describing this metadata block to the given stream.
+        /// Writes the data describing this metadata block to the given stream.
         /// </summary>
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
@@ -63,7 +61,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Gets the total number of SeekPoints (normal seekpoints + placeholder seekpoints).
+        /// Gets the total number of SeekPoints: normal seekpoints + placeholder seekpoints.
         /// </summary>
         /// <remarks>Don't use this to loop through the indexes of the SeekPoints collection! It also contains the total nr of placeholders, which are not in that collection.</remarks>
         public int TotalSeekPoints {

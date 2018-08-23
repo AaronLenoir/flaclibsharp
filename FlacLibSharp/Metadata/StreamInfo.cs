@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 using FlacLibSharp.Helpers;
 
@@ -32,9 +30,8 @@ namespace FlacLibSharp {
         #endregion
 
         /// <summary>
-        /// Creates a StreamInfo from scratch, setting some sensible defaults.
+        /// Creates a new StreamInfo.
         /// </summary>
-        /// <remarks>Not sure why you would need this now, every FLAC already contains this and this library can't create actual FLAC files.</remarks>
         public StreamInfo()
         {
             this.Header.Type = MetadataBlockHeader.MetadataBlockType.StreamInfo;
@@ -45,8 +42,6 @@ namespace FlacLibSharp {
         /// </summary>
         /// <param name="data"></param>
         public override void LoadBlockData(byte[] data) {
-            //throw new Exception("The method or operation is not implemented.");
-
             // "All numbers are big-endian coded and unsigned".
 
             // 1: Minimum Block Size (first 16-bit)
@@ -64,7 +59,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// When overridden in a derived class, will write the data describing this metadata block to the given stream.
+        /// Writes the data describing this metadata to the given stream.
         /// </summary>
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
@@ -93,64 +88,72 @@ namespace FlacLibSharp {
         #region Public Properties
 
         /// <summary>
-        /// The minimum block size (in samples) used in the stream.
+        /// The minimum block size, in samples, used in the stream.
         /// </summary>
         public UInt16 MinimumBlockSize {
             get { return this.minimumBlockSize; }
         }
 
         /// <summary>
-        /// The maximum block size (in samples) used in the stream. (Minimum blocksize == maximum blocksize) implies a fixed-blocksize stream.
+        /// The maximum block size, in samples, used in the stream. 
         /// </summary>
+        /// <remarks>Minimum blocksize == maximum blocksize implies a fixed-blocksize stream.</remarks>
         public UInt16 MaximumBlockSize {
             get { return this.maximumBlockSize; }
         }
 
         /// <summary>
-        /// The minimum frame size (in bytes) used in the stream. May be 0 to imply the value is not known.
+        /// The minimum frame size, in bytes, used in the stream.
         /// </summary>
+        /// <remarks>May be 0 to imply the value is not known.</remarks>
         public UInt32 MinimumFrameSize {
             get { return this.minimumFrameSize; }
         }
 
         /// <summary>
-        /// The maximum frame size (in bytes) used in the stream. May be 0 to imply the value is not known.
+        /// The maximum frame size, in bytes, used in the stream. 
         /// </summary>
+        /// <remarks>May be 0 to imply the value is not known.</remarks>
         public UInt32 MaximumFrameSize {
             get { return this.maximumFrameSize; }
         }
 
         /// <summary>
-        /// Sample rate in Hz. Though 20 bits are available, the maximum sample rate is limited by the structure of frame headers to 655350Hz. Also, a value of 0 is invalid.
+        /// Sample rate in Hz. 
         /// </summary>
+        /// <remarks>Though 20 bits are available, the maximum sample rate is limited by the structure of frame headers to 655350Hz. A value of 0 is invalid.</remarks>
         public UInt32 SampleRateHz {
             get { return this.sampleRateHz; }
         }
 
         /// <summary>
-        /// (number of channels)-1. FLAC supports from 1 to 8 channels
+        /// Number of channels -1.
         /// </summary>
+        /// <remarks>FLAC supports from 1 to 8 channels.</remarks>
         public Int16 Channels {
             get { return this.channels; }
         }
 
         /// <summary>
-        /// (bits per sample)-1. FLAC supports from 4 to 32 bits per sample. Currently the reference encoder and decoders only support up to 24 bits per sample.
+        /// Bits per sample -1.
         /// </summary>
+        /// <remarks>FLAC supports from 4 to 32 bits per sample. Currently the reference encoder and decoders only support up to 24 bits per sample.</remarks>
         public Int16 BitsPerSample {
             get { return this.bitsPerSample; }
         }
-        
+
         /// <summary>
-        /// Total samples in stream. 'Samples' means inter-channel sample, i.e. one second of 44.1Khz audio will have 44100 samples regardless of the number of channels. A value of zero here means the number of total samples is unknown.
+        /// Total samples in stream.
         /// </summary>
+        /// <remarks>'Samples' means inter-channel sample, i.e. one second of 44.1Khz audio will have 44100 samples regardless of the number of channels. A value of zero here means the number of total samples is unknown.</remarks>
         public Int64 Samples {
             get { return this.samples; }
         }
 
         /// <summary>
-        /// MD5 signature (16 byte) of the unencoded audio data. This allows the decoder to determine if an error exists in the audio data even when the error does not result in an invalid bitstream.
+        /// MD5 signature (16 byte) of the unencoded audio data.
         /// </summary>
+        /// <remarks>This allows the decoder to determine if an error exists in the audio data even when the error does not result in an invalid bitstream.</remarks>
         public byte[] MD5Signature {
             get { return this.md5Signature; }
         }

@@ -1,17 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace FlacLibSharp.Helpers {
 
     /// <summary>
-    /// A helper class for parsing byes and bits to actual numbers.
+    /// A helper class for parsing bytes and bits to actual numbers.
     /// </summary>
-    /// <remarks>Currently always operates with Big-Endian numbers (because this was created for FLAC parsing which uses big-endian by default).</remarks>
+    /// <remarks>Currently always operates with Big-Endian numbers, because this was created for FLAC parsing which uses big-endian by default.</remarks>
     public static class BinaryDataHelper {
 
         /// <summary>
-        /// From a given data array, get a subset of items in a deep copied array.
+        /// Gets a subset of items in a deep copied array.
         /// </summary>
         /// <param name="data">The input data (won't be altered)</param>
         /// <param name="offset">Where in the input data to start copying files.</param>
@@ -24,7 +23,7 @@ namespace FlacLibSharp.Helpers {
         }
 
         /// <summary>
-        /// From the data, reads an unsigned 16 bit integer starting from the offset.
+        /// Reads an unsigned 16 bit integer starting from the offset.
         /// </summary>
         /// <param name="data">The source data</param>
         /// <param name="byteOffset">Offset from where to start reading the integer, in bytes.</param>
@@ -34,7 +33,7 @@ namespace FlacLibSharp.Helpers {
         }
 
         /// <summary>
-        /// From the data, reads an unsigned 24 bit integer starting from the offset.
+        /// Reads an unsigned 24 bit integer starting from the offset.
         /// </summary>
         /// <param name="data">The source data</param>
         /// <param name="byteOffset">Offset from where to start reading the integer, in bytes.</param>
@@ -44,7 +43,7 @@ namespace FlacLibSharp.Helpers {
         }
 
         /// <summary>
-        /// From the data, reads an unsigned 32 bit integer starting from the offset.
+        /// Reads an unsigned 32 bit integer starting from the offset.
         /// </summary>
         /// <param name="data">The source data</param>
         /// <param name="byteOffset">Offset from where to start reading the integer, in bytes.</param>
@@ -54,7 +53,7 @@ namespace FlacLibSharp.Helpers {
         }
 
         /// <summary>
-        /// From the data, reads an unsigned 64 bit integer starting from the offset.
+        /// Reads an unsigned 64 bit integer starting from the offset.
         /// </summary>
         /// <param name="data">The source data</param>
         /// <param name="byteOffset">Offset from where to start reading the integer, in bytes.</param>
@@ -64,7 +63,7 @@ namespace FlacLibSharp.Helpers {
         }
 
         /// <summary>
-        /// From the data, reads boolean at the offset.
+        /// Reads boolean at the offset.
         /// </summary>
         /// <param name="data">The source data</param>
         /// <param name="byteOffset">Offset from where to start reading the boolean, in bytes.</param>
@@ -75,7 +74,7 @@ namespace FlacLibSharp.Helpers {
         }
 
         /// <summary>
-        /// From the data, reads an integer value starting from the offset.
+        /// Reads an integer value starting from the offset.
         /// </summary>
         /// <param name="data">The source data</param>
         /// <param name="byteOffset">Offset from where to start reading the integer, in bytes.</param>
@@ -86,7 +85,7 @@ namespace FlacLibSharp.Helpers {
         }
 
         /// <summary>
-        /// Allows you to interpret part of a byte array as a number.
+        /// Interprets part of a byte array as a number.
         /// </summary>
         /// <param name="data">The source data.</param>
         /// <param name="byteOffset">Where in the data to start reading (offset in bytes)</param>

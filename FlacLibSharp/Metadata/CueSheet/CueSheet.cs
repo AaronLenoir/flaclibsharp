@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -53,7 +52,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Will write the data describing this metadata block to the given stream.
+        /// Writes the data describing this metadata block to the given stream.
         /// </summary>
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
@@ -146,7 +145,7 @@ namespace FlacLibSharp {
         private CueSheetTrackCollection tracks;
 
         /// <summary>
-        /// The collection of tracks in the cuesheet.
+        /// All Tracks in the cuesheet.
         /// </summary>
         public CueSheetTrackCollection Tracks {
             get {
@@ -158,7 +157,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Calculates the total Block Length of this metadata block (for use in the Header)
+        /// Calculates the total Block Length of this metadata block, for use in the Header.
         /// </summary>
         /// <returns></returns>
         private uint CalculateMetaDataBlockLength()

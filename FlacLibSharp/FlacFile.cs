@@ -7,9 +7,9 @@ using FlacLibSharp.Exceptions;
 namespace FlacLibSharp
 {
     /// <summary>
-    /// Parses FLAC data from the given stream of file.
+    /// Parses FLAC data from the given Stream or file.
     /// </summary>
-    /// <remarks>Only metadata parsing is currently implemented, decoding frames is THE big TODO.</remarks>
+    /// <remarks>Only metadata parsing is supported, audio is not decoded.</remarks>
     public class FlacFile : IDisposable
     {
         private Stream dataStream;
@@ -24,7 +24,7 @@ namespace FlacLibSharp
         #region Constructors
 
         /// <summary>
-        /// Open a Flac File
+        /// Opens a flac file.
         /// </summary>
         /// <param name="path">Path to the file.</param>
         public FlacFile(string path)
@@ -35,10 +35,10 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Open a flac file from a stream of data
+        /// Opens a flac file from a stream of data.
         /// </summary>
         /// <param name="data">Any stream of data</param>
-        /// <remarks>Stream is assumed to be at the beginning of the FLAC data</remarks>
+        /// <remarks>Stream is assumed to be at the beginning of the FLAC data.</remarks>
         public FlacFile(Stream data)
         {
             this.dataStream = data;
@@ -50,7 +50,7 @@ namespace FlacLibSharp
         #region Properties
 
         /// <summary>
-        /// A list of all the available metadata.
+        /// List of all the available metadata.
         /// </summary>
         public List<MetadataBlock> Metadata
         {
@@ -69,7 +69,7 @@ namespace FlacLibSharp
         #region Initialization
 
         /// <summary>
-        /// Verifies the flac identity and tries to load the available metadata blocks.
+        /// Verifies the flac identity and loads the available metadata blocks.
         /// </summary>
         protected void Initialize()
         {
@@ -106,7 +106,7 @@ namespace FlacLibSharp
         #region Reading
 
         /// <summary>
-        /// Tries to parse all the metadata blocks available in the file.
+        /// Parses all the metadata blocks available in the file.
         /// </summary>
         protected void ReadMetadata()
         {
@@ -160,19 +160,18 @@ namespace FlacLibSharp
         private Padding padding;
 
         /// <summary>
-        /// Returns the StreamInfo metedata block of the loaded Flac file.
+        /// Returns the StreamInfo metedata of the loaded Flac file.
         /// </summary>
         public StreamInfo StreamInfo { get { return this.streamInfo; } }
         
         /// <summary>
-        /// Returns the first ApplicationInfo metadata block of the loaded Flac file or null if this block is not available.
+        /// Returns the first ApplicationInfo metadata of the loaded Flac file or null if this data is not available.
         /// </summary>
         public ApplicationInfo ApplicationInfo { get { return this.applicationInfo; } }
 
         /// <summary>
-        /// Returns all ApplicationInfo metadata blocks (if there are any) of the loaded Flac file.
+        /// Returns all ApplicationInfo metadata, if there is any.
         /// </summary>
-        /// <returns></returns>
         public IEnumerable<ApplicationInfo> GetAllApplicationInfo()
         {
             List<ApplicationInfo> result = new List<ApplicationInfo>();
@@ -187,19 +186,18 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Returns the VorbisComment metadata block of the loaded Flac file or null if this block is not available.
+        /// Returns the VorbisComment metadata of the loaded Flac file or null if this data is not available.
         /// </summary>
         public VorbisComment VorbisComment { get { return this.vorbisComment; } }
 
         /// <summary>
-        /// Returns the CueSheet metadata block of the loaded Flac file or null if this block is not available.
+        /// Returns the CueSheet metadata of the loaded Flac file or null if this data is not available.
         /// </summary>
         public CueSheet CueSheet { get { return this.cueSheet; } }
 
         /// <summary>
-        /// Returns all CueSheet metadata blocks (if there are any) of the loaded Flac file.
+        /// Returns all CueSheet metadata, if there is any.
         /// </summary>
-        /// <returns></returns>
         public IEnumerable<CueSheet> GetAllCueSheets() {
             List<CueSheet> result = new List<CueSheet>();
             foreach (MetadataBlock block in this.Metadata)
@@ -213,17 +211,17 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Returns the SeekTable metadata block of the loaded Flac file or null if this block is not available.
+        /// Returns the SeekTable metadata of the loaded Flac file or null if this data is not available.
         /// </summary>
         public SeekTable SeekTable { get { return this.seekTable; } }
 
         /// <summary>
-        /// Returns the Padding metadata block of the loaded Flac file or null if this block is not available.
+        /// Returns the Padding metadata of the loaded Flac file or null if this data is not available.
         /// </summary>
         public Padding Padding { get { return this.padding; } }
 
         /// <summary>
-        /// Returns all Padding metadata blocks (if there are any) of the loaded Flac file.
+        /// Returns all Padding metadata, if there is any.
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Padding> GetAllPadding()
@@ -240,7 +238,7 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Will return all Picture blocks available in the Flac file, or an empty list of none are found.
+        /// Will return all Picture metadata, if there is any.
         /// </summary>
         /// <returns></returns>
         public List<Picture> GetAllPictures()
@@ -332,7 +330,7 @@ namespace FlacLibSharp
         #endregion
 
         /// <summary>
-        /// Releases the loaded flac file.
+        /// Closes the Flac file.
         /// </summary>
         public void Dispose()
         {

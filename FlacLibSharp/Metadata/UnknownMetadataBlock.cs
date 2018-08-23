@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace FlacLibSharp {
     class FLACUnknownMetaDataBlock : MetadataBlock {
@@ -16,7 +14,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// When overridden in a derived class, will write the data describing this metadata block to the given stream.
+        /// When overridden in a derived class, writes the data describing this metadata block to the given stream.
         /// </summary>
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)

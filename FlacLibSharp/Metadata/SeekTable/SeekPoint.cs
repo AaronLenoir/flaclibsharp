@@ -28,7 +28,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Will write the data representing this SeekPoint to the given stream.
+        /// Writes the data representing this SeekPoint to the given stream.
         /// </summary>
         /// <param name="targetStream"></param>
         public void WriteData(Stream targetStream) {
@@ -57,7 +57,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Offset (in bytes) from the first byte of the first frame header to the first byte of the target frame's header.
+        /// Offset, in bytes, from the first byte of the first frame header to the first byte of the target frame's header.
         /// </summary>
         public UInt64 ByteOffset {
             get { return this.byteOffset; }

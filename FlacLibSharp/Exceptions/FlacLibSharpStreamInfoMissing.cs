@@ -3,8 +3,9 @@
 namespace FlacLibSharp.Exceptions
 {
     /// <summary>
-    /// A Flac file was loaded that didn't contain the stream info. This is the only metadata block that is mandatory.
+    /// Exception raised when a Flac file was loaded that didn't contain the stream info.
     /// </summary>
+    /// <remarks>Stream Info is the only metadata block that is mandatory.</remarks>
     public class FlacLibSharpStreamInfoMissing : FlacLibSharpException
     {
         /// <summary>
