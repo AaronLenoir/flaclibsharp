@@ -68,7 +68,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Will write the data representing this header (as it is stored in the FLAC file) to the given stream.
+        /// Writes the metadata to the given stream.
         /// </summary>
         /// <param name="targetStream">The stream where the data will be written to.</param>
         public void WriteHeaderData(Stream targetStream) {

@@ -15,8 +15,9 @@ namespace FlacLibSharp {
         private byte[] applicationData;
 
         /// <summary>
-        /// Creates an empty ApplicationInfo block, application id will be 0, application data will be empty.
+        /// Creates an empty ApplicationInfo block.
         /// </summary>
+        /// <remarks>Application id will be 0, application data will be empty.</remarks>
         public ApplicationInfo()
         {
             this.Header.Type = MetadataBlockHeader.MetadataBlockType.Application;
@@ -39,7 +40,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Will write the data describing this metadata block to the given stream.
+        /// Writes the data describing this metadata block to the given stream.
         /// </summary>
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)

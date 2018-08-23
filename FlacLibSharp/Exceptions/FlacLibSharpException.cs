@@ -3,7 +3,7 @@
 namespace FlacLibSharp.Exceptions
 {
     /// <summary>
-    /// These are the exceptions the FlacLibSharp library will produce.
+    /// These are the exceptions the FlacLibSharp library produces.
     /// </summary>
     public class FlacLibSharpException : Exception
     {

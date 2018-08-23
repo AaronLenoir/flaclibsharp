@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace FlacLibSharp
 {
     /// <summary>
-    /// Wrapper class for fast access to some of the FLAC functions
+    /// Wrapper class for easy access to some of the Flac functions
     /// </summary>
     public class FastFlac
     {
@@ -14,10 +11,9 @@ namespace FlacLibSharp
         #region Metadata Fetchers
 
         /// <summary>
-        /// Gives you all available metadata blocks in the flac file.
+        /// Returns all available metadata in the flac file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">Path to the file.</param>
         public static List<MetadataBlock> GetMetaData(string path)
         {
             using (FlacFile flac = new FlacFile(path))
@@ -27,9 +23,9 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Gives you the StreamInfo metadata
+        /// Returns the StreamInfo metadata.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to the file.</param>
         /// <returns>The StreamInfo metadata or null if no StreamInfo metadata is found.</returns>
         public static StreamInfo GetStreamInfo(string path)
         {
@@ -40,9 +36,9 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Gives you the vorbis comment metadata (ID3V2 tags).
+        /// Returns the vorbis comment metadata (ID3V2 tags).
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to the file.</param>
         /// <returns>The vorbis comment metadata or null if none is available.</returns>
         public static VorbisComment GetVorbisComment(string path)
         {
@@ -59,9 +55,9 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets the specific vorbis field name (example = ARTIST) if it is available.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to the file.</param>
         /// <param name="fieldName"></param>
-        /// <returns>The value of the field or an empty string if the field is not available.</returns>
+        /// <returns>The value of the field.</returns>
         public static VorbisCommentValues GetVorbisField(string path, string fieldName)
         {
             using (FlacFile flac = new FlacFile(path))
@@ -77,8 +73,8 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets the first artist of the track.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns>Empty string if the track number isn't specified in the metadata</returns>
+        /// <param name="path">Path to the file.</param>
+        /// <returns>Empty string if the track number isn't specified in the metadata.</returns>
         public static string GetArtist(string path)
         {
             return GetVorbisField(path, "ARTIST").Value;
@@ -88,7 +84,7 @@ namespace FlacLibSharp
         /// Gets the first title of the track.
         /// </summary>
         /// <param name="path"></param>
-        /// <returns>Empty string if the track number isn't specified in the metadata</returns>
+        /// <returns>Empty string if the track number isn't specified in the metadata.</returns>
         public static string GetTitle(string path)
         {
             return GetVorbisField(path, "TITLE").Value;
@@ -97,8 +93,8 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets the first album name.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns>Empty string if the track number isn't specified in the metadata</returns>
+        /// <param name="path">Path to the file.</param>
+        /// <returns>Empty string if the track number isn't specified in the metadata.</returns>
         public static string GetAlbum(string path)
         {
             return GetVorbisField(path, "ALBUM").Value;
@@ -107,8 +103,8 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets the first track number.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns>Empty string if the track number isn't specified in the metadata</returns>
+        /// <param name="path">Path to the file.</param>
+        /// <returns>Empty string if the track number isn't specified in the metadata.</returns>
         public static string GetTrackNumber(string path)
         {
             return GetVorbisField(path, "TRACKNUMBER").Value;
@@ -117,7 +113,7 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets the first genre of the track.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path to the file.</param>
         /// <returns>Empty string if no genre is specified in the metadata.</returns>
         public static string GetGenre(string path)
         {
@@ -127,8 +123,8 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets the duration of the track in seconds.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns>The duration of the track in seconds or 0 if the duration is not known (sample count is missing from streaminfo metadata)</returns>
+        /// <param name="path">Path to the file.</param>
+        /// <returns>The duration of the track in seconds or 0 if the duration is not known (sample count is missing from streaminfo metadata).</returns>
         public static int GetDuration(string path)
         {
             using (FlacFile file = new FlacFile(path))

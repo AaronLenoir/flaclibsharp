@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using FlacLibSharp.Exceptions;
 using FlacLibSharp.Helpers;
 
 namespace FlacLibSharp
@@ -35,9 +34,8 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// The first value of the list of values.
+        /// The first value of all values.
         /// </summary>
-        /// <remarks></remarks>
         public string Value {
             get
             {
@@ -61,7 +59,7 @@ namespace FlacLibSharp
     }
 
     /// <summary>
-    /// A metadata block contain the "Vorbis Comment" (artist, ...)
+    /// A metadata block containing the "Vorbis Comment" (artist, title, ...)
     /// </summary>
     public class VorbisComment : MetadataBlock, IEnumerable<KeyValuePair<string, VorbisCommentValues>>
     {
@@ -71,7 +69,7 @@ namespace FlacLibSharp
         private string vendor;
 
         /// <summary>
-        /// Initializes a Vorbis comment block (without any content).
+        /// Initializes a Vorbis comment block, without any content.
         /// </summary>
         public VorbisComment()
         {
@@ -107,7 +105,7 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Will write the data describing this metadata block to the given stream.
+        /// Will write the data describing this metadata to the given stream.
         /// </summary>
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
@@ -185,7 +183,7 @@ namespace FlacLibSharp
         /// <summary>
         /// Adds a comment to the list of vorbis comments.
         /// </summary>
-        /// <param name="comment"></param>
+        /// <param name="comment">Comment in the format "FIELDNAME=VALUE".</param>
         protected void AddComment(string comment)
         {
             int splitIndex = comment.IndexOf('=');
@@ -210,8 +208,6 @@ namespace FlacLibSharp
         /// <summary>
         /// Adds a comment to the list of vorbis comments.
         /// </summary>
-        /// <param name="fieldName"></param>
-        /// <param name="value"></param>
         protected void AddComment(string fieldName, string value)
         {
             if (this.comments.ContainsKey(fieldName))
@@ -224,12 +220,12 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// The Vendor of the flac file.
+        /// The Vendor of the Flac file.
         /// </summary>
         public string Vendor { get { return this.vendor; } }
 
         /// <summary>
-        /// Get one of the vorbis comment.
+        /// Get one of the vorbis comments.
         /// </summary>
         /// <param name="key">The key of the vorbis comment field.</param>
         /// <returns>The value of the vorbis comment field.</returns>
@@ -267,7 +263,7 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Removes all Vobis Comment values for the given key.
+        /// Removes all Vorbis Comment values for the given key.
         /// </summary>
         /// <param name="key">The key of the vorbis comment field to be removed.</param>
         /// <remarks>Does nothing if no Vorbis Comments with the key are found.</remarks>
@@ -333,7 +329,7 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Replaces all the values (if any) for a given tag with the given value.
+        /// Replaces all the values for a given tag with the given value.
         /// </summary>
         /// <param name="key">The key of the vorbis comment field to be replaced.</param>
         /// <param name="values">The values for this comment.</param>
@@ -343,7 +339,7 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Replaces all the values (if any) for a given tag with the given value.
+        /// Replaces all the values for a given tag with the given value.
         /// </summary>
         /// <param name="key">The key of the vorbis comment field to be replaced.</param>
         /// <param name="values">The values for this comment.</param>
@@ -355,7 +351,6 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets or sets the Artist if available.
         /// </summary>
-        /// <remarks>If not found an empty string is returned.</remarks>
         public VorbisCommentValues Artist {
             get { return this["ARTIST"]; }
             set { this["ARTIST"] = value; }
@@ -364,7 +359,6 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets or sets the Title if available.
         /// </summary>
-        /// <remarks>If not found an empty string is returned.</remarks>
         public VorbisCommentValues Title {
             get { return this["TITLE"]; }
             set { this["TITLE"] = value; }
@@ -373,7 +367,6 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets or sets the Album if available.
         /// </summary>
-        /// <remarks>If not found an empty string is returned.</remarks>
         public VorbisCommentValues Album {
             get { return this["ALBUM"]; }
             set { this["ALBUM"] = value; }
@@ -382,7 +375,6 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets or sets the Date if available.
         /// </summary>
-        /// <remarks>If not found an empty string is returned.</remarks>
         public VorbisCommentValues Date {
             get { return this["DATE"]; }
             set { this["DATE"] = value; }
@@ -391,7 +383,6 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets or sets the Tacknumber if available.
         /// </summary>
-        /// <remarks>If not found an empty string is returned.</remarks>
         public VorbisCommentValues TrackNumber {
             get { return this["TRACKNUMBER"]; }
             set { this["TRACKNUMBER"] = value; }
@@ -400,7 +391,6 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets or sets the Genre if available.
         /// </summary>
-        /// <remarks>If not found an empty string is returned.</remarks>
         public VorbisCommentValues Genre {
             get { return this["GENRE"]; }
             set { this["GENRE"] = value; }
@@ -409,7 +399,6 @@ namespace FlacLibSharp
         /// <summary>
         /// Gets or sets the embedded CueSheet if available.
         /// </summary>
-        /// <remarks>If not found an empty VorbisCommentValues instance is returned.</remarks>
         public VorbisCommentValues CueSheet
         {
             get { return this["CUESHEET"]; }

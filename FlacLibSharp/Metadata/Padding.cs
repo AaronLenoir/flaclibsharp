@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using FlacLibSharp.Exceptions;
 
 namespace FlacLibSharp {
@@ -13,7 +11,7 @@ namespace FlacLibSharp {
         private UInt32 emptyBitCount;
 
         /// <summary>
-        /// Creates an empty metadata block
+        /// Creates an empty metadata block.
         /// </summary>
         public Padding()
         {
@@ -24,20 +22,19 @@ namespace FlacLibSharp {
         /// <summary>
         /// Loads the padding data from the given data.
         /// </summary>
-        /// <param name="data"></param>
         public override void LoadBlockData(byte[] data) {
             this.emptyBitCount = (UInt32)(this.Header.MetaDataBlockLength * 8);
         }
 
         /// <summary>
-        /// Will write the data describing this metadata block to the given stream.
+        /// Writes the data describing this metadata block to the given stream.
         /// </summary>
         /// <param name="targetStream">Stream to write the data to.</param>
         public override void WriteBlockData(Stream targetStream)
         {
             this.Header.WriteHeaderData(targetStream);
             
-            // Simply write a bunch of 0 bytes (probably shouldn't do this byte per byte ...)
+            // write a bunch of 0 bytes (probably shouldn't do this byte per byte ...)
             UInt32 bytes = this.emptyBitCount / 8;
             for (UInt32 i = 0; i < bytes; i++)
             {
@@ -46,7 +43,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// How many empty bits there are in the padding (must be a multiple of eight).
+        /// How many empty bits there are in the padding, must be a multiple of eight.
         /// </summary>
         public UInt32 EmptyBitCount {
             get

@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 using FlacLibSharp.Helpers;
 
@@ -30,7 +28,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Will write the data representing this CueSheet track index point to the given stream.
+        /// Writes the data representing this CueSheet track index point to the given stream.
         /// </summary>
         /// <param name="targetStream"></param>
         public void WriteBlockData(Stream targetStream)

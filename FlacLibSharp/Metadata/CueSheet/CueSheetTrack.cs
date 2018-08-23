@@ -27,7 +27,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Initialize the CueSheetTrack
+        /// Initialize the CueSheetTrack.
         /// </summary>
         /// <param name="data">The full data array.</param>
         /// <param name="dataOffset">Where the cuesheet track begins.</param>
@@ -62,7 +62,7 @@ namespace FlacLibSharp {
         }
 
         /// <summary>
-        /// Will write the data representing this CueSheet track to the given stream.
+        /// Writes the data representing this CueSheet track to the given stream.
         /// </summary>
         /// <param name="targetStream"></param>
         public void WriteBlockData(Stream targetStream)

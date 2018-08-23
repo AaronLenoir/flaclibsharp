@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FlacLibSharp.Exceptions
+﻿namespace FlacLibSharp.Exceptions
 {
     /// <summary>
-    /// A padding block of metadata was set to an invalid bit length.
+    /// Exception thrown when a padding block of metadata was set to an invalid bit length.
     /// </summary>
     public class FlacLibSharpInvalidPaddingBitCount : FlacLibSharpException
     {
         /// <summary>
-        /// Creates a new FlacLibSharpStreamInfoMissing.
+        /// Creates a new Exception.
         /// </summary>
         public FlacLibSharpInvalidPaddingBitCount(string details)
             : base(details)
