@@ -4,20 +4,21 @@
     <TargetFrameworks>netstandard1.3;net20</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>FlacLibSharp</PackageId>
-    <Version>3.1.1</Version>
+    <Version>3.2.0</Version>
     <Authors>Aaron Lenoir</Authors>
     <Company />
     <Product>FlacLibSharp</Product>
     <Description>A .NET library for reading and writing FLAC metadata.</Description>
-    <Copyright>Copyright 2017</Copyright>
+    <Copyright>Copyright 2018</Copyright>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/AaronLenoir/flaclibsharp</PackageProjectUrl>
-    <PackageReleaseNotes>* 3.1.1: Multiple values for VorbisComment not written correctly (Issue #45)
-* 3.1.0: Adds ability to iterate through all VorbisComments</PackageReleaseNotes>
+    <PackageReleaseNotes>* Added Remove, Add and Replace methods to VorbisComment API (issue #44)
+* Exposed CueSheet property on VorbisComment (issue #48)
+* Reviewed XML Documentation (issue #49)</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/AaronLenoir/flaclibsharp</RepositoryUrl>
     <PackageTags />
-    <AssemblyVersion>3.1.1.0</AssemblyVersion>
-    <FileVersion>3.1.1.0</FileVersion>
+    <AssemblyVersion>3.2.0.0</AssemblyVersion>
+    <FileVersion>3.2.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
