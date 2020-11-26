@@ -78,22 +78,35 @@ namespace FlacLibSharp
         }
 
         /// <summary>
-        /// Verifies whether or not the first four bytes of the file indicate this is a flac file.
+        /// Looks for the magic fLaC marker and positions the stream to start reading right after it,
+        /// any data before the marker is ignored.
         /// </summary>
+        /// <exception cref="FlacLibSharpInvalidFormatException"/>
         private void VerifyFlacIdentity()
         {
-            byte[] data = new byte[4];
+            byte[] data = new byte[1];
 
             try
             {
-                this.dataStream.Read(data, 0, 4);
-                for (int i = 0; i < data.Length; i++)
+                // Advance the stream to just after the magic fLaC marker, if found
+
+                while(this.dataStream.Read(data, 0, 1) == 1)
                 {
-                    if (data[i] != magicFlacMarker[i])
+                    if (data[0] == magicFlacMarker[0])
                     {
-                        throw new FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException("In Verify Flac Identity");
+                        int i = 1;
+                        while (this.dataStream.Read(data, 0, 1) == 1)
+                        {
+                            if (i == 3) { return; }
+
+                            if (data[0] != magicFlacMarker[i]) { break; }
+
+                            i++;
+                        }
                     }
                 }
+
+                throw new FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException("In Verify Flac Identity");
             }
             catch (ArgumentException)
             {

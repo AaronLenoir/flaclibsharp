@@ -55,6 +55,15 @@ namespace FlacLibSharp.Test
         }
 
         [TestMethod, TestCategory("ParseTests")]
+        public void OpenID3FlacFile()
+        {
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile1.flac")))
+            {
+                // Doing nothing
+            }
+        }
+
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckMetadata()
         {
             using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile1.flac")))
