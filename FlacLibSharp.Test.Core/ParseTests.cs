@@ -55,6 +55,25 @@ namespace FlacLibSharp.Test
         }
 
         [TestMethod, TestCategory("ParseTests")]
+        public void OpenID3FlacFile()
+        {
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile1.flac")))
+            {
+                // Doing nothing
+            }
+        }
+
+        [TestMethod, TestCategory("ParseTests")]
+        [ExpectedException(typeof(FlacLibSharp.Exceptions.FlacLibSharpInvalidFormatException), "Opening an invalid FLAC file was allowed.")]
+        public void OpenFileWithMagicMarkerAtTheEnd()
+        {
+            using (FlacFile file = new FlacFile(Path.Combine("Data", "notaflacfile.flac")))
+            {
+                // Doing nothing
+            }
+        }
+
+        [TestMethod, TestCategory("ParseTests")]
         public void OpenFlacFileAndCheckMetadata()
         {
             using (FlacFile file = new FlacFile(Path.Combine("Data", "testfile1.flac")))
