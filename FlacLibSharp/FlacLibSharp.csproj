@@ -10,13 +10,14 @@
     <Product>FlacLibSharp</Product>
     <Description>A .NET library for reading and writing FLAC metadata.</Description>
     <Copyright>Copyright 2020</Copyright>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/AaronLenoir/flaclibsharp</PackageProjectUrl>
     <PackageReleaseNotes>* Bugfix: Ignore all bytes that appear before the magic fLaC marker (issue #54)</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/AaronLenoir/flaclibsharp</RepositoryUrl>
     <PackageTags />
     <AssemblyVersion>3.2.1.0</AssemblyVersion>
     <FileVersion>3.2.1.0</FileVersion>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
